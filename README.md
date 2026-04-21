@@ -4,4 +4,4 @@
 
 main分支的修改会自动触发Github Action编译文档为web界面
 
-访问[https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base](https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base)查看文档内容
+访问[https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base](https://navigator-vision-algorithm-team.github.io/knowledge-base/)查看文档内容
