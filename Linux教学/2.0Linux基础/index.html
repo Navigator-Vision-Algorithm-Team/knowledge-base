@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Linux 基础入门教案 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Linux \u57fa\u7840\u5165\u95e8\u6559\u6848";
+        var mkdocs_page_input_path = "Linux\u6559\u5b66/2.0Linux\u57fa\u7840.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Navigator视觉与导航算法组</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">文档施工中</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Linux 基础入门教案</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">视觉组内部培训 · 主讲人教学用文档</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">📋 课程信息</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">🗂️ 课程目录</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#linux_1">一、Linux 文件系统</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">📌 教学目标</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#11">1.1 讲课内容</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_5">🌳 目录树结构</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#vs">📍 绝对路径 vs 相对路径</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_6">🔍 演示操作（跟做）</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#12">1.2 小练习</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_7">二、文件权限</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_8">📌 教学目标</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#21">2.1 讲课内容</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_9">🔐 权限字段解读</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_10">🔢 数字权限（八进制）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_11">🔧 修改权限与归属</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_12">📝 演示操作（跟做）</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_13">三、常用指令</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_14">📌 教学目标</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#31">3.1 文件与目录操作</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_15">📁 目录操作</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_16">📄 文件操作</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#32">3.2 文本查看与处理</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#33">3.3 管道与重定向(看情况讲)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#34">3.4 进程与系统信息（看情况）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#35">3.5 其他实用命令</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#36">3.6 综合练习</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#vim">四、Vim 编辑器</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_17">📌 教学目标</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#41">4.1 讲课内容</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#5">🧠 引入（5 分钟）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#vim_1">🧩 Vim 的三种模式</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_18">🚀 快速上手流程</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_19">✏️ 进入插入模式的几种方式</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_20">🔄 普通模式下的移动</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_21">✂️ 普通模式下的编辑</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_22">🔍 搜索与替换</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_23">💾 保存与退出</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_24">⚙️ 实用设置（临时）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_25">📝 演示操作（完整流程，跟做）</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#42-vim">4.2 Vim 速查卡（可打印）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#43">4.3 小练习</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_26">五、代码编译</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_27">📌 教学目标</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#51">5.1 讲课内容</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#3">🧠 引入（3 分钟）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_28">🔄 编译的四个阶段</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#gcc">🛠️ GCC 基本用法</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_29">📄 完整演示代码</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_30">⚙️ 常用编译选项</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_31">🗂️ 多文件项目结构</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#makefile">📦 Makefile 入门</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_32">🐛 读懂编译错误</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#52">5.2 综合实战练习</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">Linux 基础配套练习</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git 和 GitHub 教程（Ubuntu）</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Linux教学</li>
+      <li class="breadcrumb-item active">Linux 基础入门教案</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="linux">Linux 基础入门教案</h1>
+<h3 id="_1">视觉组内部培训 · 主讲人教学用文档</h3>
+<hr />
+<h2 id="_2">📋 课程信息</h2>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>课程名称</td>
+<td>Linux 基础入门</td>
+</tr>
+<tr>
+<td>适用对象</td>
+<td>视觉组新成员（零基础或初学者）</td>
+</tr>
+<tr>
+<td>建议时长</td>
+<td>3 ~ 4 小时（含练习）</td>
+</tr>
+<tr>
+<td>授课形式</td>
+<td>讲解 + 现场演示 + 跟做练习</td>
+</tr>
+<tr>
+<td>所需环境</td>
+<td>已安装 Linux 系统或 WSL2 / SSH 连接到服务器</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_3">🗂️ 课程目录</h2>
+<ol>
+<li><a href="#一linux-文件系统">Linux 文件系统</a></li>
+<li><a href="#二文件权限">文件权限</a></li>
+<li><a href="#三常用指令">常用指令</a></li>
+<li><a href="#四vim-编辑器">Vim 编辑器</a></li>
+<li><a href="#五代码编译">代码编译</a></li>
+</ol>
+<hr />
+<h2 id="linux_1">一、Linux 文件系统</h2>
+<h3 id="_4">📌 教学目标</h3>
+<ul>
+<li>理解 Linux 一切皆文件的设计思想</li>
+<li>掌握目录树结构及各顶层目录的含义</li>
+<li>能够使用路径（绝对/相对）定位文件</li>
+</ul>
+<hr />
+<h3 id="11">1.1 讲课内容</h3>
+<h4 id="_5">🌳 目录树结构</h4>
+<p>Linux 文件系统是一个<strong>倒置的树状结构</strong>，根目录为 <code>/</code>。</p>
+<pre><code>/
+├── bin        → 基础命令（ls, cp, mv 等）
+├── boot       → 启动文件（内核）
+├── dev        → 设备文件（硬盘、USB 等）
+├── etc        → 系统配置文件
+├── home       → 用户家目录（/home/alice, /home/bob）
+├── lib        → 系统库文件
+├── media      → 可移动设备挂载点
+├── mnt        → 临时挂载点
+├── opt        → 第三方软件
+├── proc       → 进程/内核虚拟文件系统（不是真实文件）
+├── root       → root 用户的家目录
+├── sbin       → 系统管理命令（需 root）
+├── tmp        → 临时文件（重启后清空）
+├── usr        → 用户程序（/usr/bin, /usr/lib）
+└── var        → 可变数据（日志、缓存）
+</code></pre>
+<hr />
+<h4 id="vs">📍 绝对路径 vs 相对路径</h4>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>绝对路径</td>
+<td>从根目录 <code>/</code> 开始</td>
+<td><code>/home/alice/project/main.c</code></td>
+</tr>
+<tr>
+<td>相对路径</td>
+<td>从当前位置开始</td>
+<td><code>../project/main.c</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>常用特殊路径符号：</strong></p>
+<pre><code class="language-python">~       # 当前用户的家目录，等价于 /home/用户名
+.       # 当前目录
+..      # 上一级目录
+-       # 上一次所在目录（配合 cd 使用）
+</code></pre>
+<hr />
+<h4 id="_6">🔍 演示操作（跟做）</h4>
+<pre><code class="language-bash"># 查看当前所在位置
+pwd
+
+# 切换到根目录并查看
+cd /
+ls
+
+# 切换到家目录
+cd ~
+pwd
+
+# 使用绝对路径切换
+cd /etc
+
+# 使用相对路径切换（回到上一层）
+cd ..
+
+# 切换回上一次的目录
+cd -
+</code></pre>
+<hr />
+<h3 id="12">1.2 小练习</h3>
+<blockquote>
+<ol>
+<li>打开终端，用 <code>pwd</code> 确认自己在哪里</li>
+<li>用绝对路径进入 <code>/tmp</code> 目录</li>
+<li>用相对路径回到家目录</li>
+<li>查看 <code>/etc</code> 下有哪些文件</li>
+</ol>
+</blockquote>
+<hr />
+<h2 id="_7">二、文件权限</h2>
+<h3 id="_8">📌 教学目标</h3>
+<ul>
+<li>看懂 <code>ls -l</code> 输出的权限字段</li>
+<li>理解用户/组/其他的三级权限模型</li>
+<li>能使用 <code>chmod</code>、<code>chown</code> 修改权限</li>
+</ul>
+<hr />
+<h3 id="21">2.1 讲课内容</h3>
+<h4 id="_9">🔐 权限字段解读</h4>
+<p>执行 <code>ls -l</code>，会看到类似：</p>
+<pre><code>-rwxr-xr-- 1 alice devteam 4096 Apr 10 10:30 script.sh
+drwxr-xr-x 2 alice devteam 4096 Apr 10 10:00 project/
+</code></pre>
+<p><strong>字段分解：</strong></p>
+<pre><code>- r w x  r - x  r - -
+│ │───│  │───│  │───│
+│ 用户权限  组权限   其他权限
+│
+└── 文件类型：- 普通文件，d 目录，l 软链接
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>r</code></td>
+<td>读（read）</td>
+</tr>
+<tr>
+<td><code>w</code></td>
+<td>写（write）</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td>执行（execute）</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>无此权限</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="_10">🔢 数字权限（八进制）</h4>
+<table>
+<thead>
+<tr>
+<th>权限</th>
+<th>二进制</th>
+<th>数字</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rwx</code></td>
+<td>111</td>
+<td>7</td>
+</tr>
+<tr>
+<td><code>rw-</code></td>
+<td>110</td>
+<td>6</td>
+</tr>
+<tr>
+<td><code>r-x</code></td>
+<td>101</td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>r--</code></td>
+<td>100</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>---</code></td>
+<td>000</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例：<code>chmod 755 file</code></strong></p>
+<pre><code>7 = rwx  → 用户（自己）：可读可写可执行
+5 = r-x  → 组：可读可执行
+5 = r-x  → 其他人：可读可执行
+</code></pre>
+<p><strong>常用权限速查：</strong></p>
+<pre><code class="language-bash">chmod 644 file.txt    # 标准文件：自己读写，他人只读
+chmod 755 script.sh   # 可执行脚本：自己全权，他人可读可执行
+chmod 700 secret/     # 私有目录：只有自己能访问
+chmod 777 shared/     # 全开放（不推荐，仅调试用）
+</code></pre>
+<hr />
+<h4 id="_11">🔧 修改权限与归属</h4>
+<pre><code class="language-bash"># 修改文件权限（数字方式）
+chmod 755 script.sh
+
+# 修改文件权限（符号方式）
+chmod u+x script.sh      # 给用户加执行权限
+chmod g-w file.txt       # 去掉组的写权限
+chmod o=r file.txt       # 设置其他人只有读权限
+chmod a+r file.txt       # 所有人都加读权限（a = all）
+
+# 修改文件所有者
+chown alice file.txt
+
+# 修改文件所属组
+chown alice:devteam file.txt
+
+# 递归修改整个目录
+chmod -R 755 project/
+chown -R alice:devteam project/
+</code></pre>
+<hr />
+<h4 id="_12">📝 演示操作（跟做）</h4>
+<pre><code class="language-bash"># 创建一个脚本文件
+echo '#!/bin/bash' &gt; hello.sh
+echo 'echo &quot;Hello, Linux!&quot;' &gt;&gt; hello.sh
+
+# 查看当前权限
+ls -l hello.sh
+
+# 尝试运行（会失败）
+./hello.sh
+
+# 添加执行权限
+chmod +x hello.sh
+
+# 再次运行（成功）
+./hello.sh
+
+# 查看修改后的权限
+ls -l hello.sh
+</code></pre>
+<hr />
+<h2 id="_13">三、常用指令</h2>
+<h3 id="_14">📌 教学目标</h3>
+<ul>
+<li>掌握文件操作类指令（增删改查）</li>
+<li>掌握文本查看与处理类指令</li>
+<li>掌握进程与系统信息类指令</li>
+<li>能组合使用管道和重定向</li>
+</ul>
+<hr />
+<h3 id="31">3.1 文件与目录操作</h3>
+<h4 id="_15">📁 目录操作</h4>
+<pre><code class="language-bash"># 列出文件（常用参数）
+ls              # 列出当前目录
+ls -l           # 详细信息（权限、大小、时间）
+ls -a           # 显示隐藏文件（以 . 开头的文件）
+ls -lh          # 人类可读的文件大小（KB、MB）
+ls -lt          # 按时间排序
+ls /path/to/dir # 列出指定目录
+
+# 切换目录
+cd /path        # 进入指定路径
+cd ~            # 回到家目录
+cd ..           # 返回上一级
+cd -            # 切换到上次所在目录
+
+# 创建目录
+mkdir mydir           # 创建单个目录
+mkdir -p a/b/c        # 递归创建多级目录
+
+# 删除目录
+rmdir emptydir        # 只能删除空目录
+rm -r mydir           # 递归删除目录及其内容
+rm -rf mydir          # 强制递归删除（⚠️ 慎用，不可恢复）
+</code></pre>
+<hr />
+<h4 id="_16">📄 文件操作</h4>
+<pre><code class="language-bash"># 创建文件
+touch newfile.txt       # 创建空文件（或更新时间戳）
+echo &quot;hello&quot; &gt; a.txt    # 写入内容（覆盖）
+echo &quot;world&quot; &gt;&gt; a.txt   # 追加内容
+
+# 复制文件/目录
+cp source.txt dest.txt      # 复制文件
+cp -r src_dir/ dest_dir/    # 递归复制目录
+
+# 移动/重命名
+mv old.txt new.txt          # 重命名文件
+mv file.txt /tmp/           # 移动文件到另一目录
+
+# 删除文件
+rm file.txt                 # 删除文件
+rm -i file.txt              # 删除前询问确认（推荐加 -i 养成习惯）
+
+# 查看文件信息
+file image.png              # 查看文件类型
+stat file.txt               # 查看详细元信息
+du -sh mydir/               # 查看目录占用空间
+</code></pre>
+<hr />
+<h3 id="32">3.2 文本查看与处理</h3>
+<pre><code class="language-bash"># 查看文件内容
+cat file.txt            # 直接输出全部内容
+less file.txt           # 分页查看（q 退出，/ 搜索）
+head -n 20 file.txt     # 查看前 20 行
+tail -n 20 file.txt     # 查看后 20 行
+tail -f log.txt         # 实时跟踪文件末尾（看日志很有用）
+
+# 搜索文本
+grep &quot;keyword&quot; file.txt         # 在文件中搜索关键词
+grep -r &quot;keyword&quot; ./project/    # 递归搜索目录
+grep -n &quot;keyword&quot; file.txt      # 显示行号
+grep -i &quot;keyword&quot; file.txt      # 忽略大小写
+grep -v &quot;keyword&quot; file.txt      # 显示不匹配的行
+
+# 查找文件
+find . -name &quot;*.c&quot;              # 在当前目录查找 .c 文件
+find /home -name &quot;test*&quot;        # 在 /home 下查找 test 开头的文件
+find . -type d -name &quot;build&quot;    # 查找名为 build 的目录
+find . -size +1M                # 查找大于 1MB 的文件
+
+# 统计
+wc -l file.txt          # 统计行数
+wc -w file.txt          # 统计单词数
+</code></pre>
+<hr />
+<h3 id="33">3.3 管道与重定向(看情况讲)</h3>
+<pre><code class="language-bash"># 重定向
+command &gt; file.txt    # 将输出写入文件（覆盖）
+command &gt;&gt; file.txt   # 将输出追加到文件
+command 2&gt; err.txt    # 将错误输出写入文件
+command &amp;&gt; all.txt    # 将标准输出和错误都写入文件
+
+# 管道（|）：将前一个命令的输出作为后一个命令的输入
+ls -l | grep &quot;.c&quot;           # 列出当前目录中的 .c 文件
+cat file.txt | wc -l        # 统计文件行数
+ps aux | grep python        # 查找 python 进程
+cat /etc/passwd | sort      # 排序输出
+</code></pre>
+<p><strong>实用组合示例：</strong></p>
+<pre><code class="language-bash"># 查找当前目录下所有 .c 文件并统计数量
+find . -name &quot;*.c&quot; | wc -l
+
+# 查看占用空间最大的 5 个文件
+du -sh * | sort -rh | head -5
+
+# 查看系统中包含 &quot;error&quot; 的日志行
+grep -r &quot;error&quot; /var/log/ 2&gt;/dev/null | less
+</code></pre>
+<hr />
+<h3 id="34">3.4 进程与系统信息（看情况）</h3>
+<pre><code class="language-bash"># 查看进程
+ps aux              # 查看所有进程
+ps aux | grep vim   # 查找指定进程
+top                 # 动态查看进程（q 退出）
+htop                # 更友好的 top（需安装）
+
+# 终止进程
+kill PID            # 发送 SIGTERM 信号（正常终止）
+kill -9 PID         # 发送 SIGKILL 强制终止
+killall python      # 终止所有名为 python 的进程
+
+# 系统信息
+uname -a            # 系统和内核信息
+df -h               # 磁盘使用情况
+free -h             # 内存使用情况
+uptime              # 系统运行时间和负载
+
+# 网络
+ping google.com     # 测试网络连通性
+ifconfig / ip addr  # 查看网络接口信息
+</code></pre>
+<hr />
+<h3 id="35">3.5 其他实用命令</h3>
+<pre><code class="language-bash"># 软件包管理（Ubuntu/Debian）
+sudo apt update             # 更新软件列表
+sudo apt install vim        # 安装软件
+sudo apt remove vim         # 卸载软件
+
+# 帮助
+man ls          # 查看 ls 的完整手册
+ls --help       # 查看简要帮助
+type ls         # 查看命令类型
+
+# 历史与快捷键
+history         # 查看历史命令
+!!              # 重复上一条命令
+!grep           # 重复上一条以 grep 开头的命令
+
+# 好用的快捷键
+Ctrl + C        # 中断当前命令
+Ctrl + Z        # 暂停当前命令（后台挂起）
+Ctrl + L        # 清屏（等同于 clear）
+Ctrl + A        # 光标移到行首
+Ctrl + E        # 光标移到行尾
+Tab             # 自动补全
+↑ / ↓           # 翻历史命令
+</code></pre>
+<hr />
+<h3 id="36">3.6 综合练习</h3>
+<blockquote>
+<p>按顺序完成以下操作：</p>
+<ol>
+<li>在家目录创建 <code>linux_practice/</code> 目录，在里面创建 <code>src/</code> 和 <code>log/</code> 两个子目录</li>
+<li>在 <code>src/</code> 里用 <code>echo</code> 创建 <code>hello.c</code>，写入一行内容</li>
+<li>用 <code>cp</code> 把 <code>hello.c</code> 复制到 <code>log/</code> 下</li>
+<li>用 <code>grep</code> 在 <code>src/</code> 中搜索你写入的内容</li>
+<li>用 <code>find</code> 找出 <code>linux_practice/</code> 下所有 <code>.c</code> 文件</li>
+<li>用管道统计一共有几个 <code>.c</code> 文件</li>
+</ol>
+</blockquote>
+<hr />
+<h2 id="vim">四、Vim 编辑器</h2>
+<h3 id="_17">📌 教学目标</h3>
+<ul>
+<li>理解 Vim 的模式系统</li>
+<li>掌握基本的移动、编辑、保存操作</li>
+<li>能独立在 Vim 中完成一次完整的编辑任务</li>
+</ul>
+<hr />
+<h3 id="41">4.1 讲课内容</h3>
+<h4 id="5">🧠 引入（5 分钟）</h4>
+<blockquote>
+<p><strong>讲课要点：</strong>
+"为什么要学 Vim？当你 SSH 登录到服务器，没有图形界面，只能用终端编辑文件，这时候 Vim 就是你最重要的工具。很多人第一次打开 Vim 连怎么退出都不知道——我们今天把这个痛苦一次性解决掉。"</p>
+</blockquote>
+<hr />
+<h4 id="vim_1">🧩 Vim 的三种模式</h4>
+<p>Vim 是<strong>模态编辑器</strong>，不同模式下按键含义完全不同：</p>
+<pre><code>┌─────────────────────────────────────────────┐
+│                                             │
+│   普通模式 (Normal)                          │
+│   启动默认进入 / Esc 返回                     │
+│   ↕ i / a / o / I / A / O                   │
+│                                             │
+│   插入模式 (Insert)                          │
+│   像普通编辑器一样输入文字                     │
+│   ↕ : (冒号)                                │
+│                                             │
+│   命令行模式 (Command)                        │
+│   输入 :w :q :wq 等命令                      │
+│                                             │
+└─────────────────────────────────────────────┘
+</code></pre>
+<blockquote>
+<p><strong>讲课要点：</strong>
+反复强调：<strong>Esc 是回到普通模式的万能键</strong>。遇到任何问题，先按 Esc，再想下一步。</p>
+</blockquote>
+<hr />
+<h4 id="_18">🚀 快速上手流程</h4>
+<pre><code class="language-bash"># 打开文件
+vim filename.txt
+
+# 如果文件不存在，会新建一个
+vim newfile.c
+</code></pre>
+<hr />
+<h4 id="_19">✏️ 进入插入模式的几种方式</h4>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>进入位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>i</code></td>
+<td>光标前插入</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td>光标后插入</td>
+</tr>
+<tr>
+<td><code>o</code></td>
+<td>在当前行下方新开一行</td>
+</tr>
+<tr>
+<td><code>O</code></td>
+<td>在当前行上方新开一行</td>
+</tr>
+<tr>
+<td><code>I</code></td>
+<td>在行首插入</td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td>在行尾插入</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="_20">🔄 普通模式下的移动</h4>
+<pre><code>基本移动（可用方向键，也可用 hjkl）：
+  h  ←    j  ↓    k  ↑    l  →
+
+单词跳转：
+  w   跳到下一个单词开头
+  b   跳到上一个单词开头
+  e   跳到当前单词结尾
+
+行内跳转：
+  0   跳到行首
+  ^   跳到行首第一个非空字符
+  $   跳到行尾
+
+文件跳转：
+  gg  跳到文件第一行
+  G   跳到文件最后一行
+  :n  跳到第 n 行（如 :42 跳到第 42 行）
+</code></pre>
+<hr />
+<h4 id="_21">✂️ 普通模式下的编辑</h4>
+<pre><code>删除：
+  x     删除光标所在字符
+  dd    删除（剪切）当前行
+  dw    删除当前单词
+  d$    删除从光标到行尾
+  3dd   删除 3 行
+
+复制粘贴：
+  yy    复制当前行
+  3yy   复制 3 行
+  yw    复制当前单词
+  p     粘贴到光标后
+  P     粘贴到光标前
+
+撤销与重做：
+  u       撤销（Undo）
+  Ctrl+r  重做（Redo）
+
+修改：
+  r   替换光标处单个字符
+  cw  删除当前单词并进入插入模式
+  cc  删除整行并进入插入模式
+
+</code></pre>
+<hr />
+<h4 id="_22">🔍 搜索与替换</h4>
+<pre><code class="language-vim"># 搜索
+/keyword    向下搜索 keyword（Enter 确认）
+?keyword    向上搜索
+n           跳到下一个匹配
+N           跳到上一个匹配
+
+# 替换（在命令行模式）
+:s/old/new/         替换当前行第一个匹配
+:s/old/new/g        替换当前行所有匹配
+:%s/old/new/g       替换全文所有匹配
+:%s/old/new/gc      替换全文，每次询问确认
+</code></pre>
+<hr />
+<h4 id="_23">💾 保存与退出</h4>
+<pre><code class="language-vim">:w          保存文件
+:q          退出（文件未修改时）
+:wq         保存并退出（常用！）
+:q!         强制退出，不保存
+:wq!        强制保存并退出（只读文件需要）
+
+# 快捷方式
+ZZ          等价于 :wq
+ZQ          等价于 :q!
+</code></pre>
+<hr />
+<h4 id="_24">⚙️ 实用设置（临时）</h4>
+<pre><code class="language-vim">:set number         # 显示行号
+:set nonumber       # 关闭行号
+:set tabstop=4      # Tab 显示为 4 格
+:set autoindent     # 自动缩进
+:set hlsearch       # 高亮搜索结果
+:set nohlsearch     # 关闭高亮
+</code></pre>
+<blockquote>
+<p><strong>讲课要点：</strong>
+可以介绍 <code>~/.vimrc</code> 配置文件，让设置永久生效。现场演示在 <code>~/.vimrc</code> 中加入 <code>set number</code> 后重新打开 Vim 的效果。</p>
+</blockquote>
+<hr />
+<h4 id="_25">📝 演示操作（完整流程，跟做）</h4>
+<pre><code class="language-bash"># 1. 打开一个新文件
+vim practice.txt
+
+# 2. 进入插入模式，输入几行内容
+# 按 i，然后输入：
+# Hello, this is Vim!
+# I am learning Linux.
+# This is line 3.
+
+# 3. 按 Esc 回到普通模式
+
+# 4. 跳到第一行：gg
+
+# 5. 搜索 &quot;Linux&quot;：/Linux，按 Enter
+
+# 6. 将 &quot;Linux&quot; 替换为 &quot;Vim&quot;：
+# :%s/Linux/Vim/g
+
+# 7. 复制第 2 行并粘贴到第 3 行后：
+# 2G → yy → G → p
+
+# 8. 保存并退出
+# :wq
+</code></pre>
+<hr />
+<h3 id="42-vim">4.2 Vim 速查卡（可打印）</h3>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│                   VIM 速查卡                         │
+├──────────────┬──────────────────────────────────────┤
+│  模式切换    │ i/a/o 进插入  Esc 返回普通  : 命令行  │
+├──────────────┼──────────────────────────────────────┤
+│  移动        │ hjkl gg G 0 $ w b                     │
+├──────────────┼──────────────────────────────────────┤
+│  删除        │ x dd dw d$ (数字前缀倍增)              │
+├──────────────┼──────────────────────────────────────┤
+│  复制粘贴    │ yy yw  p P                            │
+├──────────────┼──────────────────────────────────────┤
+│  撤销重做    │ u  Ctrl+r                             │
+├──────────────┼──────────────────────────────────────┤
+│  搜索替换    │ /xxx  :%s/old/new/g                   │
+├──────────────┼──────────────────────────────────────┤
+│  保存退出    │ :w  :q  :wq  :q!  ZZ                  │
+└──────────────┴──────────────────────────────────────┘
+</code></pre>
+<hr />
+<h3 id="43">4.3 小练习</h3>
+<blockquote>
+<ol>
+<li>用 Vim 新建一个文件 <code>note.txt</code>，写入至少 5 行内容</li>
+<li>使用搜索功能找到某个单词</li>
+<li>用替换命令把该单词全部替换为另一个词</li>
+<li>删除第 2 行，然后撤销这次删除</li>
+<li>保存并退出</li>
+</ol>
+</blockquote>
+<hr />
+<h2 id="_26">五、代码编译</h2>
+<h3 id="_27">📌 教学目标</h3>
+<ul>
+<li>理解编译的基本概念和流程</li>
+<li>能用 <code>gcc</code> 编译 C/C++ 程序并运行</li>
+<li>了解 Makefile 的基本用法</li>
+<li>能处理基本的编译错误</li>
+</ul>
+<hr />
+<h3 id="51">5.1 讲课内容</h3>
+<h4 id="3">🧠 引入（3 分钟）</h4>
+<blockquote>
+<p><strong>讲课要点：</strong>
+"我们写的 C/C++ 源代码，计算机看不懂，需要<strong>编译器</strong>把它翻译成机器码。Linux 上最主流的编译工具是 GCC。我们来学一下从写代码到运行的完整流程。"</p>
+</blockquote>
+<hr />
+<h4 id="_28">🔄 编译的四个阶段</h4>
+<pre><code>源代码 (.c)
+    ↓  预处理（cpp）：展开宏、头文件
+预处理文件 (.i)
+    ↓  编译（cc1）：生成汇编代码
+汇编文件 (.s)
+    ↓  汇编（as）：生成目标文件
+目标文件 (.o)
+    ↓  链接（ld）：链接库，生成可执行文件
+可执行文件（a.out 或自定义名）
+</code></pre>
+<blockquote>
+<p><strong>讲课要点：</strong>
+实际工作中通常一条 <code>gcc</code> 命令完成所有步骤，但理解这四个阶段有助于排查错误。</p>
+</blockquote>
+<hr />
+<h4 id="gcc">🛠️ GCC 基本用法</h4>
+<pre><code class="language-bash"># 安装 gcc（如果没有）
+sudo apt install gcc g++
+
+# 查看版本
+gcc --version
+
+# ─────────────────────────────
+# 最简单的编译
+gcc hello.c                  # 输出为 a.out
+./a.out                      # 运行
+
+# 指定输出文件名（-o）
+gcc hello.c -o hello
+./hello
+
+# 编译 C++ 程序
+g++ hello.cpp -o hello
+./hello
+</code></pre>
+<hr />
+<h4 id="_29">📄 完整演示代码</h4>
+<p>先用 Vim 创建以下 C 程序（结合上一章练习）：</p>
+<p><strong>hello.c</strong></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    printf(&quot;Hello, Linux!\n&quot;);
+    printf(&quot;Welcome to the Visual Group.\n&quot;);
+    return 0;
+}
+</code></pre>
+<pre><code class="language-bash"># 编译并运行
+gcc hello.c -o hello
+./hello
+</code></pre>
+<p><strong>带参数的程序 args.c</strong></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(int argc, char *argv[]) {
+    printf(&quot;共有 %d 个参数\n&quot;, argc);
+    for (int i = 0; i &lt; argc; i++) {
+        printf(&quot;argv[%d] = %s\n&quot;, i, argv[i]);
+    }
+    return 0;
+}
+</code></pre>
+<pre><code class="language-bash">gcc args.c -o args
+./args hello world 123
+</code></pre>
+<hr />
+<h4 id="_30">⚙️ 常用编译选项</h4>
+<pre><code class="language-bash"># 开启警告信息（强烈推荐）
+gcc -Wall hello.c -o hello
+gcc -Wall -Wextra hello.c -o hello
+
+# 开启调试信息（方便用 gdb 调试）
+gcc -g hello.c -o hello
+
+# 优化选项
+gcc -O0 hello.c -o hello    # 不优化（默认）
+gcc -O1 hello.c -o hello    # 轻度优化
+gcc -O2 hello.c -o hello    # 推荐优化级别
+gcc -O3 hello.c -o hello    # 最大优化
+
+# 指定 C 标准
+gcc -std=c11 hello.c -o hello
+gcc -std=c99 hello.c -o hello
+
+# 链接数学库（使用 math.h 时需要）
+gcc calc.c -o calc -lm
+
+# 多文件编译
+gcc main.c utils.c -o program
+
+# 分步编译（先编译为目标文件，再链接）
+gcc -c main.c -o main.o
+gcc -c utils.c -o utils.o
+gcc main.o utils.o -o program
+</code></pre>
+<hr />
+<h4 id="_31">🗂️ 多文件项目结构</h4>
+<p><strong>项目结构示例：</strong></p>
+<pre><code>project/
+├── main.c
+├── math_utils.c
+└── math_utils.h
+</code></pre>
+<p><strong>math_utils.h</strong></p>
+<pre><code class="language-c">#ifndef MATH_UTILS_H
+#define MATH_UTILS_H
+
+int add(int a, int b);
+int multiply(int a, int b);
+
+#endif
+</code></pre>
+<p><strong>math_utils.c</strong></p>
+<pre><code class="language-c">#include &quot;math_utils.h&quot;
+
+int add(int a, int b) {
+    return a + b;
+}
+
+int multiply(int a, int b) {
+    return a * b;
+}
+</code></pre>
+<p><strong>main.c</strong></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &quot;math_utils.h&quot;
+
+int main() {
+    printf(&quot;3 + 4 = %d\n&quot;, add(3, 4));
+    printf(&quot;3 * 4 = %d\n&quot;, multiply(3, 4));
+    return 0;
+}
+</code></pre>
+<pre><code class="language-bash"># 编译多文件项目
+gcc main.c math_utils.c -o calculator
+./calculator
+</code></pre>
+<hr />
+<h4 id="makefile">📦 Makefile 入门</h4>
+<p>当项目文件变多，手动输入 <code>gcc</code> 命令会很麻烦，<strong>Makefile</strong> 可以自动化这个过程。</p>
+<p><strong>基本语法：</strong></p>
+<pre><code class="language-makefile">目标: 依赖文件
+[Tab键] 编译命令
+</code></pre>
+<p><strong>示例 Makefile：</strong></p>
+<pre><code class="language-makefile"># 变量定义
+CC = gcc
+CFLAGS = -Wall -O2
+
+# 默认目标（make 不带参数时执行）
+all: calculator
+
+# 生成最终可执行文件
+calculator: main.o math_utils.o
+    $(CC) main.o math_utils.o -o calculator
+
+# 编译各目标文件
+main.o: main.c math_utils.h
+    $(CC) $(CFLAGS) -c main.c -o main.o
+
+math_utils.o: math_utils.c math_utils.h
+    $(CC) $(CFLAGS) -c math_utils.c -o math_utils.o
+
+# 清理编译产物
+clean:
+    rm -f *.o calculator
+</code></pre>
+<pre><code class="language-bash"># 使用 Makefile
+make            # 编译整个项目
+make clean      # 清除编译产物
+make calculator # 只编译 calculator 目标
+</code></pre>
+<blockquote>
+<p><strong>讲课要点：</strong>
+强调 Makefile 中命令行前面<strong>必须是 Tab 键</strong>，不能是空格，否则会报错。</p>
+</blockquote>
+<hr />
+<h4 id="_32">🐛 读懂编译错误</h4>
+<pre><code class="language-bash"># 示例：忘记写分号
+# error: expected ';' before 'return'
+#   → 找到报错的行号，检查上一行结尾
+
+# 示例：变量未声明
+# error: 'x' undeclared (first use in this function)
+#   → 检查变量名拼写，或者是否在使用前声明了
+
+# 示例：函数未定义
+# undefined reference to 'add'
+#   → 检查是否链接了对应的 .c 文件或库
+
+# 示例：头文件找不到
+# fatal error: math_utils.h: No such file or directory
+#   → 检查头文件路径是否正确
+
+# 加 -Wall 让编译器给出更多警告
+gcc -Wall main.c -o main
+</code></pre>
+<blockquote>
+<p><strong>讲课要点：</strong>
+让学弟学妹故意写一个有错误的程序，看报错信息，然后找到错误并修正。这是培养独立调试能力最直接的方式。</p>
+</blockquote>
+<hr />
+<h3 id="52">5.2 综合实战练习</h3>
+<blockquote>
+<p>完成以下完整项目：</p>
+<p><strong>任务：</strong> 编写一个简单计算器程序</p>
+<ol>
+<li>用 Vim 创建 <code>calculator.c</code>，实现加减乘除四种运算，接收命令行参数 <code>./calc 10 + 3</code></li>
+<li>编译时加上 <code>-Wall</code> 选项</li>
+<li>运行并测试所有运算</li>
+<li>编写 <code>Makefile</code>，让 <code>make</code> 自动完成编译，<code>make clean</code> 清理文件</li>
+</ol>
+<p><strong>参考程序结构：</strong>
+```c
+// ./calc 10 + 3
+// 输出：10 + 3 = 13</p>
+<h1 id="include">include <stdio.h></h1>
+<h1 id="include_1">include <stdlib.h></h1>
+<p>int main(int argc, char *argv[]) {
+    if (argc != 4) {
+        printf("用法: %s &lt;数字&gt; &lt;运算符&gt; &lt;数字&gt;\n", argv[0]);
+        return 1;
+    }
+    double a = atof(argv[1]);
+    double b = atof(argv[3]);
+    char op = argv[2][0];
+    // 补全 switch 分支...
+    return 0;
+}
+```</p>
+</blockquote>
+<hr />
+<h2 id="_33">📝 课后总结</h2>
+<h3 id="_34">知识点回顾</h3>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>核心掌握点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件系统</td>
+<td>目录树结构、绝对/相对路径、常用目录含义</td>
+</tr>
+<tr>
+<td>文件权限</td>
+<td>rwx 三级权限、chmod 数字/符号方式、chown</td>
+</tr>
+<tr>
+<td>常用指令</td>
+<td>ls/cd/cp/mv/rm、grep/find、管道/重定向</td>
+</tr>
+<tr>
+<td>Vim</td>
+<td>三种模式切换、基本移动编辑、保存退出</td>
+</tr>
+<tr>
+<td>代码编译</td>
+<td>gcc 基本用法、常用编译选项、Makefile 基础</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="_35">推荐学习资源</h3>
+<ul>
+<li><strong>命令行练习：</strong> <code>vimtutor</code>（终端直接输入，Vim 官方教程）</li>
+<li><strong>Linux 文档：</strong> <code>man &lt;命令名&gt;</code>（本地手册）</li>
+<li><strong>在线平台：</strong></li>
+<li><a href="http://linuxcommand.org">Linux Command（linuxcommand.org）</a></li>
+<li><a href="https://overthewire.org/wargames/bandit/">OverTheWire Bandit</a>（趣味关卡式学习）</li>
+<li><a href="https://explainshell.com">explainshell.com</a>（粘贴命令即可解释每个参数）</li>
+</ul>
+<hr />
+<h3 id="_36">给主讲人的建议</h3>
+<ol>
+<li><strong>每个章节先演示，再让学员跟做</strong>，不要一口气讲完才演示</li>
+<li>准备一台已经配好环境的机器作为<strong>备用演示机</strong>，防止临时环境问题</li>
+<li>遇到学员问"为什么要这样做"，优先用<strong>实际场景</strong>回答而不是技术原理</li>
+<li>多用 <strong>Tab 自动补全</strong>，让学员看到这个功能有多方便</li>
+<li>课程结束前留 <strong>10 分钟 Q&amp;A</strong>，鼓励提问</li>
+</ol>
+<hr />
+<p><em>教案版本：v1.0 | 制作日期：2026年4月</em></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="btn btn-neutral float-left" title="文档施工中"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/" class="btn btn-neutral float-right" title="Linux 基础配套练习">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Linux 基础配套练习 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Linux \u57fa\u7840\u914d\u5957\u7ec3\u4e60";
+        var mkdocs_page_input_path = "Linux\u6559\u5b66/2.1Linux\u57fa\u7840\u914d\u5957\u7ec3\u4e60.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Navigator视觉与导航算法组</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">文档施工中</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../2.0Linux%E5%9F%BA%E7%A1%80/">Linux 基础入门教案</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Linux 基础配套练习</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">说明</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">模块一：平时没事多用用</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#vscode">模块二：安装 VSCode 并自己配置开发环境</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#21-linux-vscode">2.1 在 Linux 上安装 VSCode</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#22-ssh">2.2 配置 SSH 连接虚拟机</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#23-vsc">2.3 用vsc写程序</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ros">模块三：检查 ROS 环境并学习基础</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#31-ros">3.1 确认 ROS 版本</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#32-talker-listener">3.2 跑通 talker / listener 示例</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#33-ros-2">3.3 学习 ROS 2 基本概念</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#34">3.4 查看话题信息</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#35">3.5 检查点</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#vpn">模块四：搞清楚 VPN 对虚拟机网络的影响</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#41">4.1 先理解网络结构</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#42-vpn-ssh">4.2 验证：开 VPN 前后，SSH 连接不受影响</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#43-vpn">4.3 验证：虚拟机访问外网不依赖宿主机 VPN</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#44">4.4 虚拟机里配置代理（可选）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#45">4.5 检查点</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#linux_1">模块五：Linux 基础命令综合练习</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#51">5.1 文件权限练习</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#52-vim">5.2 Vim 练习</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#53-gcc">5.3 GCC 编译练习</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">最后：</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git 和 GitHub 教程（Ubuntu）</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Linux教学</li>
+      <li class="breadcrumb-item active">Linux 基础配套练习</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="linux">Linux 基础配套练习</h1>
+<h2 id="_1">说明</h2>
+<p>这份练习分为五个模块，遇到问题先自己查，查不到再问。</p>
+<p>希望大家知道动手比看教程重要。敢折腾，折腾坏了可以恢复快照，不用怕。不用永远学不会。</p>
+<hr />
+<h2 id="_2">模块一：平时没事多用用</h2>
+<p>打开终端，把下面这些命令都跑一遍，不用死记，感受一下：</p>
+<pre><code class="language-bash"># 看自己在哪
+pwd
+
+# 看当前目录有什么
+ls -la
+
+# 进去 /tmp 转一圈
+cd /tmp
+ls
+cd ~
+
+# 查看系统信息
+uname -a
+cat /etc/os-release
+
+# 看内存和磁盘
+free -h
+df -h
+
+# 看谁在运行
+ps aux | head -20
+</code></pre>
+<hr />
+<h2 id="vscode">模块二：安装 VSCode 并自己配置开发环境</h2>
+<h3 id="21-linux-vscode">2.1 在 Linux 上安装 VSCode</h3>
+<ul>
+<li>
+<p>在浏览器找到vsc的官方网站，下载Linux版本安装包。</p>
+</li>
+<li>
+<p>自行研究如何在Linux中使用安装包安装软件</p>
+</li>
+</ul>
+<h3 id="22-ssh">2.2 配置 SSH 连接虚拟机</h3>
+<p>在虚拟机里查自己的 IP：</p>
+<pre><code class="language-bash">ip addr show | grep &quot;inet &quot;
+</code></pre>
+<p>找到类似 <code>192.168.x.x</code> 的地址（不是 127.0.0.1）。</p>
+<p>在 Windows 的 VSCode 里：
+1. 按 <code>Ctrl+Shift+P</code>，输入 <code>Remote-SSH: Connect to Host</code>
+2. 输入 <code>用户名@虚拟机IP</code>，例如 <code>alice@192.168.56.101</code>
+3. 按提示输入密码</p>
+<p>连上之后，VSCode 的左下角会显示远程主机信息，说明成功了。</p>
+<blockquote>
+<p>如果 SSH 连不上，去虚拟机里执行 <code>sudo apt install openssh-server</code> 再试。</p>
+</blockquote>
+<h3 id="23-vsc">2.3 用vsc写程序</h3>
+<ul>
+<li>跟win一样</li>
+</ul>
+<hr />
+<h2 id="ros">模块三：检查 ROS 环境并学习基础</h2>
+<p><strong>目标：</strong> 确认 ROS 安装正确，能跑通最基本的节点通信示例。</p>
+<h3 id="31-ros">3.1 确认 ROS 版本</h3>
+<p>我们使用 <strong>ROS 2 Humble</strong>（对应 Ubuntu 22.04）。</p>
+<pre><code class="language-bash"># 检查 ROS 2 是否安装
+ros2 --version
+
+# 查看 ROS 2 环境变量是否生效
+echo $ROS_DISTRO
+</code></pre>
+<p>如果 <code>ros2</code> 命令找不到，说明环境变量没有 source。执行：</p>
+<pre><code class="language-bash">source /opt/ros/humble/setup.bash
+
+# 把它加进 ~/.bashrc，以后每次开终端自动生效
+echo &quot;source /opt/ros/humble/setup.bash&quot; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre>
+<p>如果 ROS 2 根本没安装，参考鱼香ros</p>
+<h3 id="32-talker-listener">3.2 跑通 talker / listener 示例</h3>
+<p>这是 ROS 2 的 Hello World，必须跑通。</p>
+<p>打开<strong>两个</strong>终端窗口（VSCode 里开两个终端也行）：</p>
+<p><strong>终端 1（发布者）：</strong></p>
+<pre><code class="language-bash">ros2 run demo_nodes_cpp talker
+</code></pre>
+<p><strong>终端 2（订阅者）：</strong></p>
+<pre><code class="language-bash">ros2 run demo_nodes_cpp listener
+</code></pre>
+<p>你应该能看到 talker 不断发送消息，listener 不断接收。两个终端都用 <code>Ctrl+C</code> 停止。</p>
+<h3 id="33-ros-2">3.3 学习 ROS 2 基本概念</h3>
+<p>自己查资料（ROS 2 官方文档或问 AI），搞清楚以下问题：</p>
+<ol>
+<li><strong>Node（节点）</strong> 是什么？</li>
+<li><strong>Topic（话题）</strong> 是什么？Publisher 和 Subscriber 怎么用？</li>
+<li><strong>Service（服务）</strong> 和 Topic 有什么区别？</li>
+</ol>
+<p>用自己的话写下来，不超过三句话。不需要完全准确，有自己的理解就行。</p>
+<h3 id="34">3.4 查看话题信息</h3>
+<p>在 talker 运行时，在第三个终端执行：</p>
+<pre><code class="language-bash"># 查看当前所有活跃话题
+ros2 topic list
+
+# 查看 /chatter 话题的消息
+ros2 topic echo /chatter
+
+# 查看话题发布频率
+ros2 topic hz /chatter
+
+# 查看节点列表
+ros2 node list
+</code></pre>
+<h3 id="35">3.5 检查点</h3>
+<ul>
+<li>[ ] <code>ros2 --version</code> 有输出</li>
+<li>[ ] talker / listener 示例跑通</li>
+<li>[ ] 能用 <code>ros2 topic list</code> 和 <code>ros2 topic echo</code> 查看话题</li>
+<li>[ ] 能说清楚 Node 和 Topic 是什么</li>
+</ul>
+<hr />
+<h2 id="vpn">模块四：搞清楚 VPN 对虚拟机网络的影响</h2>
+<p><strong>目标：</strong> 明白开了 VPN 之后，Windows 宿主机和 Ubuntu 虚拟机的网络是各自独立的，互不影响。</p>
+<h3 id="41">4.1 先理解网络结构</h3>
+<p>虚拟机和宿主机之间有一个<strong>虚拟网卡</strong>（VMnet）单独通信，和宿主机的物理网卡是分开的。</p>
+<p>常用的虚拟机网络模式：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NAT</td>
+<td>虚拟机通过宿主机上网，宿主机能 ping 到虚拟机（推荐）</td>
+</tr>
+<tr>
+<td>桥接</td>
+<td>虚拟机和宿主机在同一局域网，IP 由路由器分配</td>
+</tr>
+<tr>
+<td>仅主机</td>
+<td>虚拟机只能和宿主机通信，不能访问外网</td>
+</tr>
+</tbody>
+</table>
+<p><strong>推荐用 NAT 模式。</strong></p>
+<h3 id="42-vpn-ssh">4.2 验证：开 VPN 前后，SSH 连接不受影响</h3>
+<p><strong>实验步骤：</strong></p>
+<ol>
+<li>关闭 VPN，确认 VSCode Remote SSH 能连上虚拟机</li>
+<li>记下虚拟机的 IP（<code>ip addr</code>）</li>
+<li>开启 VPN</li>
+<li>再次用同一个 IP 通过 VSCode Remote SSH 连接虚拟机</li>
+</ol>
+<p><strong>正常情况下，VPN 开关不影响你 SSH 连虚拟机</strong>，因为走的是 VMnet 虚拟网卡，不经过 VPN 隧道。</p>
+<p>如果 VPN 开了之后 SSH 断了，说明你的 VPN 开了全局代理，把 VMnet 流量也劫持了。解决方法：</p>
+<pre><code>在 VPN 客户端设置里，把 192.168.x.x/24（虚拟机网段）加入&quot;直连&quot;或&quot;绕过代理&quot;列表。
+</code></pre>
+<h3 id="43-vpn">4.3 验证：虚拟机访问外网不依赖宿主机 VPN</h3>
+<ol>
+<li>在宿主机开启 VPN</li>
+<li>在虚拟机里执行：
+   <code>bash
+   curl -I https://www.google.com</code></li>
+<li>如果请求超时，说明虚拟机不走宿主机的 VPN（这是正常的）</li>
+<li>虚拟机要用代理，需要在虚拟机里单独配置</li>
+</ol>
+<h3 id="44">4.4 虚拟机里配置代理（可选）</h3>
+<p>如果需要让虚拟机访问被墙的网站（比如下 ROS 包），在虚拟机里配置：</p>
+<pre><code class="language-bash"># 临时设置（关终端后失效）
+export http_proxy=http://宿主机IP:代理端口
+export https_proxy=http://宿主机IP:代理端口
+
+# 测试
+curl -I https://www.google.com
+
+# 永久写入（不推荐，容易忘了导致奇怪问题）
+echo 'export http_proxy=http://宿主机IP:端口' &gt;&gt; ~/.bashrc
+</code></pre>
+<p>宿主机 IP 就是 VMnet 网卡的地址（通常是 <code>192.168.x.1</code>），代理端口看你的 VPN 客户端设置。</p>
+<h3 id="45">4.5 检查点</h3>
+<ul>
+<li>[ ] 理解 NAT / 桥接 / 仅主机三种网络模式的区别</li>
+<li>[ ] 验证过开 VPN 前后 SSH 连虚拟机是否受影响</li>
+<li>[ ] 知道虚拟机的网络和宿主机 VPN 是独立的</li>
+<li>[ ] （可选）能在虚拟机里配置代理访问外网</li>
+</ul>
+<hr />
+<h2 id="linux_1">模块五：Linux 基础命令综合练习</h2>
+<p><strong>目标：</strong> 把教案里的内容练一遍，不只是跑命令，要理解在做什么。</p>
+<h3 id="51">5.1 文件权限练习</h3>
+<pre><code class="language-bash"># 创建一个脚本
+mkdir -p ~/perm_test
+cat &gt; ~/perm_test/hello.sh &lt;&lt; 'EOF'
+#!/bin/bash
+echo &quot;Hello, I am a script!&quot;
+echo &quot;Current user: $(whoami)&quot;
+echo &quot;Current dir: $(pwd)&quot;
+EOF
+
+# 查看当前权限
+ls -l ~/perm_test/hello.sh
+
+# 尝试直接运行（会失败）
+~/perm_test/hello.sh
+
+# 加执行权限
+chmod +x ~/perm_test/hello.sh
+
+# 再次运行（成功）
+~/perm_test/hello.sh
+
+# 用数字方式修改权限
+chmod 644 ~/perm_test/hello.sh   # 去掉执行权限
+chmod 755 ~/perm_test/hello.sh   # 恢复
+</code></pre>
+<p><strong>问题：</strong> <code>644</code> 和 <code>755</code> 分别代表什么权限？自己算一下。</p>
+<h3 id="52-vim">5.2 Vim 练习</h3>
+<p>不用鼠标，用 Vim 完成以下操作：</p>
+<ol>
+<li>用 <code>vim ~/vim_practice.txt</code> 新建文件</li>
+<li>进入插入模式，写入以下内容（手动输入，不要粘贴）：
+   <code>RoboMaster Algorithm Team
+   We use C++ and ROS2.
+   Linux is our main development environment.
+   Learning takes time but it pays off.
+   Never give up.</code></li>
+<li>按 <code>Esc</code> 回到普通模式</li>
+<li>用 <code>/ROS</code> 搜索，跳到包含 ROS 的行</li>
+<li>用 <code>:%s/Linux/GNU\/Linux/g</code> 替换所有 Linux 为 GNU/Linux</li>
+<li>删除最后一行（<code>G</code> 跳到最后一行，<code>dd</code> 删除）</li>
+<li>撤销删除（<code>u</code>）</li>
+<li>保存退出（<code>:wq</code>）</li>
+</ol>
+<p><strong>验证：</strong> <code>cat ~/vim_practice.txt</code> 查看结果是否正确。</p>
+<h3 id="53-gcc">5.3 GCC 编译练习</h3>
+<p><strong>任务 1：编译并运行一个带命令行参数的 C 程序</strong></p>
+<p>用 Vim 创建 <code>~/gcc_test/args.c</code>：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(int argc, char *argv[]) {
+    if (argc &lt; 3) {
+        printf(&quot;用法: %s &lt;数字1&gt; &lt;数字2&gt;\n&quot;, argv[0]);
+        return 1;
+    }
+    int a = atoi(argv[1]);
+    int b = atoi(argv[2]);
+    printf(&quot;%d + %d = %d\n&quot;, a, b, a + b);
+    printf(&quot;%d * %d = %d\n&quot;, a, b, a * b);
+    return 0;
+}
+</code></pre>
+<pre><code class="language-bash">mkdir -p ~/gcc_test
+# 用 vim 创建上面的文件，然后：
+gcc -Wall ~/gcc_test/args.c -o ~/gcc_test/args
+~/gcc_test/args 6 7
+</code></pre>
+<p><strong>任务 2：故意写一个有错误的程序，读懂报错</strong></p>
+<p>把上面程序里某个分号删掉，或者故意写一个未定义的变量，重新编译，看报错信息，找到错误并修正。</p>
+<hr />
+<h2 id="_3">最后：</h2>
+<p>希望大家能多使用Linux，而不只是每次来培训才用。</p>
+<p>Last Update: NazuKida 2026/04/23</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../2.0Linux%E5%9F%BA%E7%A1%80/" class="btn btn-neutral float-left" title="Linux 基础入门教案"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/" class="btn btn-neutral float-right" title="Git 和 GitHub 教程（Ubuntu）">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../2.0Linux%E5%9F%BA%E7%A1%80/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
