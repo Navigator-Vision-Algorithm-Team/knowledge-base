@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>华东理工大学起源战队：哨兵机器人建图与地图编辑工具合集 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u534e\u4e1c\u7406\u5de5\u5927\u5b66\u8d77\u6e90\u6218\u961f\uff1a\u54e8\u5175\u673a\u5668\u4eba\u5efa\u56fe\u4e0e\u5730\u56fe\u7f16\u8f91\u5de5\u5177\u5408\u96c6";
+        var mkdocs_page_input_path = "\u5f00\u6e90\u9879\u76ee\u5408\u96c6/01.\u534e\u4e1c\u7406\u5de5\u5927\u5b66\u8d77\u6e90\u6218\u961f\u54e8\u5175\u673a\u5668\u4eba\u5f00\u6e90\u5de5\u5177.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Navigator视觉与导航算法组</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">文档施工中</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux 基础入门教案</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">Linux 基础配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">Ubuntu SSH 教程（安装、使用与排错）</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git 和 GitHub 教程（Ubuntu）</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">RoboMaster 开源项目合集</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">华东理工大学起源战队：哨兵机器人建图与地图编辑工具合集</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">项目概览</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#1-erasor2">1. 动态物体滤除建图工具：ERASOR2</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">项目背景</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">处理流程</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">主要特点</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_6">推荐入口</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_7">使用前注意</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-ros2-map-edit-plugin">2. 地图编辑工具：ROS2 Map Edit Plugin</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_8">项目简介</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_9">主要特点</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_10">编译与运行</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_11">使用前注意</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3">3. 两项工具如何配合</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4">4. 选型建议</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 开源许可与引用</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_12">相关链接</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">浙江大学 HelloWorld 战队轮腿哨兵导航算法</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1 与 Mid-360 标定及点云融合方案</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">基于 FAST-LIO 的 ROS 2 重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">武汉科技大学崇实战队算法综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">北京理工大学追梦战队哨兵自主导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开源项目合集</li>
+      <li class="breadcrumb-item active">华东理工大学起源战队：哨兵机器人建图与地图编辑工具合集</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">华东理工大学起源战队：哨兵机器人建图与地图编辑工具合集</h1>
+<blockquote>
+<p>本页收录华东理工大学起源战队开源的两项哨兵机器人地图工具，分别用于动态物体滤除和地图人工编辑。项目仍可能持续更新，具体安装步骤和参数请以对应仓库的最新 README 为准。</p>
+<p>资料核对时间：2026 年 8 月 18 日。</p>
+</blockquote>
+<h2 id="_2">项目概览</h2>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>主要用途</th>
+<th>运行环境</th>
+<th>项目地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ERASOR2 二次开发版</td>
+<td>从离线 LiDAR 序列中滤除人、车等动态物体，生成更干净的静态点云地图</td>
+<td>Ubuntu 20.04/22.04；无需 ROS/ROS 2</td>
+<td><a href="https://github.com/Tony-tpc/ERASOR2">Tony-tpc/ERASOR2</a></td>
+</tr>
+<tr>
+<td>ROS2 Map Edit Plugin</td>
+<td>在 RViz 中编辑二维栅格地图，并标注多边形语义区域</td>
+<td>ROS 2、RViz 2</td>
+<td><a href="https://github.com/Tony-tpc/map_edit">Tony-tpc/map_edit</a></td>
+</tr>
+</tbody>
+</table>
+<p>两项工具解决的是不同阶段的问题：ERASOR2 主要处理三维点云中的动态物体残影，<code>map_edit</code> 主要修改供导航使用的二维栅格地图及区域信息。</p>
+<h2 id="1-erasor2">1. 动态物体滤除建图工具：ERASOR2</h2>
+<h3 id="_3">项目背景</h3>
+<p>在适应性训练和自由调试阶段，场地内的人、车等动态障碍物容易被累计进点云地图，形成残影、拖影或错误障碍。人工逐点修改点云耗时较长，因此起源战队在 <a href="https://github.com/url-kaist/ERASOR2">url-kaist/ERASOR2</a> 的基础上进行了二次开发，使其更适合处理自采 LiDAR 序列。</p>
+<h3 id="_4">处理流程</h3>
+<pre><code class="language-text">逐帧点云 + LiDAR 位姿
+        │
+        ├── Patchwork++：地面分割
+        ├── HDBSCAN：实例聚类
+        ├── mapgen：生成原始累计地图
+        └── ERASOR2：检测并去除动态物体
+                    ├── 静态点云地图
+                    └── 逐帧 MOS 标签
+</code></pre>
+<h3 id="_5">主要特点</h3>
+<ul>
+<li>使用纯 CMake/C++17 构建，不依赖 ROS master、catkin 或 ROS 2 工作空间。</li>
+<li>直接读取 YAML 参数文件，并支持 KITTI 3×4 矩阵和“时间戳 + 平移 + 四元数”两种位姿格式。</li>
+<li>提供 <code>scripts/run_sequence.sh</code> 一键脚本，可完成输入检查、编译、标签预处理、原始地图生成和动态物体滤除。</li>
+<li>支持长序列 external-memory streaming，通过地图压缩和时间窗口降低峰值内存占用。</li>
+<li>默认可在无桌面的服务器上运行；需要可视化时可以选择启用 Rerun。</li>
+<li>输出静态 PCD 地图和逐帧 MOS 标签，便于后续检查或接入其他建图流程。</li>
+</ul>
+<h3 id="_6">推荐入口</h3>
+<p>准备好符合仓库要求的 sequence 目录和参数文件后，可使用：</p>
+<pre><code class="language-bash">./scripts/run_sequence.sh \
+  /data/sequences/00 \
+  config/erasor2/seq_00.yaml
+</code></pre>
+<p>完整依赖、数据格式、参数说明和常见问题请阅读项目的 <a href="https://github.com/Tony-tpc/ERASOR2#readme">README</a> 和 <a href="https://github.com/Tony-tpc/ERASOR2/blob/main/USAGE.md">USAGE.md</a>。</p>
+<h3 id="_7">使用前注意</h3>
+<ol>
+<li>位姿必须表示直接的 <code>T_map_lidar</code>。如果输入的是相机位姿、反向变换或其他传感器位姿，需要先完成外参转换。</li>
+<li>点云、位姿和标签必须按帧严格对应，并使用相同的时间基准和 LiDAR 坐标系。</li>
+<li>Patchwork++ 地面分割和 HDBSCAN 实例聚类的质量会直接影响最终滤除效果。</li>
+<li>自采数据缺少语义真值时可以使用 dummy label 运行，但由此得到的 Preservation、Rejection 和 F1 指标不能作为可信的算法性能结论。</li>
+<li>阈值需要根据雷达线数、安装高度、点密度和场地尺度重新调整，不建议直接把示例参数当作所有设备的最优参数。</li>
+</ol>
+<h2 id="2-ros2-map-edit-plugin">2. 地图编辑工具：ROS2 Map Edit Plugin</h2>
+<h3 id="_8">项目简介</h3>
+<p><code>map_edit</code> 是一个 ROS 2 RViz 插件，参考了 <a href="https://gitee.com/reinovo/ros_map_edit">ros_map_edit</a> 并进行了 ROS 2 兼容和功能扩展。它可以结合 RViz 中的地图、点云和导航效果，对二维占据栅格地图进行可视化编辑。</p>
+<h3 id="_9">主要特点</h3>
+<ul>
+<li>可以打开本地地图 YAML，也可以订阅 <code>/map</code> 话题加载正在使用的地图。</li>
+<li>提供黑白橡皮擦：左键绘制黑色障碍，右键绘制白色可通行区域。</li>
+<li>支持笔刷大小调整、直线绘制、多步撤销和重做。</li>
+<li>可将结果保存为 <code>.pgm + .yaml</code>，供导航系统重新加载。</li>
+<li>提供 <code>RegionTool</code> 多边形区域工具，可用于标注禁行区、感兴趣区等语义区域。</li>
+<li>支持区域 YAML 的导入、导出、清空和多区域管理，也可以保存自定义属性。</li>
+</ul>
+<h3 id="_10">编译与运行</h3>
+<pre><code class="language-bash">mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws/src
+git clone https://github.com/Tony-tpc/map_edit
+cd ..
+
+rosdepc install -r --from-paths src --ignore-src --rosdistro &quot;$ROS_DISTRO&quot; -y
+colcon build --symlink-install
+. install/setup.bash
+ros2 launch map_edit map_edit.launch.py
+</code></pre>
+<p>详细操作方法和演示截图见项目 <a href="https://github.com/Tony-tpc/map_edit#readme">README</a>，也可以观看作者提供的 <a href="https://www.bilibili.com/video/BV1XPtJzbEn8">演示视频</a>。</p>
+<h3 id="_11">使用前注意</h3>
+<ol>
+<li>插件修改后的地图发布在 <code>/map_edit</code> 话题，不会立即改变导航系统正在使用的地图。</li>
+<li>若要让修改生效，需要先保存 PGM/YAML，再让导航节点重新加载地图。</li>
+<li>区域多边形至少需要三个顶点；导出的坐标与地图使用同一坐标系。</li>
+<li>地图修改前建议备份原始 PGM、YAML 和区域文件，避免误操作覆盖可用地图。</li>
+</ol>
+<h2 id="3">3. 两项工具如何配合</h2>
+<p>可以按以下思路将两项工具接入哨兵地图制作流程：</p>
+<pre><code class="language-text">自采 LiDAR 点云与位姿
+        │
+        ▼
+ERASOR2 动态物体滤除
+        │
+        ▼
+干净的三维静态点云地图（PCD）
+        │
+        ▼
+团队已有的二维栅格地图生成/转换流程
+        │
+        ▼
+map_edit 人工修图与语义区域标注
+        │
+        ├── 导航地图：PGM + YAML
+        └── 区域信息：YAML
+</code></pre>
+<p>需要特别注意：<strong>ERASOR2 输出的是三维 PCD 点云地图，<code>map_edit</code> 编辑的是二维 PGM/YAML 占据栅格地图，两者不能直接无缝衔接。</strong> 中间仍需要使用团队现有的点云投影、栅格化或导航地图生成流程。</p>
+<h2 id="4">4. 选型建议</h2>
+<table>
+<thead>
+<tr>
+<th>遇到的问题</th>
+<th>推荐工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>点云地图中存在人、车等动态物体残影</td>
+<td>ERASOR2</td>
+</tr>
+<tr>
+<td>长序列处理时内存占用过高</td>
+<td>ERASOR2 streaming 模式</td>
+</tr>
+<tr>
+<td>二维导航地图存在少量错误障碍或缺口</td>
+<td><code>map_edit</code></td>
+</tr>
+<tr>
+<td>需要绘制禁行区、限速区或感兴趣区</td>
+<td><code>map_edit</code> 的 <code>RegionTool</code></td>
+</tr>
+<tr>
+<td>希望得到较完整的最终地图</td>
+<td>先用 ERASOR2 自动滤除，再转换为二维地图并用 <code>map_edit</code> 检查</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5">5. 开源许可与引用</h2>
+<ul>
+<li><code>Tony-tpc/ERASOR2</code> 基于原版 ERASOR2 开发，仓库声明采用 <a href="https://github.com/Tony-tpc/ERASOR2/blob/main/Licence">GPL-3.0</a>。在项目或论文中使用时，请按仓库说明引用 ERASOR2 和 ERASOR 论文，并保留相应版权与许可证信息。</li>
+<li><code>Tony-tpc/map_edit</code> 在本页资料核对时尚未提供有效的许可证声明，<code>package.xml</code> 中的许可证字段仍为待填写状态。公开可访问不等于自动获得复制、修改和再发布授权；如需将其代码集成进其他公开项目或进行二次分发，建议先联系作者确认许可。</li>
+<li>本页仅作项目索引和使用提示。功能、依赖和接口可能随仓库更新而变化，请以项目最新源码和 README 为准。</li>
+</ul>
+<h2 id="_12">相关链接</h2>
+<ul>
+<li><a href="https://github.com/Tony-tpc/ERASOR2">起源战队 ERASOR2 二次开发版</a></li>
+<li><a href="https://github.com/url-kaist/ERASOR2">ERASOR2 原始项目</a></li>
+<li><a href="https://github.com/Tony-tpc/map_edit">ROS2 Map Edit Plugin</a></li>
+<li><a href="https://www.bilibili.com/video/BV1XPtJzbEn8">地图编辑工具演示视频</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="RoboMaster 开源项目合集"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/" class="btn btn-neutral float-right" title="浙江大学 HelloWorld 战队轮腿哨兵导航算法">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

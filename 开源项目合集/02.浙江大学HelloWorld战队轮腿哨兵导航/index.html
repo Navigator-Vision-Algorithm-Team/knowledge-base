@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>浙江大学 HelloWorld 战队轮腿哨兵导航算法 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u6d59\u6c5f\u5927\u5b66 HelloWorld \u6218\u961f\u8f6e\u817f\u54e8\u5175\u5bfc\u822a\u7b97\u6cd5";
+        var mkdocs_page_input_path = "\u5f00\u6e90\u9879\u76ee\u5408\u96c6/02.\u6d59\u6c5f\u5927\u5b66HelloWorld\u6218\u961f\u8f6e\u817f\u54e8\u5175\u5bfc\u822a.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Navigator视觉与导航算法组</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">文档施工中</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux 基础入门教案</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">Linux 基础配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">Ubuntu SSH 教程（安装、使用与排错）</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git 和 GitHub 教程（Ubuntu）</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">RoboMaster 开源项目合集</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">华东理工大学起源战队：哨兵机器人建图与地图编辑工具合集</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">浙江大学 HelloWorld 战队轮腿哨兵导航算法</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">项目概览</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">主要技术亮点</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1">1. 因子图优化里程计</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2">2. 跨地形路径规划</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-lpv-fddp-mpc">3. LPV 隐状态模型与 FDDP MPC</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4">4. 扁平化导航状态机</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5">5. 动态障碍物预测与避让</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6">6. 离线建图优化与动态物体去除</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">环境与构建入口</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">实车表现与适用边界</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">维护与许可</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1 与 Mid-360 标定及点云融合方案</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">基于 FAST-LIO 的 ROS 2 重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">武汉科技大学崇实战队算法综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">北京理工大学追梦战队哨兵自主导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">开源项目合集</li>
+      <li class="breadcrumb-item active">浙江大学 HelloWorld 战队轮腿哨兵导航算法</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="helloworld">浙江大学 HelloWorld 战队轮腿哨兵导航算法</h1>
+<h2 id="_1">项目概览</h2>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>仓库</td>
+<td><a href="https://github.com/Polyacetone/HWSentryNav26">Polyacetone/HWSentryNav26</a></td>
+</tr>
+<tr>
+<td>定位</td>
+<td>基于 GLIM 定制的因子图滑窗里程计</td>
+</tr>
+<tr>
+<td>规划</td>
+<td>空间 A<em>、Kinodynamic A</em>、MINCO 和速度剖面优化</td>
+</tr>
+<tr>
+<td>控制</td>
+<td>LPV 隐状态模型与自研 FDDP 模型预测控制</td>
+</tr>
+<tr>
+<td>环境</td>
+<td>Ubuntu 24.04 LTS、ROS 2 Jazzy</td>
+</tr>
+<tr>
+<td>许可证</td>
+<td><a href="https://github.com/Polyacetone/HWSentryNav26/blob/main/LICENSE">MIT License</a></td>
+</tr>
+</tbody>
+</table>
+<p><code>HWSentryNav26</code> 是浙江大学 HelloWorld 战队面向 RoboMaster 2026 轮腿哨兵机器人的 ROS 2 导航框架。项目针对轮腿底盘受到强烈碰撞、翻车、跨台阶和坡道等工况进行了定制，也可以在修改机器人模型和约束后为其他构型的哨兵提供参考。</p>
+<h2 id="_2">主要技术亮点</h2>
+<h3 id="1">1. 因子图优化里程计</h3>
+<p>项目在 <a href="https://github.com/koide3/glim">GLIM</a> 基础上进行定制，使用固定滞后因子图在滑动窗口内联合优化历史位姿。相较只依赖相邻帧递推的方案，该结构有助于缓解剧烈碰撞和短时异常观测对当前位姿的影响。</p>
+<p>需要注意，这里的“鲁棒性较好”来自项目设计目标和战队实车经验，并不意味着在所有雷达安装方式、底盘振动和场地结构下都不会失效。</p>
+<h3 id="2">2. 跨地形路径规划</h3>
+<p>规划链路采用从粗到细的分阶段策略：</p>
+<pre><code class="language-text">空间 A* 选择地形通道
+        │
+        ▼
+提取安全走廊
+        │
+        ▼
+Kinodynamic A* 动力学搜索
+        │
+        ▼
+MINCO 分段五次多项式连续优化
+        │
+        ▼
+台阶执行约束与弧长域速度剖面优化
+</code></pre>
+<p>空间 A<em> 负责决定整体通道，Kinodynamic A</em> 使用曲率—弧长运动基元寻找动力学可行路径，随后通过 MINCO 和速度剖面优化获得可供底盘跟踪的轨迹。</p>
+<h3 id="3-lpv-fddp-mpc">3. LPV 隐状态模型与 FDDP MPC</h3>
+<p>项目使用实车记录的命令—响应数据离线辨识 LPV 模型，并以底盘高度作为调度变量。不可直接测量的内部状态由在线观测器估计，管式辅助环用于抑制模型误差，MPC 求解器采用自主实现的 FDDP。</p>
+<p>这部分与具体轮腿底盘动力学、采样周期、执行器延迟和辨识数据关系密切。迁移到其他底盘时，需要重新采集数据、辨识模型和调节代价权重，不能直接复用原车参数。</p>
+<h3 id="4">4. 扁平化导航状态机</h3>
+<p>项目没有采用 Navigation2 行为树作为任务管理主体，而是设计了扁平化有限状态机。该设计便于按比赛逻辑直接增加和维护状态，但也意味着任务恢复、异常处理和生命周期管理需要由项目自身负责。</p>
+<h3 id="5">5. 动态障碍物预测与避让</h3>
+<p>动态障碍物链路包含：</p>
+<ol>
+<li>点云差分提取动态点；</li>
+<li>形态学闭运算和连通域聚类；</li>
+<li>匈牙利匹配完成帧间关联；</li>
+<li>卡尔曼恒速滤波维护航迹；</li>
+<li>按衰减速度模型进行多步外推；</li>
+<li>将逐帧预测代价图按时间对齐送入 MPC。</li>
+</ol>
+<p>该方案不仅依据障碍物当前位置避让，还会利用预测位置影响后续控制时域内的代价。</p>
+<h3 id="6">6. 离线建图优化与动态物体去除</h3>
+<p>在线里程计使用固定滞后平滑以满足实时性，离线阶段则将保存的关键帧组织为两级因子图：局部子图内进行帧间 VGICP 优化，全局再以子图为节点进行 VGICP 和回环优化。获得全局一致轨迹后，使用 3D-DDA 光线投射清理动态物体并输出全局点云地图。</p>
+<p>这种流程适合在适应性训练中先保存原始关键帧，再离线生成精度更高、动态残影更少的地图。</p>
+<h2 id="_3">环境与构建入口</h2>
+<p>项目推荐 Ubuntu 24.04 LTS 和 ROS 2 Jazzy，核心依赖包括 Eigen3、OpenCV、PCL、Asio、Boost、MsgPack、GTSAM 和 <code>gtsam_points</code>。构建时还需要同一组织下的公共消息与工具仓库 <a href="https://github.com/Polyacetone/HWSentryCommon26">HWSentryCommon26</a>。</p>
+<pre><code class="language-bash">mkdir ~/hwsentry_ws &amp;&amp; cd ~/hwsentry_ws
+git clone https://github.com/Polyacetone/HWSentryCommon26
+git clone https://github.com/Polyacetone/HWSentryNav26
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+</code></pre>
+<p>部署前建议依次阅读：</p>
+<ul>
+<li><a href="https://github.com/Polyacetone/HWSentryNav26#readme">README：环境与依赖</a></li>
+<li><a href="https://github.com/Polyacetone/HWSentryNav26/blob/main/DESIGN.md">DESIGN：架构设计</a></li>
+<li><a href="https://github.com/Polyacetone/HWSentryNav26/blob/main/TUTORIAL.md">TUTORIAL：导航入门</a></li>
+<li><a href="https://github.com/Polyacetone/HWSentryNav26/blob/main/DEMO.md">DEMO：离线演示</a></li>
+<li><a href="https://github.com/Polyacetone/HWSentryNav26/blob/main/DEPLOY.md">DEPLOY：实车部署</a></li>
+</ul>
+<h2 id="_4">实车表现与适用边界</h2>
+<p>据开源者说明，项目在临港测试中实现过跨越单级/二级台阶、上高地、飞坡和反向飞坡，但部分动作的稳定性仍有提升空间。这些结果来自特定机械结构、控制器和场地条件，尚不能直接推导为其他机器人上的性能保证。</p>
+<p>迁移时至少需要重新确认：</p>
+<ul>
+<li>轮腿底盘几何和动力学模型；</li>
+<li>底盘高度、速度和加速度约束；</li>
+<li>LiDAR/IMU 外参与时间同步；</li>
+<li>地形语义、台阶执行契约和安全走廊宽度；</li>
+<li>LPV 辨识数据、观测器和 MPC 权重；</li>
+<li>状态机中的比赛任务与故障恢复逻辑。</li>
+</ul>
+<h2 id="_5">维护与许可</h2>
+<p>仓库保留了项目开发历史，文档仍可能继续补充。代码采用 MIT License；使用时仍需分别检查 GLIM、GTSAM、<code>gtsam_points</code> 等第三方依赖的许可证和引用要求。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" class="btn btn-neutral float-left" title="华东理工大学起源战队：哨兵机器人建图与地图编辑工具合集"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/" class="btn btn-neutral float-right" title="Odin1 与 Mid-360 标定及点云融合方案">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
