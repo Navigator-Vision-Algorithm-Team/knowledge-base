@@ -46,3 +46,5 @@ Humble 配置/API 交叉核对 [Nav2 Humble Smac 源码](https://github.com/ros-
 ## 验收与排错
 
 完成 [T5–T6](../assignments/README.md)。能分别解释：地图无通路、unknown 策略、起点碰撞、TF 不可用、规划超时；知道清 Costmap 不能修复地图坐标错位。下一步沿[Nav2 与控制链](../nav2/README.md)检查路径如何变成最终速度。
+
+自学指定章节与固定地图实验见[规划与控制专题](../self-study/planning-control.md)：先读 Red Blob A*，完成 T5 后再选带权搜索和 Smac 对照；不需要同时实现所有候选算法。

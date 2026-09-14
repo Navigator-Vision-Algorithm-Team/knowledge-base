@@ -126,3 +126,5 @@ QoS 先通过端点证据定位。仅在确实不兼容时，按照[官方覆盖
 | 倍速回放速度变了 | 时间差分使用消息 stamp 还是墙钟/steady_clock | 把回放结果当实车速度结论 |
 
 按 [T1–T3](../assignments/README.md)提交代码、TF 图和至少两个不同根因的故障记录。完成后进入[传感器与定位](../sensor-lio/README.md)。
+
+具体官方章节与进阶实验见[ROS2 系统自学](../self-study/ros2-systems.md)；二维变换和时间差分可先做[带解答源码练习](../assignments/reading-labs.md)。

@@ -207,6 +207,8 @@ ros2 launch pb2025_nav_bringup rm_navigation_reality_launch.py \
 
 通过标准：能从“缺输入、类型不符、时间不符、TF 不符、地图不符”五类原因定位至少三个故障；任何 `Returning identity`、持续 TF 查找失败、地图加载失败都不能写成算法验收通过。运行指标需由训练负责人结合机器、场景设定并实测；本文没有提供虚构的漂移或成功率。
 
+需要补矩阵、滤波或配准基础时进入[定位自学专题](../self-study/localization.md)，其中给出指定章节、三个合成数据实验和 Point-LIO 逐函数阅读顺序。S2 可先做坐标变换；无 bag 时可做合成实验，动态定位验收仍保留待资源状态。
+
 [bringup]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/bringup_launch.py#L139-L197
 [reality-config]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L1-L214
 [driver-topic]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/livox_ros_driver2/src/lddc.cpp#L450-L538

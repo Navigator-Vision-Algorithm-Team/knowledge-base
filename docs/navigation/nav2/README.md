@@ -196,3 +196,5 @@ ros2 topic pub --once /nav_training/cmd_vel_nav2_result geometry_msgs/msg/Twist 
 | 边界说明 | 不把“有源码/节点启动/规划成功/最终零命令”替代“完整实车系统验证”；指出未闭合的串口、决策和停车部分 |
 
 `nav.py`、`nav_run.sh`、`to_home.sh`、`to_center.sh`只是辅助入口，其中存在消息类型、namespace或持续发布问题，详见证据页R10/R11。当前审查未找到默认启动的比赛策略状态机；新人应先掌握NavigateToPose的目标、反馈、结果与取消契约，再接实际决策端。
+
+进一步学习可选[全向 PID 与算法对照项目](../self-study/planning-control.md)、[Action/BT/并发与性能专题](../self-study/ros2-systems.md)。零速度、自旋和缓存的逐步推导见[源码练习 R2](../assignments/reading-labs.md)。

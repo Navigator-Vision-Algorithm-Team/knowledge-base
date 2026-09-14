@@ -4,7 +4,7 @@
 
 ## 1. 先建立最小环境
 
-沿用[Linux 基础](../../Linux教学/2.0Linux基础.md)、[配套练习](../../Linux教学/2.1Linux基础配套练习.md)、[SSH](../../Linux教学/3.ubuntu-ssh-guide.md)与[Git](../../git教学/1.git下载和如何使用github.md)。Ubuntu 安装的旧页面仍为施工占位，不把它作为新人唯一入口。
+沿用[Linux 基础](../../Linux教学/2.0Linux基础.md)、[配套练习](../../Linux教学/2.1Linux基础配套练习.md)、[SSH](../../Linux教学/3.ubuntu-ssh-guide.md)与[Git](../../git教学/1.git下载和如何使用github.md)。原 Ubuntu 安装占位页已转为本课入口；准确安装步骤见下方官方版本文档。
 
 ROS 安装按[官方 Humble 安装文档](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)进行，若网页无法访问可读[官方 Humble 文档源码](https://github.com/ros2/ros2_documentation/blob/humble/source/Installation/Ubuntu-Install-Debs.rst)。操作系统、软件源和依赖版本以安装日官方说明为准；不混装其他 ROS 发行版来绕过错误。
 
@@ -77,6 +77,8 @@ rosdep install --from-paths src --ignore-src --rosdistro humble -y
 基础学习不要因完整比赛工程的缺包而停住。继续 T0–T2、A* 和静态源码追踪，待训练材料齐备再做完整链路。
 
 ## 5. 编程只学本周用得到的部分
+
+具体章节、预计投入、停止条件与带数值答案的小练习见[基础自学手册 F1–F6](../self-study/foundations.md)。按[周任务单](weekly-plan.md)逐步补齐，不要求先刷完整套 C++ 或 Python 课程。
 
 | 能力 | 必须能做的事 | 对应代码阅读 |
 |---|---|---|

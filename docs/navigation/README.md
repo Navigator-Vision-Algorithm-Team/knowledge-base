@@ -10,12 +10,14 @@
 2. 按[环境与工程基础](onboarding/environment.md)完成 S0。没有机器人也能开始；不要一开始尝试运行整个实车工程。
 3. 对照[系统、Topic 和 TF 地图](system/README.md)阅读少量真实代码；看不懂的概念回到对应专题。
 4. 按[实践任务与考核](assignments/README.md)交付代码、日志、对照结果和恢复记录。完成一次作业不等于取得实车操作资格。
+5. 用[16 周任务单](onboarding/weekly-plan.md)确定每周具体阅读与交付；读源码困难时做[带参考解答的练习](assignments/reading-labs.md)。当期任务完成后，从[自学与进阶导航](self-study/README.md)选择一个方向深入。
 
 ## 学习目录
 
 | 入口 | 解决什么问题 | 主要阶段 |
 |---|---|---|
 | [培训路线](onboarding/learning-route.md) | 顺序、必学/了解/进阶、能力门槛 | 全程 |
+| [16 周具体任务单](onboarding/weekly-plan.md) | 每周指定阅读、实际操作、交付、加餐和缺资源替代任务 | 全程 |
 | [环境与工程基础](onboarding/environment.md) | Ubuntu/Humble、Git、C++/Python、构建缺口 | S0 |
 | [ROS2、TF、时间与全向运动](ros2-tf/README.md) | Node/Action/QoS、真实 TF、bag、速度坐标系 | S1–S2 |
 | [系统地图](system/README.md) | launch→节点→Topic→TF→输出 | 初读 S0，S3 后复读 |
@@ -25,6 +27,8 @@
 | [源码审查证据](system/nav2-and-control-evidence.md) | 当前配置差异与需要复测的风险 | S5–S7 |
 | [Debug、实车与比赛](debug-real/README.md) | 故障分层、停止、恢复、比赛交接 | 每阶段练习，S6–S7 实车 |
 | [实践任务与考核](assignments/README.md) | 作业输入、验收方法、量化门槛 | 全程 |
+| [源码导读与参考解答](assignments/reading-labs.md) | 节点接口、速度缓存、地图路径、参数加载、时间差分五道题 | S1–S5 |
+| [自学与进阶材料](self-study/README.md) | 基础补课、数学定位、规划控制、ROS2 系统，指定章节与离线项目 | 随阶段选学 |
 | [仿真环境建设](simulation/README.md) | 已有代码、缺失资产、统一环境验收 | 可选基础设施 |
 | [资料、模板与维护](maintenance/README.md) | 阅读资源、数据集、问题记录、知识库更新 | 全程 |
 

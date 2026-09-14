@@ -7,14 +7,15 @@
 ```text
 docs/navigation/
 ├─ README.md                       学习入口与资源边界
-├─ onboarding/                     最终路线、环境与工程基础
+├─ onboarding/                     最终路线、16周任务单、环境基础
 ├─ system/                         系统地图、固定版本源码证据
 ├─ ros2-tf/                        通信、TF、时间、全向运动
 ├─ sensor-lio/                     传感器、LIO、建图、重定位
 ├─ planning/                       环境表达、Costmap、规划
 ├─ nav2/                           Nav2、控制、BT、接口
 ├─ debug-real/                     Debug、实车、比赛流程
-├─ assignments/                    任务与统一考核
+├─ assignments/                    任务与统一考核、带解答源码练习
+├─ self-study/                     基础、数学定位、规划控制、ROS2系统
 ├─ simulation/                     统一仿真建设与验收
 └─ maintenance/                    资源、模板、维护规则
 ```
@@ -23,12 +24,14 @@ docs/navigation/
 
 ## 教学资料：每个链接都要对应一个任务
 
+完整的指定章节、先修、学时、跳过范围与离线项目已拆到[自学与进阶导航](../self-study/README.md)。下面保留常用速查入口；新人按周选读，不以收藏链接数量作为学习进度。
+
 | 资源 | 指定用途 | 任务与版本边界 |
 |---|---|---|
 | [MIT Missing Semester](https://missing.csail.mit.edu/) | Shell、Git、调试工具选读 | T0；不要求完整刷课 |
 | [Learn Git Branching](https://learngitbranching.js.org/?locale=zh_CN) | HEAD、分支、merge 可视化 | T0；用练习仓库操作 |
 | [LearnCpp](https://www.learncpp.com/) | 类/引用/指针/标准库查询 | T1/T9；不是进入 ROS 的前置全集 |
-| [鱼香《动手学 ROS2》](https://fishros.com/d2lros2/#/) | 中文通信、包、参数与 launch 入门 | T0–T2；挑 Humble 对应内容，不跨发行版照抄 |
+| [鱼香《动手学 ROS2》](https://fishros.com/d2lros2/#/) | 中文通信、包、参数与 launch 的辅助解释 | 当前入口标注 Foxy 版；T0–T2 可参考概念，安装/API/命令以 Humble 官方原文为准，不跟随降版 |
 | [ROS2 官方 Humble 教程源码](https://github.com/ros2/ros2_documentation/tree/humble/source/Tutorials) | CLI、C++ 节点、Action、tf2 的准确说明 | T1–T3；官网受限时可读官方源码 |
 | [Humble QoS](https://github.com/ros2/ros2_documentation/blob/humble/source/Concepts/Intermediate/About-Quality-of-Service-Settings.rst) | offered/requested 与兼容性 | T1/T3 |
 | [tf2 Debug 教程](https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Tf2/Debugging-Tf2-Problems.rst) | frame 与时间问题分离 | T2/T8 |
