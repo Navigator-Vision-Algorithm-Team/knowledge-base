@@ -1,0 +1,7 @@
+{
+  "namespace": "/nav_training",
+  "publisher": "sequence",
+  "subscriber_broken": "/sequence",
+  "subscriber_fixed": "sequence",
+  "sequence": [1, 2, 3, 4, 5]
+}

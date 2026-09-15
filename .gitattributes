@@ -1,0 +1,4 @@
+# Dataset manifests hash exact bytes; do not rewrite text line endings on checkout.
+training/datasets/** -text
+training/cases/inputs/** -text
+training/cases/evidence/** -text

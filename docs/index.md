@@ -6,6 +6,7 @@
 |---|---|
 | [导航新人培训路线](navigation/onboarding/learning-route.md) | 对齐 Navigation-2027 的必学/了解/进阶与 16 周建议路线 |
 | [16 周任务单](navigation/onboarding/weekly-plan.md) | 每周阅读、代码、实验、交付与可选加餐 |
+| [可运行教学工作区](navigation/training/workspace.md) / [合成数据包](navigation/training/datasets.md) | 节点、运动/TF、Action、真值与可复现故障 |
 | [自学材料与进阶项目](navigation/self-study/README.md) | 指定章节、网站、先修、离线项目与验收 |
 | [源码导读与参考解答](navigation/assignments/reading-labs.md) | 从真实节点、Topic 和参数推导运行行为 |
 | [实际系统地图](navigation/system/README.md) | 代码、节点、Topic、TF、Nav2 与底盘接口 |

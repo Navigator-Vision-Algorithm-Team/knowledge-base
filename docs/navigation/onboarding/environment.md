@@ -93,3 +93,5 @@ rosdep install --from-paths src --ignore-src --rosdistro humble -y
 完成 [T0](../assignments/README.md)：同伴在新终端按 README 能复现；提交不包含 build/install/log、密钥或大 bag；能解释一次 source/包来源错误。常见失败是打开新终端未 source、在错误目录编译、混用多个工作区、改了源码配置但运行另一份安装。先确认这些，再处理算法问题。
 
 下一步：[S1–S2 ROS2、TF、时间与运动](../ros2-tf/README.md)。
+
+需要一套现成可运行的小系统时，使用[配套教学工作区](../training/workspace.md)。它的包名也为 `nav_training`，采用 ament_python；与本页自建 C++ 练习包使用不同工作区和终端，不同时叠加 source。

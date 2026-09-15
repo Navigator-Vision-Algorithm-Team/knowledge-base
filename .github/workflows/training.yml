@@ -1,0 +1,51 @@
+name: Navigation teaching kit
+
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths: ['training/**', '.github/workflows/training.yml']
+  pull_request:
+    paths: ['training/**', '.github/workflows/training.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  humble:
+    runs-on: ubuntu-22.04
+    container: ros:humble-ros-base-jammy
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      ROS_DOMAIN_ID: '87'
+      ROS_LOCALHOST_ONLY: '1'
+      NAV_TRAINING_REQUIRE_ROS: '1'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install teaching dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends python3-pip python3-pytest python3-colcon-common-extensions ros-humble-launch-ros ros-humble-tf2-ros ros-humble-action-tutorials-interfaces ros-humble-rosbag2 ros-humble-nav-msgs ros-humble-geometry-msgs ros-humble-std-msgs ros-humble-tf2-msgs
+          python3 -m pip install -r training/requirements-data.txt
+      - name: Build isolated ament package
+        run: |
+          source /opt/ros/humble/setup.bash
+          cd training/ros2_ws
+          colcon build --symlink-install --packages-select nav_training
+      - name: Verify analytic model and committed datasets
+        run: |
+          python3 -m unittest discover -s training/tests -p test_core.py -v
+          python3 -m unittest discover -s training/tests -p test_replay.py -v
+          python3 -m unittest discover -s training/tests -p test_datasets.py -v
+      - name: Verify the two executable Debug cases
+        run: python3 -m unittest discover -s training/cases/tests -p 'test_*.py' -v
+      - name: Verify ROS nodes, TF, timeout and Action cancellation
+        run: |
+          source /opt/ros/humble/setup.bash
+          source training/ros2_ws/install/setup.bash
+          python3 -m unittest discover -s training/ros2_ws/src/nav_training/test -p 'test_*.py' -v
+          python3 -m unittest discover -s training/tests -p test_ros_smoke.py -v

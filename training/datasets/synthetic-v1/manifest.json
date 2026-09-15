@@ -1,0 +1,219 @@
+{
+  "dataset_id": "synthetic-v1",
+  "files": {
+    "forward/bag/bag.db3": {
+      "bytes": 86016,
+      "sha256": "0557999e46f131f708de1fa4f21e468677dbc4fd12683ceda1cc9345ba8440e1"
+    },
+    "forward/bag/metadata.yaml": {
+      "bytes": 2640,
+      "sha256": "c094bfb374b16cbe9e3507435fbe5dfdb75373fa6d00618a353b1a715f76a5cf"
+    },
+    "forward/ground_truth.csv": {
+      "bytes": 5362,
+      "sha256": "a529626212ebda8c96da7e68e73bf5ab618bbf68d2969bc5a4a4e069c4496963"
+    },
+    "lateral/bag/bag.db3": {
+      "bytes": 86016,
+      "sha256": "940639ed27ece4771bf73b53416ce3039e5df1e93c396fdc7ac44a0d133f6b9b"
+    },
+    "lateral/bag/metadata.yaml": {
+      "bytes": 2640,
+      "sha256": "c094bfb374b16cbe9e3507435fbe5dfdb75373fa6d00618a353b1a715f76a5cf"
+    },
+    "lateral/ground_truth.csv": {
+      "bytes": 5362,
+      "sha256": "ca308d118abe722dd3ddb254bbe3c133693d435d47ef46d8a7caefcfbdfa9b4d"
+    },
+    "map/teaching_map.pcd": {
+      "bytes": 1583,
+      "sha256": "5a917dee7f88e4de3263be05f5abb1c714cc65697fac9820b85122c2dac6be0d"
+    },
+    "map/teaching_map.pgm": {
+      "bytes": 1197,
+      "sha256": "1adbfeab96bc0ce6bf3fed6950336411e94230db94dae2b616ef8380619a5969"
+    },
+    "map/teaching_map.yaml": {
+      "bytes": 132,
+      "sha256": "1287bc98354a4f7e5d7ed72b62378abd7bcf7d6f9d61f6b7dce41aa95634e544"
+    },
+    "rotation/bag/bag.db3": {
+      "bytes": 86016,
+      "sha256": "f309b4f6c7dd26d03b0d162014ebc4216aa56b5fc95aea1d706cec304ffd0c71"
+    },
+    "rotation/bag/metadata.yaml": {
+      "bytes": 2640,
+      "sha256": "c094bfb374b16cbe9e3507435fbe5dfdb75373fa6d00618a353b1a715f76a5cf"
+    },
+    "rotation/ground_truth.csv": {
+      "bytes": 5362,
+      "sha256": "990b27e1f0e96baeb50c635eb5f94b2694c54e614a20f6057883ce93b7a69c4f"
+    },
+    "stationary/bag/bag.db3": {
+      "bytes": 86016,
+      "sha256": "ee927254969f179ab7adecd749729b57fc5c7618e044071106f7c51b7d1e367b"
+    },
+    "stationary/bag/metadata.yaml": {
+      "bytes": 2640,
+      "sha256": "c094bfb374b16cbe9e3507435fbe5dfdb75373fa6d00618a353b1a715f76a5cf"
+    },
+    "stationary/ground_truth.csv": {
+      "bytes": 5362,
+      "sha256": "da5f7539c8e142897adb9f4da533ea9b0e8e916e4822f23d4ed3909deb586acc"
+    },
+    "time_anomalies/expected.json": {
+      "bytes": 375,
+      "sha256": "a1f06731427d7eae23e6f730775155c368f952abebc1e1d27315686bfefd2c9a"
+    },
+    "time_anomalies/timestamps.csv": {
+      "bytes": 109,
+      "sha256": "29f8257aae0dc4d48851ff1edd10b8ddeef6f120ebb382ab1dfd74f2c8e098a4"
+    }
+  },
+  "format_version": 1,
+  "frames": {
+    "axes": "right-handed, body +x forward, +y left, +z up; positive yaw counterclockwise",
+    "body": "training_base",
+    "lidar": "training_lidar",
+    "pose_parent": "training_odom",
+    "static_quaternion_xyzw": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "static_translation_m": [
+      0.2,
+      0.0,
+      0.1
+    ]
+  },
+  "generator": {
+    "bag_metadata_version": 8,
+    "path": "training/tools/generate_data.py",
+    "rosbags_version": "0.10.11",
+    "serialization": "cdr",
+    "storage": "sqlite3",
+    "typestore": "ROS2_HUMBLE"
+  },
+  "map": {
+    "frame": "training_odom",
+    "height_cells": 16,
+    "occupied_cells": 75,
+    "origin": [
+      -1.0,
+      -1.0,
+      0.0
+    ],
+    "pcd_meaning": "one point at each occupied cell center, z=0; no lidar scan or 3D environment",
+    "pcd_points": 75,
+    "resolution_m": 0.25,
+    "width_cells": 20
+  },
+  "provenance": {
+    "imu": false,
+    "kind": "synthetic_analytic",
+    "limitations": "Ideal holonomic motion, no slip, latency, noise, obstacles or estimation. Covariances are zero synthetic placeholders; never fusion tuning evidence.",
+    "raw_lidar": false,
+    "sensor_noise": false,
+    "source": "Closed-form motion from zero pose plus hand-constructed occupancy grid; no external recording.",
+    "source_baseline": "Navigation-2027@183a4109b0de2030bb8970a54654937c8b039ba9 (teaching context only)",
+    "valid_pointlio_input": false
+  },
+  "scenarios": {
+    "forward": {
+      "bag_messages": 154,
+      "command_before_stop": {
+        "vx_m_s": 0.2,
+        "vy_m_s": 0.0,
+        "wz_rad_s": 0.0
+      },
+      "expected_final": {
+        "x_m": 1.0,
+        "y_m": 0.0,
+        "yaw_rad": 0.0
+      },
+      "samples": 51
+    },
+    "lateral": {
+      "bag_messages": 154,
+      "command_before_stop": {
+        "vx_m_s": 0.0,
+        "vy_m_s": 0.1,
+        "wz_rad_s": 0.0
+      },
+      "expected_final": {
+        "x_m": 0.0,
+        "y_m": 0.5,
+        "yaw_rad": 0.0
+      },
+      "samples": 51
+    },
+    "rotation": {
+      "bag_messages": 154,
+      "command_before_stop": {
+        "vx_m_s": 0.0,
+        "vy_m_s": 0.0,
+        "wz_rad_s": 0.2
+      },
+      "expected_final": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "yaw_rad": 1.0
+      },
+      "samples": 51
+    },
+    "stationary": {
+      "bag_messages": 154,
+      "command_before_stop": {
+        "vx_m_s": 0.0,
+        "vy_m_s": 0.0,
+        "wz_rad_s": 0.0
+      },
+      "expected_final": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "yaw_rad": 0.0
+      },
+      "samples": 51
+    }
+  },
+  "time": {
+    "duration_s": 5.0,
+    "epoch": "arbitrary simulation epoch, not UTC wall time",
+    "final_sample": "zero command at elapsed=5 s",
+    "samples": 51,
+    "start_ns": 100000000000,
+    "step_ns": 100000000
+  },
+  "topics": {
+    "/nav_training/cmd_vel": {
+      "durability": "volatile",
+      "messages_per_bag": 51,
+      "type": "geometry_msgs/msg/Twist"
+    },
+    "/nav_training/odom": {
+      "durability": "volatile",
+      "messages_per_bag": 51,
+      "type": "nav_msgs/msg/Odometry"
+    },
+    "/nav_training/tf": {
+      "durability": "volatile",
+      "messages_per_bag": 51,
+      "type": "tf2_msgs/msg/TFMessage"
+    },
+    "/nav_training/tf_static": {
+      "durability": "transient_local",
+      "messages_per_bag": 1,
+      "type": "tf2_msgs/msg/TFMessage"
+    }
+  },
+  "units": {
+    "angular_velocity": "radians/second",
+    "elapsed_s": "seconds",
+    "linear_velocity": "meters/second",
+    "position": "meters",
+    "stamp_ns": "nanoseconds",
+    "yaw": "radians"
+  }
+}

@@ -4,6 +4,8 @@
 
 不知道如何开始时，先做[源码导读 R1–R5](reading-labs.md)，其中给出输入、问题、推导和参考答案；按[逐周任务单](../onboarding/weekly-plan.md)安排工作。通过当期必修后可选[自学专题](../self-study/README.md)的离线项目，额外项目不替代 T8/T10 实车验收。
 
+配套[教学工作区](../training/workspace.md)给出可运行基线；[标准合成包](../training/datasets.md)可直接做运动/时间/TF 前置练习。[Topic 完整案例](../debug-real/case-topic-mismatch.md)对应 T1，[速度缓存案例](../debug-real/case-stale-command.md)对应 T7/T9。合成包不满足 T3–T4 真实 LiDAR/IMU 定位输入要求，相关验收仍需队内数据。
+
 ## 统一交付格式与评分
 
 每次提交必须包含：代码/配置 commit、系统和依赖版本、输入数据标识与校验值、完整命令、预期、实际观察、原始证据路径、结论、回退步骤、未验证项。代码改动附 diff，参数实验附改前/改后有效参数；截图要标注 frame、单位和时间段。

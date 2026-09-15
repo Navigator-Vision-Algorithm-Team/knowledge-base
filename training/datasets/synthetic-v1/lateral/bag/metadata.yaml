@@ -1,0 +1,66 @@
+rosbag2_bagfile_information:
+  compression_format: ''
+  compression_mode: ''
+  custom_data: null
+  duration:
+    nanoseconds: 5000000000
+  files:
+  - duration:
+      nanoseconds: 5000000000
+    message_count: 154
+    path: bag.db3
+    starting_time:
+      nanoseconds_since_epoch: 100000000000
+  message_count: 154
+  relative_file_paths:
+  - bag.db3
+  ros_distro: rosbags
+  starting_time:
+    nanoseconds_since_epoch: 100000000000
+  storage_identifier: sqlite3
+  topics_with_message_count:
+  - message_count: 51
+    topic_metadata:
+      name: /nav_training/cmd_vel
+      offered_qos_profiles: "- avoid_ros_namespace_conventions: false\n  deadline:
+        {nsec: 0, sec: 0}\n  depth: 10\n  durability: 2\n  history: 1\n  lifespan:
+        {nsec: 0, sec: 0}\n  liveliness: 1\n  liveliness_lease_duration: {nsec: 0,
+        sec: 0}\n  reliability: 1"
+      serialization_format: cdr
+      type: geometry_msgs/msg/Twist
+      type_description_hash:
+        RIHS01_9c45bf16fe0983d80e3cfe750d6835843d265a9a6c46bd2e609fcddde6fb8d2a
+  - message_count: 51
+    topic_metadata:
+      name: /nav_training/odom
+      offered_qos_profiles: "- avoid_ros_namespace_conventions: false\n  deadline:
+        {nsec: 0, sec: 0}\n  depth: 10\n  durability: 2\n  history: 1\n  lifespan:
+        {nsec: 0, sec: 0}\n  liveliness: 1\n  liveliness_lease_duration: {nsec: 0,
+        sec: 0}\n  reliability: 1"
+      serialization_format: cdr
+      type: nav_msgs/msg/Odometry
+      type_description_hash:
+        RIHS01_3cc97dc7fb7502f8714462c526d369e35b603cfc34d946e3f2eda2766dfec6e0
+  - message_count: 51
+    topic_metadata:
+      name: /nav_training/tf
+      offered_qos_profiles: "- avoid_ros_namespace_conventions: false\n  deadline:
+        {nsec: 0, sec: 0}\n  depth: 100\n  durability: 2\n  history: 1\n  lifespan:
+        {nsec: 0, sec: 0}\n  liveliness: 1\n  liveliness_lease_duration: {nsec: 0,
+        sec: 0}\n  reliability: 1"
+      serialization_format: cdr
+      type: tf2_msgs/msg/TFMessage
+      type_description_hash:
+        RIHS01_e369d0f05a23ae52508854b66f6aa0437f3449d652e8cbf22d5abe85d020f087
+  - message_count: 1
+    topic_metadata:
+      name: /nav_training/tf_static
+      offered_qos_profiles: "- avoid_ros_namespace_conventions: false\n  deadline:
+        {nsec: 0, sec: 0}\n  depth: 1\n  durability: 1\n  history: 1\n  lifespan:
+        {nsec: 0, sec: 0}\n  liveliness: 1\n  liveliness_lease_duration: {nsec: 0,
+        sec: 0}\n  reliability: 1"
+      serialization_format: cdr
+      type: tf2_msgs/msg/TFMessage
+      type_description_hash:
+        RIHS01_e369d0f05a23ae52508854b66f6aa0437f3449d652e8cbf22d5abe85d020f087
+  version: 8

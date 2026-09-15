@@ -10,6 +10,10 @@ nav:
       - 最终培训路线: navigation/onboarding/learning-route.md
       - 16周具体任务单: navigation/onboarding/weekly-plan.md
       - 环境与工程基础: navigation/onboarding/environment.md
+      - 配套教学工作区:
+          - 从运行到修改代码: navigation/training/workspace.md
+          - 标准合成数据包: navigation/training/datasets.md
+          - 验证状态与复验: navigation/training/validation.md
       - 本队系统地图: navigation/system/README.md
       - ROS2、TF、时间与运动: navigation/ros2-tf/README.md
       - 传感器、LIO与重定位: navigation/sensor-lio/README.md
@@ -17,6 +21,8 @@ nav:
       - Nav2与控制链: navigation/nav2/README.md
       - 源码审查证据: navigation/system/nav2-and-control-evidence.md
       - Debug、实车与比赛: navigation/debug-real/README.md
+      - Debug案例：Topic名字不匹配: navigation/debug-real/case-topic-mismatch.md
+      - Debug案例：旧速度再次输出: navigation/debug-real/case-stale-command.md
       - 实践任务与考核: navigation/assignments/README.md
       - 源码导读与参考解答: navigation/assignments/reading-labs.md
       - 自学与进阶:
