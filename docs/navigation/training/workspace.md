@@ -6,7 +6,15 @@
 
 ## 1. 获取与首次运行（约 30 分钟）
 
-若当前 PR 尚未合入，使用知识库 PR 所在分支；合入后可以使用组织仓库 main。下面命令以已克隆的知识库根目录为工作目录。完整源文件见[配套目录][kit]，保留 `git rev-parse HEAD` 作为练习版本。
+若当前 PR 尚未合入，先克隆知识库 PR 所在分支。以下命令在准备存放练习的目录执行，`navigation-training-kb` 应是尚不存在的新目录；已经克隆者直接进入对应仓库即可：
+
+```text
+git clone --branch codex/navigation-onboarding-20260914 --single-branch https://github.com/lkigai486/knowledge-base.git navigation-training-kb
+cd navigation-training-kb
+git rev-parse HEAD
+```
+
+合入后可以从组织仓库 main 获取。后续命令均以知识库根目录为起点；完整源文件见[配套目录][kit]，保留当前提交 SHA 作为练习版本。Ubuntu 若没有 `python` 命令，使用 `python3`。
 
 ```text
 python --version
@@ -25,7 +33,8 @@ python training/tools/replay_motion.py training/datasets/synthetic-v1/forward/gr
 ```bash
 source /opt/ros/humble/setup.bash
 sudo apt install python3-colcon-common-extensions ros-humble-launch-ros \
-  ros-humble-tf2-ros ros-humble-action-tutorials-interfaces ros-humble-rosbag2
+  ros-humble-tf2-ros ros-humble-action-tutorials-interfaces ros-humble-rosbag2 \
+  ros-humble-geometry-msgs ros-humble-nav-msgs ros-humble-std-msgs ros-humble-tf2-msgs
 cd training/ros2_ws
 colcon build --symlink-install --packages-select nav_training
 source install/setup.bash

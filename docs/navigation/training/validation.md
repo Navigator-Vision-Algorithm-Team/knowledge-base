@@ -38,7 +38,22 @@ python3 -m unittest discover -s training/tests -p test_ros_smoke.py -v
 
 ## 实际运行记录
 
-本轮记录会在配套代码与数据完成集成后更新。当前 Windows 主机已执行核心与重算测试；本机没有可用的 Humble/WSL/Docker。ROS 运行由[独立 Humble CI 工作流][workflow]验证，结果以具体运行记录为准。
+2026-09-15，教学代码提交 `061bd082ca2c5417be7f09c069740dadf5c3fce8` 已在 GitHub Actions 的 Ubuntu 22.04 runner、`ros:humble-ros-base-jammy` 容器中完成构建与运行。[完整 CI 记录：34911735913](https://github.com/lkigai486/knowledge-base/actions/runs/34911735913)结论为 **success**，共 **45 项测试通过，0 项跳过**。
+
+| 测试组 | 数量 | 实际结果 |
+|---|---:|---|
+| 核心积分与时间边界 | 9 | 通过 |
+| CSV 重算与错误输入 | 3 | 通过 |
+| 数据生成、读回、校验与地图 | 10 | 通过 |
+| 两个 Debug 模型及命令行 | 10 | 通过 |
+| 速度与参数边界 | 7 | 通过 |
+| 真实 Humble 集成 | 6 | 通过，耗时 23.911 秒 |
+
+6 项集成测试覆盖：Action 客户端成功/取消/拒绝退出码；Action 服务端反馈/取消/结果/忙时拒绝；错误 Topic 的真实端点及修复后通信；健康序号链；已提交 forward bag 的 `info` 与 `play --clock`；理想模型运动、TF、速度限制、无效输入清零与超时停止。静态 TF 还检查了迟到订阅。详情见[测试源文件](https://github.com/lkigai486/knowledge-base/blob/061bd082ca2c5417be7f09c069740dadf5c3fce8/training/tests/test_ros_smoke.py)。
+
+Windows/Python 3.12.10 本地另通过上述 39 项非 ROS 测试、四种 CSV 轨迹重算和 `pip check`。本地缺少 ROS 的集成组标为跳过，未计入这 39 项；远程通过记录来自真实 Humble 运行。四组 bag 均完成离线 CDR 读回，真实 ROS 回放测试抽取其中的 forward 包，不声称四组都做了 ROS 回放。
+
+知识库通过 MkDocs 1.6.1 严格构建；构建后检查 40 个 HTML 页面、内部链接/锚点以及 160 个固定 SHA 源码引用。复验代码与数据使用[独立 Humble CI 工作流][workflow]，后续修改以相应提交的新运行记录为准。
 
 ## 仍需队内完成
 

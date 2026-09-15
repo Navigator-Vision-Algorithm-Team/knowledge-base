@@ -1,6 +1,6 @@
 # Debug 案例 1：能看到 Topic，订阅者却没有收到
 
-这是一道可复现的教学故障题，适合 S1/S2，建议 45–60 分钟。**已执行的是 Python 事件路由模型；没有真实 DDS 抓包、ROS 运行或队内事故记录。** 可选 ROS 复验在文末单独列出。准备方式见[教学工作区](../training/workspace.md)。
+这是一道可复现的教学故障题，适合 S1/S2，建议 45–60 分钟。Python 事件路由模型和配套 Humble 节点链路都已执行，结果见[验证记录](../training/validation.md)。下文的固定 5 条消息与 JSON 日志来自 Python 模型，ROS 测试另以真实端点和实际接收判断；没有队内事故记录或 DDS 抓包。准备方式见[教学工作区](../training/workspace.md)。
 
 ## 学生任务：先记录证据，再改配置
 
@@ -87,9 +87,9 @@ fixed 退出 0、接收 5/5；共享案例套件共 10 个测试，其中本题�
 
 恢复故障时不用修改源码，重新以 `--mode broken` 和新目录 `training/cases/runs/topic-rollback-1` 运行原命令，应再次得到 0/5、退出 1。恢复正常再使用 fixed。输出目录已存在时返回 2，保留旧证据；不要把目录重用错误当作故障复现成功。
 
-## 可选 ROS2 Humble 复验：当前待执行
+## ROS2 Humble 复验：端点检查与真实通信
 
-在已按[工作区说明](../training/workspace.md)构建并 source 的 Ubuntu 22.04/Humble 教学环境，使用 `nav_training` 包。以下是待运行步骤，**本页没有声称这些命令在本机通过**。两终端应采用相同、已确认空闲的教学 domain，仅启动教学节点。
+在已按[工作区说明](../training/workspace.md)构建并 source 的 Ubuntu 22.04/Humble 教学环境，使用 `nav_training` 包。远程 CI 已用 rclpy 检查真实发布/订阅端点，确认故障模式无接收、参数修复后恢复递增消息；以下 CLI 步骤供学生手动观察并记录自己的输出，不是 CI 终端日志的逐字抄录。两终端应采用相同、已确认空闲的教学 domain，仅启动教学节点。
 
 终端 A：
 
@@ -116,4 +116,4 @@ timeout 5 ros2 topic echo /nav_training/received --once
 ros2 launch nav_training bad_topic.launch.py sink_topic:=sequence
 ```
 
-重复终端 B 的端点检查，并采集 `/nav_training/received` 的多条递增整数。source 持续发布，ROS 计数受订阅建立时间影响，不以“恰好 5 条”验收；5/5 仅属于固定 Python 输入。ROS 回滚是停止本次 launch 后重新运行未加覆盖参数的 bad_topic 入口。保存实际输出后再更新[验证状态](../training/validation.md)。
+重复终端 B 的端点检查，并采集 `/nav_training/received` 的多条递增整数。source 持续发布，ROS 计数受订阅建立时间影响，不以“恰好 5 条”验收；5/5 仅属于固定 Python 输入。ROS 回滚是停止本次 launch 后重新运行未加覆盖参数的 bad_topic 入口。保存自己的命令、端点与接收证据，并记录对应提交和运行环境。
