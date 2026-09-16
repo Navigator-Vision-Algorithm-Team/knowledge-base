@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/07.%E4%B8%9C%E5%8C%97%E5%A4%A7%E5%AD%A6TDT%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA%E5%89%8D%E5%90%8E%E7%AB%AF%E7%BB%84%E4%BB%B6/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>东北大学 TDT 战队哨兵导航前后端组件 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u4e1c\u5317\u5927\u5b66 TDT \u6218\u961f\u54e8\u5175\u5bfc\u822a\u524d\u540e\u7aef\u7ec4\u4ef6";
+        var mkdocs_page_input_path = "\u5f00\u6e90\u9879\u76ee\u5408\u96c6/07.\u4e1c\u5317\u5927\u5b66TDT\u6218\u961f\u54e8\u5175\u5bfc\u822a\u524d\u540e\u7aef\u7ec4\u4ef6.md";
+        var mkdocs_page_url = "/knowledge-base/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/07.%E4%B8%9C%E5%8C%97%E5%A4%A7%E5%AD%A6TDT%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA%E5%89%8D%E5%90%8E%E7%AB%AF%E7%BB%84%E4%BB%B6/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">东北大学 TDT 战队哨兵导航前后端组件</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="tdt">东北大学 TDT 战队哨兵导航前后端组件</h1>
+<blockquote>
+<p>资料整理与上传：朱鑫鹏</p>
+<p>分类：规划前后端组件</p>
+</blockquote>
+<h2 id="_1">项目概览</h2>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>仓库</td>
+<td><a href="https://github.com/T-DT-Algorithm-2026/tdt-nav-kit">T-DT-Algorithm-2026/tdt-nav-kit</a></td>
+</tr>
+<tr>
+<td>前端搜索</td>
+<td>二维栅格 A<em>、Kinodynamic A</em>、代价场、多层障碍物掩码</td>
+</tr>
+<tr>
+<td>后端优化</td>
+<td>分段多项式、闭式/OSQP 求解、方形走廊、迭代碰撞处理</td>
+</tr>
+<tr>
+<td>核心环境</td>
+<td>C++11、Eigen3、OSQP、OsqpEigen，不依赖 ROS</td>
+</tr>
+<tr>
+<td>示例环境</td>
+<td>Ubuntu 22.04、GCC 11.2.0；OpenCV 仅用于示例可视化</td>
+</tr>
+<tr>
+<td>许可证</td>
+<td><a href="https://github.com/T-DT-Algorithm-2026/tdt-nav-kit/blob/main/LICENCE">MIT License</a></td>
+</tr>
+</tbody>
+</table>
+<p><code>tdt-nav-kit</code> 是东北大学 TDT 战队公开的哨兵导航前后端算法组件。它以二维栅格地图、起终点和运动约束为输入，完成代价地图生成、路径搜索、路径化简、约束区域生成和连续轨迹优化，可接入现有导航工程中从“收到导航目标”到“交给轨迹跟踪器”之间的链路。</p>
+<p>项目不依赖 ROS，核心算法以 C++ 类和 Eigen 数据结构提供，适合已有定位、地图与控制框架，只希望替换或学习规划模块的队伍。项目介绍见 <a href="https://bbs.robomaster.com/article/1969284">RoboMaster 社区开源帖</a>。</p>
+<h2 id="_2">功能边界</h2>
+<pre><code class="language-text">上游工程提供
+二维占据栅格 + 起点/终点 + 初末速度 + 运动约束
+                         │
+                         ▼
+          YAstar：代价地图与前端搜索
+                         │
+                         ▼
+                路径化简与方形走廊
+                         │
+                         ▼
+    MinimumSnapOsqp：分段多项式轨迹优化
+                         │
+                         ▼
+下游工程接收
+带时间信息的轨迹采样结果 → 轨迹跟踪器/底盘控制器
+</code></pre>
+<p>该仓库不是完整的自主导航系统，未包含定位、建图、重定位、传感器驱动、全局任务管理和轨迹跟踪控制。集成者需要负责这些上下游模块，以及坐标系、地图更新、重规划触发和控制接口。</p>
+<h2 id="1-yastar">1. YAstar 前端搜索</h2>
+<p><code>YAstar</code> 面向二维栅格地图，提供普通 A<em> 和 Kinodynamic A</em> 两种搜索方式。</p>
+<h3 id="a">普通 A*</h3>
+<p>普通 A* 使用八邻域扩展。除了基础占据地图，还可以依据障碍物距离生成代价场，让路径在长度和离障碍物的距离之间折中。多层位掩码可叠加临时障碍、禁行区等信息；基础地图或任意掩码层标记为障碍的栅格都会被排除。</p>
+<p>搜索结果可以使用 DP 算法去除冗余点。仓库文档特别说明，单独调用 <code>simplifyPath()</code> 时不会结合地图检查化简后线段是否碰撞，因此集成时需要使用带碰撞检查的流程或自行补充验证。</p>
+<h3 id="kinodynamic-a">Kinodynamic A*</h3>
+<p>Kinodynamic A* 将节点状态扩展为 <code>[x, y, vx, vy]</code>，使用加速度和持续时间进行状态转移，并过滤超过速度、加速度限制或发生碰撞的状态。接近终点时，可尝试用三次多项式连接终点并检查动力学约束与碰撞。</p>
+<p>这种搜索比普通 A<em> 更贴近车辆运动状态，但搜索空间明显增大。仓库文档建议长距离部分先使用 A</em> 或 JPS 找到大致通路，再在车辆附近使用 Kinodynamic A*，避免让动力学搜索承担整条全局路径。</p>
+<h2 id="2-minimumsnaposqp">2. MinimumSnapOsqp 后端优化</h2>
+<p>后端使用分段多项式将离散路径转换为连续轨迹，支持闭式求解与 OSQP 二次规划求解。虽然模块名称为 <code>MinimumSnapOsqp</code>，仓库当前示例配置使用 0～5 阶多项式并最小化三阶导数，即 Minimum Jerk；导数阶数可通过参数调整。</p>
+<h3 id="_3">方形约束与碰撞处理</h3>
+<p>项目借鉴安全飞行走廊的思路，在前端控制点附近扩张无碰撞方形区域，使优化后的轨迹不必严格经过原始控制点。轨迹求解后会按时间采样并检测碰撞；发生碰撞时，迭代加入控制点或缩短相应轨迹段的时间，再重新求解。</p>
+<p>需要注意，仓库文档明确指出这里的方形区域不构成严格意义上的安全走廊：区域之间不一定相接，也不能从数学上保证整条多项式轨迹无碰撞。因此必须保留轨迹采样碰撞检查，并为迭代失败或超时准备拒绝执行和重新规划逻辑。</p>
+<h3 id="_4">数值稳定性</h3>
+<p>每段轨迹可以使用 <code>[0, 1]</code> 的局部归一化时间表达，以减小不同轨迹段时长和高次幂造成的矩阵数量级差异。使用者仍应检查求解状态、轨迹系数是否为有限数，以及速度、加速度和碰撞约束是否实际满足。</p>
+<h2 id="_5">示例参数与团队自测性能</h2>
+<p>仓库示例使用 0.05 m 栅格、4 层掩码、5 阶多项式、Minimum Jerk、0.1 s 采样间隔、6 次后端迭代、3.0 m/s 最大速度、1.0 m/s² 最大加速度和 OSQP 方形走廊后端。</p>
+<p>团队在 AMD 7735H（4.2 GHz）、Ubuntu 22.04、GCC 11.2.0 环境中，每张地图执行 1000 次测试，README 报告的数据如下：</p>
+<table>
+<thead>
+<tr>
+<th>地图</th>
+<th>阶段</th>
+<th style="text-align: right;">平均时间</th>
+<th style="text-align: right;">最大时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RMUC 2024</td>
+<td>A*</td>
+<td style="text-align: right;">7627.44 μs</td>
+<td style="text-align: right;">21806 μs</td>
+</tr>
+<tr>
+<td>RMUC 2024</td>
+<td>Minimum Snap</td>
+<td style="text-align: right;">1255.42 μs</td>
+<td style="text-align: right;">14493.1 μs</td>
+</tr>
+<tr>
+<td>RMUC 2024</td>
+<td>生成代价地图</td>
+<td style="text-align: right;">1604.13 μs</td>
+<td style="text-align: right;">6870.61 μs</td>
+</tr>
+<tr>
+<td>RMUC 2024</td>
+<td>化简路径</td>
+<td style="text-align: right;">34.0191 μs</td>
+<td style="text-align: right;">242.632 μs</td>
+</tr>
+<tr>
+<td>RMUC 2026</td>
+<td>A*</td>
+<td style="text-align: right;">5446.45 μs</td>
+<td style="text-align: right;">14761.2 μs</td>
+</tr>
+<tr>
+<td>RMUC 2026</td>
+<td>Minimum Snap</td>
+<td style="text-align: right;">3901.7 μs</td>
+<td style="text-align: right;">126698 μs</td>
+</tr>
+<tr>
+<td>RMUC 2026</td>
+<td>生成代价地图</td>
+<td style="text-align: right;">1588.52 μs</td>
+<td style="text-align: right;">3613.08 μs</td>
+</tr>
+<tr>
+<td>RMUC 2026</td>
+<td>化简路径</td>
+<td style="text-align: right;">26.0119 μs</td>
+<td style="text-align: right;">117.99 μs</td>
+</tr>
+</tbody>
+</table>
+<p>以上是开源团队在指定地图、参数和硬件上的自测结果，不是独立基准测试。尤其 RMUC 2026 的后端最大耗时明显高于平均值，实时接入时不应只依据平均时间设定控制周期，还需要测试尾延迟并设置规划超时。</p>
+<h2 id="_6">环境与运行示例</h2>
+<p>核心依赖为支持 C++11 的编译器、Eigen3、OSQP 和 OsqpEigen。仓库通过 Git 子模块固定 OSQP 与 OsqpEigen 版本，配置脚本会初始化并安装到 <code>3rd/install</code>：</p>
+<pre><code class="language-bash">git clone --recurse-submodules \
+  https://github.com/T-DT-Algorithm-2026/tdt-nav-kit.git
+cd tdt-nav-kit
+./scripts/setup.sh
+</code></pre>
+<p><code>main.cpp</code> 用于演示从读取地图到显示前端路径、方形区域和最终轨迹的流程。OpenCV 只服务于该示例的图像读取和可视化，不是核心算法组件的必要依赖。</p>
+<pre><code class="language-bash">mkdir build &amp;&amp; cd build
+cmake ..
+make -j4
+./play
+</code></pre>
+<p>建议按以下顺序阅读仓库文档：</p>
+<ul>
+<li><a href="https://github.com/T-DT-Algorithm-2026/tdt-nav-kit/blob/main/doc/Astar.md">Astar.md</a>：普通 A<em>、Kinodynamic A</em> 与混合搜索思路；</li>
+<li><a href="https://github.com/T-DT-Algorithm-2026/tdt-nav-kit/blob/main/doc/MinimumSnap.md">MinimumSnap.md</a>：多项式优化、方形约束、迭代碰撞处理和时间归一化；</li>
+<li><a href="https://github.com/T-DT-Algorithm-2026/tdt-nav-kit/blob/main/doc/Usage.md">Usage.md</a>：类、参数、输入输出和调用示例。</li>
+</ul>
+<h2 id="_7">集成检查清单</h2>
+<ol>
+<li>统一二维地图中“可行/障碍”的像素语义、地图分辨率、原点和坐标轴方向。</li>
+<li>对真实坐标与栅格坐标的往返转换做边界测试，确保起终点不会越界或落入障碍。</li>
+<li>将定位系统输出的当前速度正确传给规划器；不要把默认初速度 <code>0.0 m/s</code> 误认为强制静止起步。</li>
+<li>根据机器人半径和定位误差对障碍物膨胀，不能把质点轨迹直接视为整车无碰撞。</li>
+<li>对化简路径、走廊和最终采样轨迹分别执行碰撞检查。</li>
+<li>检查求解失败、无路径、超时和地图更新时的返回状态，并在上层实现安全停车或重新规划。</li>
+<li>在目标硬件上重新统计平均耗时、P95/P99 和最大耗时，再决定重规划频率。</li>
+<li>将输出轨迹的时间、位置、速度和加速度约定与下游跟踪器对齐。</li>
+</ol>
+<h2 id="_8">许可证与第三方依赖</h2>
+<ul>
+<li>项目采用 <a href="https://github.com/T-DT-Algorithm-2026/tdt-nav-kit/blob/main/LICENCE">MIT License</a>，版权所有者为 SnifferCaptain 和 Nathongc。</li>
+<li>仓库列出的 OSQP 为 Apache-2.0，OsqpEigen 为 BSD-3-Clause；Eigen3 和可选的 OpenCV 应以实际安装版本附带的许可证为准。</li>
+<li>复制、修改或再发布时，应同时保留项目 MIT 许可证文本，并遵守所有第三方依赖的许可证与声明要求。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/system/nav2-and-control-evidence/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>源码审查证据 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u6e90\u7801\u5ba1\u67e5\u8bc1\u636e";
+        var mkdocs_page_input_path = "navigation/system/nav2-and-control-evidence.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/system/nav2-and-control-evidence/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">源码审查证据</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 真实入口与启动边界</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-nav2">2. Nav2 插件和行为树</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-tf">3. 速度、TF、手柄与串口边界</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#c">仓库内 C++ 串口包提供的接口</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#twist">停机不能只看上游 Twist</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4">4. 待核实风险与文档差异</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 更新本页时留下的记录</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+      <li class="breadcrumb-item active">源码审查证据</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="navigation-2027nav2">Navigation-2027：Nav2 与控制接口证据</h1>
+<p>审查对象：<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/tree/183a4109b0de2030bb8970a54654937c8b039ba9">Navigation-2027 固定提交</a>，SHA <code>183a4109b0de2030bb8970a54654937c8b039ba9</code>。审查日期：2026-09-14。本页依据完整浅克隆中的源码、launch、参数和 XML，只读审查；没有编译 ROS 工作区、启动 ROS 节点、连接串口或做实车测试。未发现仓库内及本地工作区祖先目录中的 <code>AGENTS.md</code>。</p>
+<p>本文使用三种结论：<strong>代码事实</strong>表示文件中可直接定位；<strong>启动配置</strong>表示给定 launch 的默认分支会尝试加载，不能等同于已经成功运行；<strong>待验证</strong>表示源码推断或缺少部署、硬件证据。配套学习页：<a href="../../nav2/">真实 Nav2 与控制链</a>。</p>
+<h2 id="1">1. 真实入口与启动边界</h2>
+<table>
+<thead>
+<tr>
+<th>证据</th>
+<th>可确认内容</th>
+<th>边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py#L50-L134">实车入口 L50–134</a></td>
+<td>默认 namespace=<code>red_standard_robot1</code>、slam=False、world=<code>rmul_2024</code>、use_sim_time=False、use_composition=True、use_respawn=False、use_robot_state_pub=False、use_rviz=True；默认参数来自 <code>config/reality/nav2_params.yaml</code></td>
+<td>根 README 的命令显式覆盖了部分参数，必须记录实际启动命令</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py#L146-L199">入口节点与 include L146–199</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py#L218-L223">添加动作 L218–223</a></td>
+<td>启动 Livox、bringup、joy_teleop；robot_state_publisher 与 RViz 分别受条件控制</td>
+<td>入口没有启动 <code>rm_serial_driver</code>、根目录 <code>serial_node.py</code>、<code>standard_robot_pp_ros2</code> 或比赛决策节点</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/bringup_launch.py#L54-L80">bringup L54–80</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/bringup_launch.py#L140-L197">L140–197</a></td>
+<td>替换 <code>&lt;robot_namespace&gt;</code>，重写 <code>use_sim_time</code>，为子图添加 namespace，并将 <code>/tf</code>、<code>/tf_static</code> 映射到相对话题；slam=True/False 分别包含 SLAM/定位，navigation 始终包含</td>
+<td>YAML 中 local/global costmap 的原始 <code>use_sim_time: true</code> 不代表实车有效参数为 true，必须检查 launch 重写结果</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/localization_launch.py#L119-L199">定位 launch L119–199</a></td>
+<td>定位分支启动 Point-LIO、map_server、small_gicp_relocalization；map_server 与 small_gicp 支持组件方式</td>
+<td>本导航启动链没有加载 AMCL；传感器与重定位细节见系统其他页面</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/slam_launch.py#L111-L180">SLAM launch L111–180</a></td>
+<td>SLAM 分支把 terrain_map 转成 obstacle_scan，启动 slam_toolbox 与 Point-LIO，发布静态 map→odom</td>
+<td><code>slam=True</code> 并不会关闭 navigation；不能直接把建图模式理解成“不会输出底盘指令”</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L42-L50">navigation L42–50</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L253-L342">L253–342</a></td>
+<td>默认组件分支加载 loam_interface、sensor_scan_generation、terrain_analysis、fake_vel_transform，以及 controller/smoother/planner/behavior/bt_navigator/waypoint_follower/velocity_smoother 和生命周期管理器</td>
+<td>生命周期列表只含七个 Nav2 server；节点存在不等于这些 server 已 active</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-nav2">2. Nav2 插件和行为树</h2>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>实际选择与含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L315-L366">controller 参数 L315–366</a></td>
+<td><code>FollowPath</code>=<code>pb_omni_pid_pursuit_controller::OmniPidPursuitController</code>，20 Hz，平移 PID=3.0/0.1/0.3，<code>enable_rotation: false</code>，<code>v_linear_max: 0.5</code>。SimpleProgressChecker：0.5 m/10 s；SimpleGoalChecker：xy=0.15 m，yaw=6.28 rad。不能据此宣称严格目标朝向验收</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp#L219-L286">控制器实现 L219–286</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp#L164-L169">局部路径发布 L164–169</a></td>
+<td>变换全局路径、选前视点、PID、曲率和接近目标减速，输出 x/y；rotation 关闭时 angular.z=0；发布 <code>local_plan</code>、<code>lookahead_point</code>。<code>setSpeedLimit</code> 只打印“未实现”</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L468-L503">planner 参数 L468–503</a></td>
+<td><code>GridBased</code>=<code>nav2_smac_planner/SmacPlannerHybrid</code>，搜索模型 DUBIN，最小转弯半径0.05 m，<code>smooth_path: True</code>。教学不能直接把默认算法写成 NavFn、DWB、TEB、MPPI 或标准 RPP</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L368-L451">local/global costmap L368–451</a></td>
+<td>两者均为 StaticLayer + 自定义 IntensityObstacleLayer + InflationLayer，输入 <code>&lt;robot_namespace&gt;/terrain_map</code>，PointCloud2，intensity 范围0.1–2.0；分辨率0.05 m，robot_radius=0.2 m，膨胀半径0.7 m。local 为 odom 下5×5 m滚动图；global 为 map 下全局图</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/layers/intensity_obstacle_layer.cpp#L377-L430">IntensityObstacleLayer L377–430</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/costmap_plugins.xml#L1-L10">插件注册 XML L1–10</a></td>
+<td>标记障碍时读取 PointCloud2 的 <code>intensity</code> 字段并过滤；仓库也注册了 IntensityVoxelLayer，但 reality 的 plugins 列表没有选它。不能用“源码存在”判断实际启用</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L255-L313">BT 参数 L255–313</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml#L5-L38">单点树 L5–38</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml#L5-L43">多点树 L5–43</a></td>
+<td>参数指向仓库这两份 XML。单点树以3 Hz限频重规划，ComputePathToPose 用 GridBased，FollowPath 用 FollowPath；失败清 costmap，外层恢复含清图与 BackUp。多点树增加 RemovePassedGoals（0.7 m）和 ComputePathThroughPoses</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L515-L545">行为参数 L515–545</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/behaviors/back_up_free_space.cpp#L54-L155">BackUpFreeSpace L54–155</a></td>
+<td>backup 实现是自定义 BackUpFreeSpace：查询 <code>global_costmap/get_costmap</code>，搜索自由方向，输出x/y。XML的 BackUp 请求距离1.0 m、速度1.0 m/s；它不保证朝车后方退，也不受 FollowPath 的0.5 m/s参数约束</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L505-L571">smoother/waypoint/velocity 参数 L505–571</a></td>
+<td>配置并启动 SimpleSmoother、WaitAtWaypoint、OPEN_LOOP VelocitySmoother（20 Hz，平移上限2.5 m/s，timeout=1.0 s）</td>
+</tr>
+</tbody>
+</table>
+<p>行为树实际没有 <code>SmoothPath</code>、<code>Spin</code>、<code>Wait</code>、<code>AssistedTeleop</code> 节点。库可加载、server 可启动、参数有配置、BT 实际调用是四件不同的事。规划器内部 <code>smooth_path</code> 与独立 <code>smoother_server</code> 也要区分。</p>
+<h2 id="3-tf">3. 速度、TF、手柄与串口边界</h2>
+<p>在实车入口默认 namespace 和组件分支下，以下相对话题解析到 <code>/red_standard_robot1/…</code>。frame 名仍为 <code>map</code>、<code>odom</code>、<code>gimbal_yaw</code>、<code>gimbal_yaw_fake</code>，不能机械地给 frame 字符串加 namespace。</p>
+<table>
+<thead>
+<tr>
+<th>发送者 → 接收者</th>
+<th>话题/接口与消息</th>
+<th>精确证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>controller_server → velocity_smoother</td>
+<td><code>cmd_vel_controller</code>；Humble 此链使用 <code>geometry_msgs/msg/Twist</code>。控制器 C++ API 的返回值为 TwistStamped，不代表 ROS 输出话题也为 TwistStamped</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L281-L328">组件 remap L281–328</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp#L219-L286">控制器接口 L219–277</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L31-L77">fake 输入订阅 L51–73</a></td>
+</tr>
+<tr>
+<td>velocity_smoother → fake_vel_transform</td>
+<td><code>cmd_vel_nav2_result</code>；Twist</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L281-L328">remap L321–328</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L137-L146">参数 L137–146</a></td>
+</tr>
+<tr>
+<td>behavior_server → fake_vel_transform</td>
+<td><code>cmd_vel_nav2_result</code>；Twist；默认组件分支绕过 velocity_smoother</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L281-L328">组件 behavior remap L300–307</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/behaviors/back_up_free_space.cpp#L54-L155">行为发布 L140–155</a></td>
+</tr>
+<tr>
+<td>fake_vel_transform → 外部底盘接口</td>
+<td><code>cmd_vel</code>；Twist；本仓库实车入口没有为该输出启动串口接收节点</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L137-L146">fake 参数</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L115-L154">发布与旋转公式 L115–154</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py#L218-L223">入口 actions</a></td>
+</tr>
+<tr>
+<td>odometry/local_plan/cmd_spin → fake_vel_transform</td>
+<td><code>odometry</code>：nav_msgs/msg/Odometry；<code>local_plan</code>：nav_msgs/msg/Path；<code>cmd_spin</code>：example_interfaces/msg/Float32</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L31-L77">订阅/近似同步 L31–77</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/include/fake_vel_transform/fake_vel_transform.hpp#L22-L58">类型定义 L22–58</a></td>
+</tr>
+<tr>
+<td>fake_vel_transform → TF</td>
+<td>50 Hz发布 <code>gimbal_yaw</code>→<code>gimbal_yaw_fake</code>，相对 yaw=-里程计 yaw，无平移</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L31-L77">定时器 L75–77</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L115-L154">TF L135–144</a></td>
+</tr>
+<tr>
+<td>joy_node → pb_teleop_twist_joy_node</td>
+<td><code>joy</code>：sensor_msgs/msg/Joy；默认 <code>auto_control</code>，手柄平移转成 NavigateToPose action；manual_control 才直接发送平移 Twist</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/joy_teleop_launch.py#L82-L111">手柄 launch L82–111</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L573-L594">配置 L573–594</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp#L61-L74">代码 L61–74</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp#L160-L181">模式分支 L160–181</a></td>
+</tr>
+<tr>
+<td>pb_teleop_twist_joy_node → Nav2/底盘接口</td>
+<td><code>navigate_to_pose</code>：nav2_msgs/action/NavigateToPose；还可发 <code>cmd_vel</code>、<code>cmd_gimbal_joint</code>：sensor_msgs/msg/JointState、<code>cmd_shoot</code>：example_interfaces/msg/UInt8</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp#L61-L74">接口创建</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp#L141-L158">松开按钮 L141–158</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp#L216-L264">目标/取消/零输出 L216–264</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="c">仓库内 C++ 串口包提供的接口</h3>
+<p>以下只是 <code>standard_robot_pp_ros2-main</code> 的<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp#L75-L115">源码接口</a>，不是默认导航入口已加载的节点。它自身launch的<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/launch/standard_robot_pp_ros2.launch.py#L74-L99">namespace默认空，source_list为serial/gimbal_joint_state</a>；若直接用默认值运行，<code>cmd_vel</code>位于根命名空间，不能自动接到导航默认的 <code>/red_standard_robot1/cmd_vel</code>。</p>
+<table>
+<thead>
+<tr>
+<th>方向</th>
+<th>相对话题</th>
+<th>消息类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接收控制</td>
+<td><code>cmd_vel</code> / <code>cmd_gimbal_joint</code> / <code>cmd_shoot</code></td>
+<td>geometry_msgs/msg/Twist / sensor_msgs/msg/JointState / example_interfaces/msg/UInt8</td>
+</tr>
+<tr>
+<td>发布运动状态</td>
+<td><code>serial/imu</code> / <code>serial/gimbal_joint_state</code> / <code>serial/robot_motion</code></td>
+<td>sensor_msgs/msg/Imu / sensor_msgs/msg/JointState / geometry_msgs/msg/Twist</td>
+</tr>
+<tr>
+<td>发布机器人状态</td>
+<td><code>serial/robot_state_info</code></td>
+<td>pb_rm_interfaces/msg/RobotStateInfo</td>
+</tr>
+<tr>
+<td>发布裁判信息</td>
+<td><code>referee/event_data</code> / <code>referee/all_robot_hp</code> / <code>referee/game_status</code></td>
+<td>pb_rm_interfaces/msg/EventData / GameRobotHP / GameStatus</td>
+</tr>
+<tr>
+<td>发布裁判信息</td>
+<td><code>referee/ground_robot_position</code> / <code>referee/rfid_status</code> / <code>referee/robot_status</code></td>
+<td>pb_rm_interfaces/msg/GroundRobotPosition / RfidStatus / RobotStatus</td>
+</tr>
+</tbody>
+</table>
+<p>这些发布器表明可提供的策略输入；当前审查没有找到默认导航launch中消费这些裁判消息并生成比赛策略的节点，且本克隆缺少对应 <code>pb_rm_interfaces</code> 消息包，字段与部署侧契约需要补齐。</p>
+<h3 id="twist">停机不能只看上游 Twist</h3>
+<p>设里程计 yaw 为 θ，fake_vel_transform 计算：</p>
+<pre><code class="language-text">vx_out =  vx_in cosθ + vy_in sinθ
+vy_out = -vx_in sinθ + vy_in cosθ
+wz_out =  wz_in + spin_speed
+</code></pre>
+<p><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L137-L146">reality 参数 L146</a> 的 <code>init_spin_speed=0.5</code>，而<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L115-L154">转换函数 L147–154</a>总是叠加 spin。因此在未收到改变 spin 的消息时，<strong>输入全零 Twist 会输出 angular.z=0.5</strong>；这只是源码可确定的 ROS 输出规则，不是本轮观测到的车体运动。<code>cmd_spin=0</code> 只更新变量，回调本身也不立即发布停车消息（<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L80-L132">L80–83</a>）。</p>
+<h2 id="4">4. 待核实风险与文档差异</h2>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>源码事实 / 文档差异</th>
+<th>待验证内容与训练要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R1</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/README.md#L35-L43">根 README L35–43</a>要求运行 <code>rm_serial_driver/serial_driver.launch.py</code>；全仓库路径与 package.xml 检索未发现该包。现有 C++ 串口包名是 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/package.xml#L3-L30">standard_robot_pp_ros2</a>，位于 <code>ros_ws</code> 之外，并依赖未在此克隆发现的 <code>pb_rm_interfaces</code></td>
+<td>在部署机只读检查 <code>ros2 pkg prefix rm_serial_driver</code>、实际 launch 和 overlay；补齐自瞄端仓库、提交和协议。不能声称克隆本仓库就拥有完整串口链</td>
+</tr>
+<tr>
+<td>R2</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/serial_node.py#L34-L83">serial_node.py L34–56</a>用 /dev/ttyUSB0、921600，订阅绝对 <code>/red_standard_robot1/cmd_vel</code>，发布绝对 <code>/serial/gimbal_joint_state</code>（Float32MultiArray）。<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp#L75-L115">C++串口 L75–113</a>发布同用途相对话题（JointState），<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/config/standard_robot_pp_ros2.yaml#L1-L7">其配置</a>为 /dev/ttyACM0、115200</td>
+<td>两份实现不是已证明等价的替代件；需核对包格式、CRC、字段、单位、坐标系、namespace。root Python接收 L66–83 只检查帧头，未校验接收CRC；具体协议正确性未验证</td>
+</tr>
+<tr>
+<td>R3</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L80-L132">fake 回调 L93–132</a>：零消息直接转换发布，但不覆盖/清空 <code>latest_cmd_vel_</code>；同步回调复用已有缓存，未做缓存年龄判断</td>
+<td>源码存在“非零缓存→零输入→后续同步再次发旧平移”的路径，是否出现及持续多久取决于回调时序。必须在不连接底盘的独立 ROS 域复现；不能把0.5 s <code>CONTROLLER_TIMEOUT</code>理解成输出看门狗，它检测的是 local_plan 活跃时间</td>
+</tr>
+<tr>
+<td>R4</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/include/fake_vel_transform/fake_vel_transform.hpp#L73-L78">fake 成员 L73–78</a>的 <code>current_robot_base_angle_</code> 没有显式初值；<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L31-L77">构造与50 Hz定时器</a>在首次 odometry 到来前就可发布 TF；回调使用 <code>rclcpp::Clock()</code>，TF时间戳使用节点时钟</td>
+<td>首包前TF值以及 use_sim_time 回放行为需单独检查；本轮没有证明每次必现异常</td>
+</tr>
+<tr>
+<td>R5</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L191-L212">非组件分支 L191–212</a>没有给 behavior_server remap cmd_vel，却给 bt_navigator 放了该 remap；<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L281-L328">组件分支 L300–313</a>则给 behavior_server 正确配置输出到 <code>cmd_vel_nav2_result</code></td>
+<td><code>use_composition=False</code> 的恢复输出链与默认分支不等价，可能绕过 fake坐标变换并与最终cmd_vel并发。切换模式做实验必须比对 publisher 与实际消息</td>
+</tr>
+<tr>
+<td>R6</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp#L633-L662">C++串口 L633–662</a>每5 ms发送缓存，cmdVelCallback只更新速度字段，所读发送路径无cmd_vel年龄检查；<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/serial_node.py#L90-L117">Python发送 L90–117</a>在收到Twist时才写串口</td>
+<td>上游停止发布不等于底盘收到零指令。实际部署用哪份驱动、下位机看门狗、断线与断电停车策略均未知；验收必须覆盖最终cmd_vel、串口发送和实际车体停止</td>
+</tr>
+<tr>
+<td>R7</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp#L216-L264">手柄 L251–264</a>在auto模式取消导航并向最终cmd_vel发一次零命令；<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L80-L132">fake发布路径</a>也是最终cmd_vel的发布者；启动链未见速度仲裁器</td>
+<td>无法从单条零消息证明停车持续成立。检查publisher数量、取消响应、fake后续输出和底盘超时；“松开L1”不能在文档里直接写成已验证急停</td>
+</tr>
+<tr>
+<td>R8</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp#L219-L286">控制器 L258–275</a>在局部路径采样10点，按<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp#L451-L469">代价值检测 L451–469</a>判断碰撞，遇到某点不在costmap时直接返回false；<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp#L219-L286">setSpeedLimit L282–286</a>未实现</td>
+<td>这是当前碰撞检查的边界，未证明所有姿态/速度下都能安全避障，也不能假定通用速度限制接口生效。规划碰撞、控制输出和制动距离分别考核</td>
+</tr>
+<tr>
+<td>R9</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/README.md#L24-L30">pb_nav2_plugins README L24–30</a>列出BackUpFreeSpace的robot_radius/free_threshold；<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/behaviors/back_up_free_space.cpp#L21-L39">实现 L21–39</a>实际读取global_frame/max_radius/service_name/visualize，无前述两个参数</td>
+<td>以实现和运行时参数为准，不能把README参数表直接当成调参清单。<code>BackUp</code>的实际含义是搜索自由方向移动</td>
+</tr>
+<tr>
+<td>R10</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/nav.py#L15-L20">nav.py L15–20</a>使用未加namespace的action与绝对/odom；<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/nav.py#L64-L71">L64–71</a>创建PoseStamped却传其<code>.pose</code>给<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/nav.py#L29-L36">赋值到goal.pose的函数 L29–36</a>。部署默认图的odometry/action名称不匹配，且有消息类型问题</td>
+<td>属于辅助脚本的静态缺陷，未执行；不能作为新人可直接运行的完整决策样例</td>
+</tr>
+<tr>
+<td>R11</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/nav_run.sh#L3-L10">nav_run.sh L3–10</a>使用全局/goal_pose，第一次<code>ros2 topic pub</code>没有--once；<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/to_home.sh#L3">to_home.sh L3</a>和<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/to_center.sh#L3">to_center.sh L3</a>才是命名空间内单次发布</td>
+<td>nav_run.sh按命令通常持续发布的语义无法正常进入后续sleep/回家；在训练机验证CLI行为。后两脚本也只有硬编码目标，不含状态机、结果处理或比赛决策</td>
+</tr>
+</tbody>
+</table>
+<p>根 README 的“先自瞄、串口、再导航”是<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/README.md#L35-L43">部署要求</a>；嵌套 README 则以<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/README.md#L196">standard_robot_pp_ros2提供关节位姿</a>作为完整系统示例。两者描述的是不同集成前提，当前克隆不能独自说明队伍部署机采用哪条。不要自行补写成已经存在的决策链或串口验证结果。</p>
+<h2 id="5">5. 更新本页时留下的记录</h2>
+<p>下次实测应附：部署仓库SHA、ROS发行版及overlay、完整launch参数、生命周期状态、三个速度话题的publisher/类型/频率、实际TF发布者、串口驱动与固件版本、零命令/取消/消息中断/串口中断的时间序列。每个风险分别记“未验证、复现、未复现的条件、已修复及回归证据”，不要用“导航能跑”替代这些记录。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../nav2/" class="btn btn-neutral float-left" title="Nav2与控制链"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../debug-real/" class="btn btn-neutral float-right" title="Debug、实车与比赛">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../nav2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../debug-real/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

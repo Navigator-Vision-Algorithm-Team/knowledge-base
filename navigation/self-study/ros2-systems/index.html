@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/self-study/ros2-systems/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>ROS2与系统工程 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "ROS2\u4e0e\u7cfb\u7edf\u5de5\u7a0b";
+        var mkdocs_page_input_path = "navigation/self-study/ros2-systems.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/self-study/ros2-systems/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >自学与进阶</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">ROS2与系统工程</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">怎样安排与阅读</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#1-action">1. Action：目标接受、反馈、结果与取消</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-qos">2. QoS：先证明兼容性，再改参数</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-tf">3. TF 与时钟：名字正确仍可能查不到</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-rosbag2">4. rosbag2：构造可重复输入</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-executor-callback-group">5. Executor 与 Callback Group：为什么多线程仍卡住</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6">6. 生命周期与组件：节点存在不等于可执行</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#7-behaviortreecpp-3x-tick-xml">7. BehaviorTree.CPP 3.x：从 tick 走到本队 XML</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#8-gdb-memcheck">8. GDB 与 Memcheck：给崩溃一份可定位的报告</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#9-perf-cpu">9. perf：从 CPU 高到具体函数</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#10-ros-tracing">10. ROS tracing：把回调放到同一时间轴</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">不依赖运动真车的进阶挑战</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#a-action-34">A. Action 取消监测器（额外 3–4 小时）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#b-qos-23">B. QoS 最小复现包（额外 2–3 小时）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#c-tf-34">C. 时钟/TF 诊断档案（额外 3–4 小时）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#d-bt-35">D. BT 离线走读册（额外 3–5 小时）</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#e-46">E. 一页性能报告（额外 4–6 小时）</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+          <li class="breadcrumb-item">自学与进阶</li>
+      <li class="breadcrumb-item active">ROS2与系统工程</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ros-2">ROS 2 系统能力：从会运行到能解释故障</h1>
+<p>本页给对照 <a href="../../ros2-tf/">ROS2/TF 基础训练</a>的新人成套自学材料，补足通信、并发、时间、状态管理和性能诊断。S1–S2 可先读相应单元的官方入门章节；单元完整实验和文末挑战用于巩固或专项选学，不要求把全部网站从头读完。</p>
+<p>学习基线为 Ubuntu / ROS 2 Humble；本队代码固定在 <code>Navigation-2027@183a4109b0de2030bb8970a54654937c8b039ba9</code>。以下命令在独立 Linux 训练环境执行，练习节点使用 <code>/nav_training</code> 或 <code>/training</code>，不加载串口、电机或实车导航入口。</p>
+<h2 id="_1">怎样安排与阅读</h2>
+<table>
+<thead>
+<tr>
+<th>学习顺序</th>
+<th>层级</th>
+<th>建议组合</th>
+<th>完整单元估计投入</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1–S2</td>
+<td>基础对应材料</td>
+<td>1 Action、2 QoS、3 TF/时间、4 bag</td>
+<td>10–14 小时，可与 T1–T3 合并</td>
+</tr>
+<tr>
+<td>S4–S5 前后</td>
+<td>基础概念 + 系统方向核心</td>
+<td>5 Executor、6 生命周期/组件、7 行为树</td>
+<td>完整实验 10–15 小时，按需选做</td>
+</tr>
+<tr>
+<td>能复现问题后</td>
+<td>进阶</td>
+<td>8 GDB/Memcheck、9 perf、10 tracing</td>
+<td>8–13 小时</td>
+</tr>
+</tbody>
+</table>
+<p>学时包含阅读、编译、故障注入和报告；已做过的基础练习可直接提交已有证据，不再叠加同等课时。下文“必学”指现有 T1–T7 对应的知识点，完整实验深度按方向选择；尤其 callback group 死锁、并行调度不作为所有新人基础准入题。专项建议每周额外 2–3 小时，文末挑战另计、任选一个先完成，进阶成果不能代替 T8 实车验收。</p>
+<p>本页入口均可免费公开阅读，无需购买证书。2026-09-14 核验时 <code>docs.ros.org</code> 部分页面触发反爬，因此 ROS 教程优先链接官方 <code>ros2/ros2_documentation</code> 的 <code>humble</code> 分支原文；遇到 <code>literalinclude</code>，按给出的同分支源码链接读代码。</p>
+<p>英文阅读采用四步：先看 Goal/Prerequisites → 对照代码找输入输出 → 精读本页指定小节 → 用中文写五句话解释实验。浏览器翻译只用于正文，保留 <code>callback group</code>、<code>requested/offered</code>、<code>stamp</code>、<code>halt</code>、<code>CANCELED</code> 等术语和报错原文，不翻译代码、包名或参数。</p>
+<p>先记录 <code>ROS_DISTRO</code>、RMW、安装包/overlay 路径及工具版本；命令选项查本机 <code>--help</code>。Humble 分支也会维护更新，网页不等于本机已安装补丁版本；Foxy/Jazzy/Rolling 的签名、参数和默认值不能直接复制。</p>
+<h2 id="1-action">1. Action：目标接受、反馈、结果与取消</h2>
+<p><strong>层级/前置/额外学时：</strong>必学；完成 C++ pub/sub、Service 和基础 Action 作业；3–4 小时。</p>
+<p><strong>主材料：</strong><a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Writing-an-Action-Server-Client/Cpp.rst">Humble C++ Action server/client</a>，精读 Tasks 2「Writing an action server」和 3「Writing an action client」；接口尚未建好时先做 <a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Creating-an-Action.rst">Creating an action</a> 的接口生成步骤。</p>
+<p><strong>代码抓手：</strong>打开同章 <a href="https://raw.githubusercontent.com/ros2/ros2_documentation/humble/source/Tutorials/Intermediate/Writing-an-Action-Server-Client/scripts/client.cpp">client.cpp</a> 与 <a href="https://raw.githubusercontent.com/ros2/ros2_documentation/humble/source/Tutorials/Intermediate/Writing-an-Action-Server-Client/scripts/server.cpp">server.cpp</a>，找 goal response、feedback、result、<code>handle_cancel</code>、<code>is_canceling()</code>、<code>canceled(result)</code>。先跳过 Windows 可见性机制的原理，但保留示例编译所需文件。</p>
+<p><strong>输入与输出：</strong>用 Fibonacci order=20 发长任务；客户端保存 goal handle，在第二次反馈后只发一次异步取消；输出包含目标 UUID、取消请求/响应、最后反馈及最终 result 的日志。</p>
+<p><strong>验收：</strong>成功完成与主动取消各跑一次；取消请求被发送、服务端接受取消、最终 <code>ResultCode::CANCELED</code> 分别有证据。使用 steady clock 统计取消耗时，回调中不阻塞等待 future；关闭客户端不算取消。</p>
+<p><strong>本队映射：</strong>读<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp">手柄目标/取消实现</a>，对照 <a href="../../nav2/">Nav2 速度链</a>说明取消发生在哪一层；Action 成功取消不证明最终 <code>cmd_vel</code> 持续为零，更不证明物理停车。</p>
+<h2 id="2-qos">2. QoS：先证明兼容性，再改参数</h2>
+<p><strong>层级/前置/额外学时：</strong>必学；能写带序号的发布订阅节点；2–3 小时。</p>
+<p><strong>主材料：</strong><a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Concepts/Intermediate/About-Quality-of-Service-Settings.rst">Humble About Quality of Service settings</a>，只先读 QoS policies、QoS profiles、QoS compatibilities 中 reliability/durability 的两张表，再看 QoS events。</p>
+<p><strong>读懂的边界：</strong>发布端 offered 必须满足订阅端 requested；Best Effort 发布与 Reliable 订阅不兼容。先跳过 deadline/liveliness 的细节调参，但知道所有影响兼容性的策略均须满足。</p>
+<p><strong>输入与输出：</strong>用同一消息类型、同一 Topic 的两个小节点，做 reliability 四种组合；启动后确认图中两端存在，再计数 10 秒。每轮输出端点 QoS、发送/接收总数及序号缺口。</p>
+<p><strong>验收：</strong>四格表有预测和实测，不兼容格接收为零时仍能找到端点；兼容格收到消息。Reliable 不是任意负载下零丢失的保证，接收少于发送要继续查启动区间、历史深度和处理能力。</p>
+<p><strong>本队映射：</strong>对照 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp">loam_interface.cpp</a> 的订阅/发布和 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp">fake_vel_transform.cpp</a> 的输入；先查实际 <code>topic info --verbose</code>，不把所有传感器订阅统一改为 Reliable。</p>
+<h2 id="3-tf">3. TF 与时钟：名字正确仍可能查不到</h2>
+<p><strong>层级/前置/额外学时：</strong>必学；完成静态 TF、动态广播与里程计练习；3–4 小时。</p>
+<p><strong>主材料：</strong><a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Tf2/Debugging-Tf2-Problems.rst">Humble Debugging tf2 problems</a>，依次做「Finding the tf2 request」「Checking the frames」「Checking the timestamp」；补读 <a href="https://design.ros2.org/articles/clock_and_time.html">Clock and Time</a> 的 ROS Time、System Time、Steady Time 和时间跳变说明。</p>
+<p><strong>具体读法：</strong>比较 <code>TimePointZero</code> 与指定查询时间；用 <code>tf2_echo</code>、<code>tf2_monitor</code>、<code>view_frames</code> 区分帧不存在与时间外推。先跳过分布式时钟同步算法；ROS 时间设计页帮助理解概念，C++ 签名仍以 Humble 为准。</p>
+<p><strong>输入与输出：</strong>在教学 TF 链中各注入一次错误 frame 和错误时间源；输出异常原文、请求时刻、最新 TF stamp、<code>use_sim_time</code>、<code>/clock</code> 与 TF 图。</p>
+<p><strong>验收：</strong>修 frame 只能解决名字错误，修时钟才能解释另一例；不能靠把所有查询改成最新时刻或增大 tolerance 掩盖根因。重放前重启教学节点，避免旧 TF 缓存干扰结论。</p>
+<p><strong>本队映射：</strong>读 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp">fake_vel_transform.cpp</a> 的 wall timer、<code>rclcpp::Clock()</code> 与 TF stamp，并对照<a href="../../system/nav2-and-control-evidence/">证据页 R4</a>；TF Topic 的 namespace 和 frame ID 是两层命名。</p>
+<h2 id="4-rosbag2">4. rosbag2：构造可重复输入</h2>
+<p><strong>层级/前置/额外学时：</strong>必学；完成单元 2、3 和基础录包练习；2–3 小时。</p>
+<p><strong>主材料：</strong><a href="https://raw.githubusercontent.com/ros2/rosbag2/humble/README.md">rosbag2 Humble README</a> 只读 Recording data、Simulation time、Replaying data、Analyzing data；再读 <a href="https://github.com/ros2/ros2_documentation/blob/humble/source/How-To-Guides/Overriding-QoS-Policies-For-Recording-And-Playback.rst">Overriding QoS Policies</a> 的 YAML 格式与 Example。</p>
+<p><strong>版本提醒：</strong>README 中安装示例仍出现 <code>CHOOSE_ROS_DISTRO=crystal</code>，不要照抄；使用现有 Humble 环境。先跳过 ROS1 bag 插件、压缩、存储调优、合并转换；回放控制服务是否可用查本机包和帮助。</p>
+<p><strong>输入与输出：</strong>录一份含教学序号、动态 TF、静态 TF 的小 bag；写 Topic 白名单、消息类型/数量、录制时钟和回放命令；停止原发布者后，用单一 <code>/clock</code> 源回放。</p>
+<p><strong>验收：</strong>另一名队员能按清单重放并收到数据；迟加入的 TF 观察工具能获得所需静态边。若需要 QoS override，报告修改前后端点证据，只给确有问题的 Topic 配置。</p>
+<p><strong>本队映射：</strong>按 <a href="../../ros2-tf/">ROS2/TF 回放分类</a>区分系统观察与重跑算法；重跑 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp">loam_interface</a> 等链路时避免回放旧输出和重复 TF。<strong>bag 不响应新的速度命令，不能证明闭环跟踪或避障。</strong></p>
+<h2 id="5-executor-callback-group">5. Executor 与 Callback Group：为什么多线程仍卡住</h2>
+<p><strong>层级/前置/额外学时：</strong>系统方向核心，全员了解调度与阻塞概念；会读 C++ lambda、future，完成单元 1；完整实验 3–5 小时。</p>
+<p><strong>主材料：</strong>先读 <a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Concepts/Intermediate/About-Executors.rst">Humble Executors</a> 的 Overview/Types/Callback groups，再做 <a href="https://github.com/ros2/ros2_documentation/blob/humble/source/How-To-Guides/Using-callback-groups.rst">Using Callback Groups</a> 中 Basics、Avoiding deadlocks、Examples 的 C++ 分支。</p>
+<p><strong>只抓核心：</strong>默认互斥组、分组、future 完成回调与 executor 线程之间的关系；示例 C++ 用等待 future 模拟同步调用。先跳过自定义 executor、WaitSet 和实时调度改造。</p>
+<p><strong>输入与输出：</strong>运行教材的服务/定时器案例，比较「同一互斥组」「两个互斥组」和「异步返回」；每轮保留 15 秒日志，标注请求、服务端响应、客户端完成回调的时刻。</p>
+<p><strong>验收：</strong>能解释服务端已响应而客户端等不到的原因；两个互斥组也需要有能力并行调度的 executor。保留 callback group 的成员引用，说明共享可变数据如何避免竞争；仅增加线程数不算修复证据。</p>
+<p><strong>本队映射：</strong>检查 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp">fake_vel_transform</a> 的订阅、同步回调和定时器；本单元只建立诊断方法，不凭源码有多个回调就声称本队节点存在死锁。</p>
+<h2 id="6">6. 生命周期与组件：节点存在不等于可执行</h2>
+<p><strong>层级/前置/额外学时：</strong>必学概念；了解单元 5 的调度与阻塞概念，读过 launch 与 namespace；完整实验 3–4 小时，不要求先完成并发专项实验。</p>
+<p><strong>主材料：</strong><a href="https://raw.githubusercontent.com/ros2/demos/humble/lifecycle/README.rst">Humble lifecycle demo</a> 的 Basic Concept、Run the demo、CLI；<a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Composition.rst">Composition</a> 的 Discover available components、运行时 pub/sub、Composition using launch actions、namespace/remap。</p>
+<p><strong>先跳过：</strong>直接调用底层生命周期服务、dlopen 手工加载和自定义容器。旧示例的服务类型缩写不应照抄；优先用 <code>ros2 lifecycle get/list/set</code> 查询教学节点。</p>
+<p><strong>输入与输出：</strong>仅用 lifecycle talker/listener，在 configure→activate→deactivate 前后各观察 5 秒；另加载官方 Talker/Listener 组件，输出节点列表、容器列表与进程 PID 的对应表。</p>
+<p><strong>验收：</strong>报告至少三个状态与实际发布行为；讲清节点、组件、进程、生命周期状态分别是什么。修改生命周期只在教学节点上做，不为排错而批量激活真实 Nav2 server。</p>
+<p><strong>本队映射：</strong>逐项标注 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py">navigation_launch.py</a> 的 lifecycle node 名单、ComposableNode 与 remap；对照<a href="../../system/nav2-and-control-evidence/">证据页 R5</a>指出两种 composition 分支的恢复速度输出差异。</p>
+<h2 id="7-behaviortreecpp-3x-tick-xml">7. BehaviorTree.CPP 3.x：从 tick 走到本队 XML</h2>
+<p><strong>层级/前置/额外学时：</strong>必学；完成 Action、生命周期，能阅读 XML；4–6 小时。</p>
+<p><strong>主材料：</strong><a href="https://www.behaviortree.dev/docs/3.8/tutorial-basics/tutorial_04_sequence/">官方 3.8 Reactive and Asynchronous behaviors</a> 的 StatefulActionNode、Sequence/ReactiveSequence 对比；从 <a href="https://raw.githubusercontent.com/BehaviorTree/BehaviorTree.CPP/3.8.6/examples/t01_build_your_first_tree.cpp">3.8.6 first-tree 示例</a> 学注册 ID、创建树和 tick。先跳过 Groot、脚本语言和 BT4 新特性。</p>
+<p><strong>版本边界：</strong>本队两份 XML 标注 <code>BTCPP_format="3"</code>；<a href="https://raw.githubusercontent.com/ros-navigation/navigation2/humble/nav2_behavior_tree/package.xml">Nav2 humble package.xml</a> 依赖 <code>behaviortree_cpp_v3</code>。3.8.6 示例用于 v3 学习，不宣称部署机恰好安装 3.8.6；编译前查实际版本，不能只把 BT4 头文件名改一下。</p>
+<p><strong>必读补充：</strong>Nav2 的 <a href="https://raw.githubusercontent.com/ros-navigation/navigation2/humble/nav2_behavior_tree/plugins/control/recovery_node.cpp">RecoveryNode::tick/halt</a>、<a href="https://raw.githubusercontent.com/ros-navigation/navigation2/humble/nav2_behavior_tree/plugins/control/pipeline_sequence.cpp">PipelineSequence::tick/halt</a>，这两个控制节点不能用普通 Sequence 语义代替。<code>RUNNING</code> 与 <code>halt()</code> 要能逐步解释。</p>
+<p><strong>输入与输出：</strong>对<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml">单点树</a>与<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml">多点树</a>各画一张控制流图；整理 XML ID→插件/服务器→输入输出表；用给定 SUCCESS/FAILURE/RUNNING 序列逐 tick 记录路径。</p>
+<p><strong>验收：</strong>至少解释一次正常跟踪、一次规划失败清图重试、一次恢复失败；把 RateController 的 3 Hz 与根 tick 分开。<code>BackUp</code> 对应本队自由方向恢复，离线走读不能证明恢复时车体运动正确。</p>
+<h2 id="8-gdb-memcheck">8. GDB 与 Memcheck：给崩溃一份可定位的报告</h2>
+<p><strong>层级/前置/额外学时：</strong>进阶；会用 CMake、指针、栈与堆；3–4 小时。</p>
+<p><strong>主材料：</strong><a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Backtrace.html">GDB Backtraces</a> 中 <code>bt full</code>、多线程 backtrace；<a href="https://valgrind.org/docs/manual/quick-start.html">Valgrind Quick Start</a> 的 Preparing、Running、Interpreting output。先跳过 GDB Python 扩展和 Valgrind 内部实现。</p>
+<p><strong>输入与输出：</strong>写一个只在训练目录运行的 C++ 小程序，用 <code>vector.at()</code> 越界制造未捕获异常，再用带 <code>-g</code> 的构建取栈；另跑 Valgrind 官方的小型越界/泄漏例子，修复并保存前后报告。</p>
+<p><strong>验收：</strong>崩溃报告含可执行文件、构建选项、输入、异常与第一处自己的源码位置；Memcheck 报告区分 invalid write、definitely lost 与 still reachable，不能把内存占用高直接叫泄漏。</p>
+<p><strong>本队映射：</strong>参照 <a href="../../system/nav2-and-control-evidence/">fake 节点成员与输入</a>列出初始化检查点，但不在生产代码制造故障。系统工具手册的 current 不是 ROS API 版本；以本机 <code>gdb --version</code>、<code>valgrind --version</code> 核对选项。</p>
+<h2 id="9-perf-cpu">9. perf：从 CPU 高到具体函数</h2>
+<p><strong>层级/前置/额外学时：</strong>进阶；完成单元 5、8，已有稳定可重复工作负载；2–4 小时。</p>
+<p><strong>主材料：</strong><a href="https://www.brendangregg.com/perf.html">Brendan Gregg 作者站 Linux perf Examples</a> 的 4.1 Prerequisites、4.2 Symbols、6.1 Event Counting、6.2 Timed Profiling；先跳过硬件 raw counters、内核探针和整本性能书。</p>
+<p><strong>输入与输出：</strong>固定同一教学节点、输入、编译优化级别和运行时长，用 <code>perf stat</code> 记录计数，用 <code>perf record</code>/<code>perf report</code> 找 CPU 样本最多的函数；保存原始数据、文本报告和版本。</p>
+<p><strong>验收：</strong>能从样本回到源码，并报告前三个热点与各自占比；不同工具下的运行时间分开统计。CPU 采样热点不等于端到端时延，更不能从函数宽度直接推断回调的 p99。</p>
+<p><strong>本队映射：</strong>候选对象是 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp">fake_vel_transform</a> 的合成输入实验，或 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp">loam_interface</a> 的固定回放；尚未测量时不得写“某函数是本队瓶颈”。perf、内核和权限需匹配，虚拟机/WSL 缺少某事件时记录限制，换可用事件。</p>
+<h2 id="10-ros-tracing">10. ROS tracing：把回调放到同一时间轴</h2>
+<p><strong>层级/前置/额外学时：</strong>进阶；完成单元 5、9，能区分回调耗时和排队等待；3–5 小时。</p>
+<p><strong>主材料：</strong><a href="https://raw.githubusercontent.com/ros2/ros2_tracing/humble/README.md">ros2_tracing Humble README</a> 的 Building、Tracing、Trace command、Launch file trace action；先跳过 kernel tracing、实时内核调优与论文中的全部性能数字。</p>
+<p><strong>版本边界：</strong>此分支说明 Linux/LTTng 支持，并有构建时关闭插桩的情况；先执行 <code>ros2 run tracetools status</code>、<code>ros2 trace --help</code>。README 的历史构建说明不是要求重编整套部署环境，缺能力时仅在独立训练 overlay 解决。</p>
+<p><strong>输入与输出：</strong>用单元 5 的教学节点，在节点启动前开始 trace，记录初始化与 callback start/end；采集至少 100 个完整回调，导出 callback 标识、线程、开始/结束时间与 duration 表。</p>
+<p><strong>验收：</strong>按同一线程/回调正确配对，报告丢失或未配对事件；给出 p50/p95/p99 与样本数，展示一段慢回调阻塞其他工作或被并行调度的时间轴。未采集到初始化映射时不能随意给地址命名。</p>
+<p><strong>本队映射：</strong>将相同方法用于 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py">navigation_launch.py</a> 的组件容器时，先区分进程与组件，再关联 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp">fake_vel_transform</a> 的回调；只有合成输入验证时，报告名称必须写明“训练节点实验”。</p>
+<h2 id="_2">不依赖运动真车的进阶挑战</h2>
+<p>所有挑战均在无底盘连接的独立训练机与组内分配的独立 ROS domain 完成；文中时间/样本要求是练习验收条件，不是整车安全指标。输入、脚本、环境和结果一起交付，失败日志也属于结果。</p>
+<h3 id="a-action-34">A. Action 取消监测器（额外 3–4 小时）</h3>
+<p>基于单元 1 保存目标 UUID，为接受、反馈、发起取消、取消响应、最终结果输出一条条 CSV 事件；取消响应核对对应 goal，不能只有一个“cancel sent”字符串。</p>
+<p>连续做 10 次第二次反馈后取消，另做 2 次自然完成和 2 次服务端拒绝目标的受控变体。提交代码、CSV、状态转换图和取消请求到最终结果的时间统计；最终终态缺失必须列为失败，不能预填 CANCELED。</p>
+<p>验收还需解释取消接受后可能仍有在途反馈，以及为何该工具只能证明 Action 契约；用本队<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp">手柄取消代码</a>补一段“还需观察哪些下游输出”。</p>
+<h3 id="b-qos-23">B. QoS 最小复现包（额外 2–3 小时）</h3>
+<p>把单元 2 的四格实验做成参数化 launch，启动后先确认端点发现，再发送 100 个带序号消息；每次运行保存 YAML、端点信息、计数、RMW 与日志。</p>
+<p>再做迟加入订阅者实验：Transient Local 发布者保活，先发布一条数据后停止继续发布，稍后启动两种 durability 的订阅者。提交“历史消息/后续消息”分开的结果表，不能靠持续发消息掩盖历史数据是否收到。</p>
+<p>验收由另一名队员只改一行可靠性配置重现“有 Topic 无数据”，再恢复；同时说明这不是数据格式错误，也不是网络性能测试。</p>
+<h3 id="c-tf-34">C. 时钟/TF 诊断档案（额外 3–4 小时）</h3>
+<p>同一教学 bag 分别做全节点正确仿真时间、一个查询节点误用系统时间、停止动态 TF 后继续查询三组实验；每组使用全新节点，保留完全相同的 Topic 白名单。</p>
+<p>提交 TF 图、查询时间与最新 TF stamp 的对照表、异常原文、每节点 <code>use_sim_time</code> 和 <code>/clock</code> 来源。至少取得两种不同根因的失败；写清查询的 source/target 与时刻，不能仅交 RViz 截图。</p>
+<p>验收者按档案能够区分时间源错配、数据停止和帧不存在；结论明确 bag 只能重现记录输入，不能闭环验证新的导航控制命令。</p>
+<h3 id="d-bt-35">D. BT 离线走读册（额外 3–5 小时）</h3>
+<p>输入为本队两份原始 XML，输出 <code>bt-ports.csv</code>、控制流图、四个逐 tick 场景：正常、规划失败后清图成功、控制失败后恢复、恢复本身失败。表中记录节点状态、重试计数、下一节点和 halt 对象。</p>
+<p>说明根 tick 与 3 Hz 限频的时间假设，用 Nav2 humble 的 RecoveryNode/PipelineSequence 源码交叉校验。可写无 ROS 的桩节点程序验证子树；未经注册的 Nav2 节点不能直接交给通用 BT.CPP parser 当作可运行树。</p>
+<p>验收需指出单点/多点树的差别与 BackUp 的本队实现，不能将纸面路径称为 Nav2 运行测试，更不能把恢复节点名理解成固定朝后运动。</p>
+<h3 id="e-46">E. 一页性能报告（额外 4–6 小时）</h3>
+<p>选择单元 5 的固定负载：输入频率、一次回调的工作量与持续时长不变；单线程与合理分组的多线程各跑 3 次，每次 60 秒。开启/关闭采集分组记录，报告 CPU、处理消息数、回调耗时分位数和采集开销。</p>
+<p>交付 perf 原始数据、trace 或明确说明替代测量方法的原始日志、统计脚本、热点源码位置和一页结论。先定义耗时起止点；只记录 callback start/end 时，不得声称测到了消息从发布到处理完成的总延迟。</p>
+<p>验收要求结论可由原始数据重算，解释一次“CPU 较低却延迟较高”的原因；若未观察到该现象，写假设与下一项实验，不伪造数据。GDB 断点、Memcheck 下的时间不能当作正常运行性能。</p>
+<p>完成后把代码、README、依赖版本、原始日志与复现命令交给导师，结果标记“已实测/源码预测/未完成”。将结论映射回 <a href="../../nav2/">Nav2</a> 和 <a href="../../debug-real/">Debug</a> 的具体故障卡；本页网页核验与静态阅读不代表已在当前 Windows 主机完成 ROS 实验。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../planning-control/" class="btn btn-neutral float-left" title="规划、控制与算法对照"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../simulation/" class="btn btn-neutral float-right" title="仿真环境验收">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../planning-control/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../simulation/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

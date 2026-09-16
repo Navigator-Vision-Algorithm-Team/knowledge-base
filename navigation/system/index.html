@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/system/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>本队系统地图 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u672c\u961f\u7cfb\u7edf\u5730\u56fe";
+        var mkdocs_page_input_path = "navigation/system/README.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/system/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">本队系统地图</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 先读五个文件</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2">2. 两个模式共用哪些模块</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-topic">3. 实际 Topic 数据流</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-tf">4. TF 按发布者学习</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 源码暴露的教学重点</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+      <li class="breadcrumb-item active">本队系统地图</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">本队系统地图：从启动入口追到机器人</h1>
+<p>本页依据 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/tree/183a4109b0de2030bb8970a54654937c8b039ba9">Navigation-2027@183a410</a> 的源码静态整理。<strong>主仓库已确认，实际运行图、有效参数和硬件接线仍须实机采集。</strong> 下文以 reality 默认 <code>namespace=red_standard_robot1</code>、<code>use_composition=True</code> 为例，记 <code>/N/topic</code> 为 <code>/red_standard_robot1/topic</code>；TF 的 frame ID 不自动带 namespace。</p>
+<h2 id="1">1. 先读五个文件</h2>
+<table>
+<thead>
+<tr>
+<th>顺序</th>
+<th>文件（固定版本链接）</th>
+<th>要回答的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/README.md">根 README</a></td>
+<td>为什么依赖自瞄端串口？工作区和辅助脚本在哪？</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py">rm_navigation_reality_launch.py</a></td>
+<td>namespace、world、slam、use_robot_state_pub、composition 默认是什么？</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/bringup_launch.py">bringup_launch.py</a></td>
+<td>slam 如何选择分支？TF remap、参数替换在哪里？</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py">navigation_launch.py</a></td>
+<td>哪些节点是组件？cmd_vel 如何改名？lifecycle 管理谁？</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml">config/reality/nav2_params.yaml</a></td>
+<td>实际插件、frame、数据源、速度和地图设置是什么？</td>
+</tr>
+</tbody>
+</table>
+<p>最先画“谁启动谁”，再画通信图。仓库中有文件不等于 launch 启用了它，有参数段也不等于运行节点读取了它。</p>
+<h2 id="2">2. 两个模式共用哪些模块</h2>
+<pre><code class="language-text">reality 入口
+ ├─ 可选机器人描述发布（use_robot_state_pub）
+ ├─ Livox 驱动、手柄节点、可选 RViz
+ └─ bringup（namespace、TF remap、参数替换、组件容器）
+     ├─ slam=True：Point-LIO + 点云转scan + slam_toolbox + map_saver
+     │            静态 map→odom；禁用 small_gicp
+     ├─ slam=False：Point-LIO + small_gicp + map_server
+     └─ navigation：loam_interface、sensor_scan_generation、terrain_analysis、
+                    fake_vel_transform、Nav2 servers 与 lifecycle manager
+</code></pre>
+<p><code>slam=True</code> 仍包含 navigation 分支，不能解释成“绝不会产生运动输出的录图模式”。建图、回放和源码实验都要隔离底盘执行端。建图分支在 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/slam_launch.py">slam_launch.py</a>，定位分支在 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/localization_launch.py">localization_launch.py</a>。</p>
+<h2 id="3-topic">3. 实际 Topic 数据流</h2>
+<p>以下名称为该基线的发布/订阅及 launch 配置预期；上车后用 <code>ros2 node info</code>、<code>ros2 topic info --verbose</code> 复核完整名称、类型和端点。</p>
+<table>
+<thead>
+<tr>
+<th>发布模块</th>
+<th>Topic / 类型</th>
+<th>接收模块与作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>livox_ros_driver2</td>
+<td><code>/N/livox/lidar</code>，<code>livox_ros_driver2/msg/CustomMsg</code>；<code>/N/livox/imu</code>，<code>sensor_msgs/msg/Imu</code></td>
+<td>Point-LIO；reality lidar_type=1 分支读取 CustomMsg，不能拿任意 PointCloud2 替换</td>
+</tr>
+<tr>
+<td>point_lio</td>
+<td><code>/N/aft_mapped_to_init</code>，<code>nav_msgs/msg/Odometry</code>；<code>/N/cloud_registered</code>，<code>sensor_msgs/msg/PointCloud2</code></td>
+<td>loam_interface；原始 frame 语义是 camera_init/body，与 Nav2 odom 不同</td>
+</tr>
+<tr>
+<td>loam_interface</td>
+<td><code>/N/lidar_odometry</code>，Odometry；<code>/N/registered_scan</code>，PointCloud2</td>
+<td>sensor_scan_generation、terrain_analysis；registered_scan 另供 small_gicp</td>
+</tr>
+<tr>
+<td>sensor_scan_generation</td>
+<td><code>/N/odometry</code>，Odometry；<code>/N/sensor_scan</code>，PointCloud2</td>
+<td>odometry 供 Nav2/速度转换；sensor_scan 是雷达坐标点云，<strong>当前地形节点订阅 registered_scan</strong></td>
+</tr>
+<tr>
+<td>terrain_analysis</td>
+<td><code>/N/terrain_map</code>，PointCloud2（最终发布为 front_mid360 frame，intensity 为地形量）</td>
+<td>global/local Costmap 的 IntensityObstacleLayer；建图时另供点云转 scan；内部先在 odom 处理再变换</td>
+</tr>
+<tr>
+<td>pointcloud_to_laserscan（建图）</td>
+<td><code>/N/obstacle_scan</code>，<code>sensor_msgs/msg/LaserScan</code></td>
+<td>slam_toolbox→<code>/N/map</code>（OccupancyGrid）→map_saver</td>
+</tr>
+<tr>
+<td>map_server（定位）</td>
+<td><code>/N/map</code>，<code>nav_msgs/msg/OccupancyGrid</code></td>
+<td>StaticLayer；数据来自 YAML 指向的图像，不是直接加载 PCD</td>
+</tr>
+<tr>
+<td>RViz/导航客户端</td>
+<td><code>/N/initialpose</code>，<code>geometry_msgs/msg/PoseWithCovarianceStamped</code></td>
+<td>small_gicp 的初始位姿输入；不是 AMCL 专属 Topic</td>
+</tr>
+<tr>
+<td>RViz/任务客户端</td>
+<td><code>/N/navigate_to_pose</code>，<code>nav2_msgs/action/NavigateToPose</code></td>
+<td>bt_navigator，反馈/结果/取消必须检查</td>
+</tr>
+<tr>
+<td>planner_server</td>
+<td><code>/N/plan</code>，<code>nav_msgs/msg/Path</code>（Nav2 通常接口，运行时确认）</td>
+<td>BT 的规划结果交给 FollowPath；不是靠订阅 plan Topic 才能跟踪</td>
+</tr>
+<tr>
+<td>controller_server</td>
+<td><code>/N/cmd_vel_controller</code>，<code>geometry_msgs/msg/Twist</code></td>
+<td>velocity_smoother</td>
+</tr>
+<tr>
+<td>velocity_smoother</td>
+<td><code>/N/cmd_vel_nav2_result</code>，Twist</td>
+<td>fake_vel_transform；组合分支 behavior_server 也输出到此处</td>
+</tr>
+<tr>
+<td>fake_vel_transform</td>
+<td><code>/N/cmd_vel</code>，Twist；输入还包括 <code>/N/cmd_spin</code></td>
+<td>外部串口/底盘接收者必须实测；不要推断存在完整仲裁与超时停车</td>
+</tr>
+</tbody>
+</table>
+<p>主要实现证据：<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/point_lio/src/laserMapping.cpp#L368">Point-LIO 发布订阅</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp#L46">loam_interface</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L44">sensor_scan_generation</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/terrain_analysis/src/terrain_analysis.cpp#L95">terrain_analysis</a>。速度链的分支差异与辅助脚本问题见<a href="nav2-and-control-evidence/">证据页</a>。</p>
+<h2 id="4-tf">4. TF 按发布者学习</h2>
+<table>
+<thead>
+<tr>
+<th>TF 关系</th>
+<th>该基线的发布者/条件</th>
+<th>要验收的事情</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>map→odom</td>
+<td>定位：small_gicp_relocalization；建图：静态发布器</td>
+<td>同一运行模式只能有一个权威来源；slam_toolbox 的 transform_publish_period=0，不能另开一个重复源</td>
+</tr>
+<tr>
+<td>odom→base_footprint</td>
+<td>sensor_scan_generation</td>
+<td>来自 LIO 与雷达/底盘变换，不能再无条件加轮速 odom 发布同一边</td>
+</tr>
+<tr>
+<td>base_footprint 到 chassis、gimbal_yaw 等模型链</td>
+<td>robot_state_publisher 根据转换后的机器人模型与关节状态发布</td>
+<td>固定关节与可动关节区别；完整生成树应以实际模型为准</td>
+</tr>
+<tr>
+<td>gimbal_yaw→front_mid360</td>
+<td>默认 uic2025 模型的雷达固定安装关系</td>
+<td>雷达相对云台固定，不表示相对底盘也固定；外参与模型要成套</td>
+</tr>
+<tr>
+<td>gimbal_yaw→gimbal_yaw_fake</td>
+<td>fake_vel_transform 的导航虚拟帧，零平移、相对 yaw 为负里程计 yaw</td>
+<td>动态抵消云台在 odom 中的 yaw；不是 odom 直接发布的分支，也不能用静态 TF 替代</td>
+</tr>
+</tbody>
+</table>
+<p>模型入口：<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_robot_description/resource/xmacro/uic2025_sentry_robot.sdf.xmacro#L20">uic2025_sentry_robot.sdf.xmacro</a>。关节状态配置：<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_robot_description/params/robot_description.yaml">robot_description.yaml</a> 读取 <code>serial/gimbal_joint_state</code>。实际串口必须提供匹配名称、单位和时间戳的数据。</p>
+<pre><code class="language-text">map
+└─ odom
+   └─ base_footprint → [实际机器人模型链] → gimbal_yaw
+                                               ├─ front_mid360
+                                               └─ gimbal_yaw_fake （动态虚拟导航帧）
+</code></pre>
+<p>此图省略模型中间关节，不是完整 URDF。Point-LIO 的 <code>publish.tf_send_en=False</code>，不要为了“补齐 TF”擅自启用原始 <code>camera_init→aft_mapped</code>。<code>Odometry</code> 消息存在与 TF 边存在是两回事。<a href="https://github.com/ros-infrastructure/rep/blob/master/rep-0105.rst">REP-105</a> 的 map/odom 语义可以迁移，帧名和发布节点必须依据本队实现。</p>
+<h2 id="5">5. 源码暴露的教学重点</h2>
+<ol>
+<li><strong>运行参数与文件默认值不同。</strong> reality YAML 中 costmap 的 <code>use_sim_time: true</code> 经过 launch 重写；必须查运行值，不能仅据 YAML 判断实车在用仿真时钟。</li>
+<li><strong>普通节点与组件分支需要分别核对。</strong> composition=False 的 remap 与默认组合分支不完全相同；不能把它当作必然等价的 Debug 开关。</li>
+<li><strong>有 TF 不代表定位正确。</strong> small_gicp 可能继续发布旧估计；观察 stamp、配准结果、点云重合、实际位置，不只看 Topic 频率。</li>
+<li><strong>里程计速度值得专项审查。</strong> sensor_scan_generation 用 steady_clock 回调间隔差分位置；回放倍速可影响速度数值，且 twist 的参考系与消息约定需要核实。这是代码阅读/回归课题，不是本次已经修复的结论。</li>
+<li><strong>外部依赖必须具名。</strong> rm_robot_ws 是另一条 CAN/ros2_control 工程，不能替代本导航 README 所需的串口包；本次不把它列为所有导航新人的必修实现。</li>
+</ol>
+<p>实践：完成节点图、Topic 表、TF 发布权表各一份，标出“源码已确认 / 运行已确认 / 待确认”。三张图必须能相互解释，见 <a href="../assignments/">T3、T7</a>。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../training/validation/" class="btn btn-neutral float-left" title="验证状态与复验"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ros2-tf/" class="btn btn-neutral float-right" title="ROS2、TF、时间与运动">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../training/validation/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ros2-tf/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

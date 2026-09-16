@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/assignments/reading-labs/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>源码导读与参考解答 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u6e90\u7801\u5bfc\u8bfb\u4e0e\u53c2\u8003\u89e3\u7b54";
+        var mkdocs_page_input_path = "navigation/assignments/reading-labs.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/assignments/reading-labs/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">源码导读与参考解答</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">先掌握一套读代码方法</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#r1-loam_interfaces16090">R1：读通 loam_interface（S1，60–90 分钟）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#r2s2-s5-90120">R2：零速度为什么不一定输出零（S2 算式，S5 完整题，90–120 分钟）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#r3worlddona-s34560">R3：world:=dona 为什么还可能找不到地图（S3，45–60 分钟）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#r4-yaml-s4s56090">R4：改 YAML 后为何没有效果（S4–S5，60–90 分钟）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#r5bag-s2s34560">R5：bag 倍速下的速度为何不同（S2–S3，45–60 分钟）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">同伴复核用这张表</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+      <li class="breadcrumb-item active">源码导读与参考解答</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">源码导读与带解答练习</h1>
+<p>本页用于从“看得懂教程”过渡到“看得懂本队工程”。R1–R5 是 T1/T2/T4/T6/T7 的练习材料，<strong>不增加新的实车准入等级</strong>。先独立写答案，再看参考分析；参考分析是基于固定源码的推导，题目中的数值和时间线是教学输入，不是实测记录。</p>
+<p>所有本队链接固定为 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/tree/183a4109b0de2030bb8970a54654937c8b039ba9">Navigation-2027@183a410</a>。只读源码无需 ROS；运行检查需已经配置好的 Ubuntu 22.04/Humble 教学环境。实验使用独立节点、Topic 和确认空闲的 domain，输出不接真实串口；不得把本页变成实车故障注入脚本。</p>
+<h2 id="_2">先掌握一套读代码方法</h2>
+<p>每次只追一个输出，按“构建目标→启动入口→参数来源→订阅/回调→状态→输出→失败路径”读。用搜索定位函数再看上下文，不从第一行逐字翻完整仓库。</p>
+<p>在导航仓库根目录的 Bash 中可做只读搜索：</p>
+<pre><code class="language-bash">rg -n 'create_subscription|create_publisher|declare_parameter' \
+  ros_ws/src/pb2025_sentry_nav/loam_interface
+rg -n 'cmdVelCallback|syncCallback|latest_cmd_vel_|CONTROLLER_TIMEOUT' \
+  ros_ws/src/pb2025_sentry_nav/fake_vel_transform
+rg -n 'RewrittenYaml|param_rewrites|use_sim_time|SetRemap' \
+  ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch
+</code></pre>
+<p>每题交一页：问题→代码位置→自己的推理→需运行确认的证据。无法确定的地方写未知，不用注释或函数名代替执行逻辑。</p>
+<h2 id="r1-loam_interfaces16090">R1：读通 loam_interface（S1，60–90 分钟）</h2>
+<p><strong>读文件</strong>：<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/CMakeLists.txt">CMakeLists.txt</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/include/loam_interface/loam_interface.hpp">头文件</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp">实现</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml">reality 参数</a> 的 <code>loam_interface</code> 段。</p>
+<p><strong>先回答</strong>：</p>
+<ol>
+<li>源码没有手写 <code>main()</code>，如何生成可运行入口？</li>
+<li>两个订阅输入和两个发布输出是什么类型？在默认 namespace 下全名是什么？</li>
+<li><code>state_estimation_topic</code> 是消息还是参数？默认空字符串在哪里被替换？</li>
+<li>哪个回调第一次查询外参？查询目标帧、源帧和时间是什么？每次回调都会重查吗？</li>
+<li>消息有 pose，是否自动发布了 TF？如果第一条点云先于成功外参初始化，应检查什么？</li>
+</ol>
+<p><strong>参考分析</strong>：CMake 将源文件编成共享库，<code>rclcpp_components_register_node</code> 注册组件并声明 <code>loam_interface_node</code> 可执行入口。构造函数从参数读取输入名，YAML 提供 <code>aft_mapped_to_init</code> 与 <code>cloud_registered</code>。默认 namespace 是 <code>red_standard_robot1</code>；未另加 remap 时接口为：</p>
+<table>
+<thead>
+<tr>
+<th>方向</th>
+<th>全名</th>
+<th>类型</th>
+<th>输出帧或用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>订阅</td>
+<td><code>/red_standard_robot1/aft_mapped_to_init</code></td>
+<td><code>nav_msgs/msg/Odometry</code></td>
+<td>LIO 位姿输入</td>
+</tr>
+<tr>
+<td>订阅</td>
+<td><code>/red_standard_robot1/cloud_registered</code></td>
+<td><code>sensor_msgs/msg/PointCloud2</code></td>
+<td>已配准点云输入</td>
+</tr>
+<tr>
+<td>发布</td>
+<td><code>/red_standard_robot1/lidar_odometry</code></td>
+<td><code>nav_msgs/msg/Odometry</code></td>
+<td>header <code>odom</code>，child <code>front_mid360</code></td>
+</tr>
+<tr>
+<td>发布</td>
+<td><code>/red_standard_robot1/registered_scan</code></td>
+<td><code>sensor_msgs/msg/PointCloud2</code></td>
+<td><code>odom</code></td>
+</tr>
+</tbody>
+</table>
+<p>首次成功的 <code>odometryCallback</code> 按消息 stamp 查询 <code>base_footprint ← front_mid360</code>，缓存变换并置初始化标志；之后不反复查这个外参。TF 查找失败会记录并返回。点云回调未检查这个标志，因此要审查启动先后和首批点云的变换，不能凭“有输出”断言初始外参正确。此节点发布 Odometry 消息，不负责广播 <code>odom→base_footprint</code>；后者在 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp">sensor_scan_generation</a>。</p>
+<p><strong>运行证据要求</strong>：若环境可运行，只读采集 <code>ros2 node info</code>、两条输出的首条消息和启动日志；比较实际 namespace、参数与上表。暂不能运行就提交表和待验证设计，不编造 CLI 输出。</p>
+<p><strong>拓展</strong>：解释将动态挂载关系只在初始化时缓存的假设；指出它与机器人模型、初始姿态和 LIO 局部原点的联系。未经建模核验，不直接把缓存改成每帧查询。</p>
+<h2 id="r2s2-s5-90120">R2：零速度为什么不一定输出零（S2 算式，S5 完整题，90–120 分钟）</h2>
+<p><strong>读文件</strong>：<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp">fake_vel_transform.cpp</a> 的 <code>transformVelocity</code>、<code>cmdVelCallback</code>、<code>localPlanCallback</code>、<code>syncCallback</code>，以及 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml">reality YAML</a> 的 <code>init_spin_speed</code>。详细风险背景见<a href="../../system/nav2-and-control-evidence/">证据页</a>。</p>
+<p><strong>题 A：计算而不是猜方向</strong>。给定 <code>yaw=π/2</code>、输入 <code>(vx,vy,wz)=(0.2,0,0)</code>、spin 为 <code>0.5 rad/s</code>，算最终三个分量；再算输入全零、spin 为 0.5 和 spin 为 0 两种情况。</p>
+<p>参考：按源码，<code>vx_out = vx cos(yaw) + vy sin(yaw)</code>，<code>vy_out = -vx sin(yaw) + vy cos(yaw)</code>，<code>wz_out = wz + spin</code>。所以第一组约为 <code>(0,-0.2,0.5)</code>；全零输入的输出分别为 <code>(0,0,0.5)</code>、<code>(0,0,0)</code>。浮点计算允许舍入误差。这只是输入变换，底盘如何解释坐标仍需协议确认。</p>
+<p><strong>题 B：手推缓存时间线</strong>。为隔离缓存问题，假定已收到有效 odometry，角度为 0、spin 为 0、local_plan 始终新鲜，按以下顺序执行回调：</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>输入事件</th>
+<th>你应写出的状态与输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>localPlanCallback</code> 被调用</td>
+<td>更新最近 local_plan 活动时间</td>
+</tr>
+<tr>
+<td>2</td>
+<td>收到非零 Twist <code>(0.2,0,0)</code></td>
+<td>进入缓存分支，<code>latest_cmd_vel_</code> 保存该消息</td>
+</tr>
+<tr>
+<td>3</td>
+<td>一对 odometry/local_plan 触发同步回调</td>
+<td>使用缓存，发布 <code>(0.2,0,0)</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>收到全零 Twist</td>
+<td>走立即变换发布分支，发布零，但没有清除原非零缓存</td>
+</tr>
+<tr>
+<td>5</td>
+<td>后续同步回调再次发生</td>
+<td>在该构造序列下仍能读到旧缓存，再发布非零</td>
+</tr>
+</tbody>
+</table>
+<p>这说明存在需要复现的缓存路径，不说明实车每次取消都会发生同样事件序列。同步器实际配对、回调顺序、输入源和底盘消费者都应记录。</p>
+<p><strong>题 C：三个判断</strong>。① 0.5 秒常量是否是 cmd_vel 独立 watchdog？② 发布一次 <code>cmd_spin=0</code> 是否立刻发布停止？③ <code>ros2 param get init_spin_speed</code> 是否等于当前 spin 成员值？</p>
+<p>参考：① 它依据 local_plan 回调活动时间判定，没有独立定时检查速度输入年龄并强制停车；② spin 回调只改成员，不立即发布；③ 参数在构造时读取，Topic 回调更新成员不等于更新 ROS 参数。需要分别观察配置、运行成员影响和最终输出。</p>
+<p><strong>交付</strong>：三组算式、五步状态表、一份隔离实验的输入事件与采集项设计。要做 T9 修复，先与维护者定义“取消、零命令、断流、自旋保留”的协议，再覆盖这些行为的回归；不能只把 spin 设零就声称修复缓存。</p>
+<h2 id="r3worlddona-s34560">R3：world:=dona 为什么还可能找不到地图（S3，45–60 分钟）</h2>
+<p><strong>读文件</strong>：<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py">reality launch</a> 的 map/prior_pcd_file 默认值、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/dona.yaml">dona.yaml</a>、<a href="../../sensor-lio/">地图审查表</a>。</p>
+<p><strong>题目</strong>：设安装包 share 目录为 <code>/opt/training/share/pb2025_nav_bringup</code>，只覆盖 <code>world:=dona</code>。写出会查找的 YAML 和 PCD 路径；再解释源码中 <code>ros_ws/dona.yaml</code> 为什么不会自动被选中。YAML 的 <code>image: dona.pgm</code> 应相对哪里解析？</p>
+<p><strong>参考</strong>：默认路径是 <code>/opt/training/share/pb2025_nav_bringup/map/reality/dona.yaml</code> 和 <code>/opt/training/share/pb2025_nav_bringup/pcd/reality/dona.pcd</code>。launch 按安装 share 路径拼接，不搜索整个源码树；源码根工作区有同名 YAML 也不改变默认路径。相对 image 以 YAML 所在目录解析。</p>
+<p><strong>做什么</strong>：列出 YAML、图像、PCD 的真实绝对路径、大小与 SHA256；写出显式 <code>map:=...</code> 和 <code>prior_pcd_file:=...</code> 参数，但先只检查文件和内容。环境齐备后运行步骤见定位页，不为验证路径就启动完整 reality 导航。</p>
+<p><strong>验收</strong>：文件可解析只是第一关；还必须解释 PCD 与二维地图的坐标、场地和外参一致性如何验证。<code>prior_pcd.enable=False</code> 是 Point-LIO 的开关，不免除定位分支 small_gicp 的 PCD 需求。缺训练地图标记待资源，不反复改规划参数。</p>
+<h2 id="r4-yaml-s4s56090">R4：改 YAML 后为何没有效果（S4–S5，60–90 分钟）</h2>
+<p><strong>读文件</strong>：<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py">reality launch</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/bringup_launch.py">公共 bringup</a> 的 <code>ReplaceString/RewrittenYaml</code>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py">navigation launch</a> 的参数与组合分支。</p>
+<p><strong>教学场景</strong>：你修改了源码目录里一份 YAML 的 <code>use_sim_time</code> 或插件参数，界面行为没有变化。先给出四种可区分的原因，再写检查顺序；不能把“重启全部”作为第一条解释。</p>
+<p><strong>参考诊断顺序</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>假设</th>
+<th>要取的证据</th>
+<th>能得出什么结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source 了另一套工作区</td>
+<td><code>ros2 pkg prefix pb2025_nav_bringup</code>、当前 overlay 顺序</td>
+<td>运行包可能来自其他 install</td>
+</tr>
+<tr>
+<td>launch 使用另一份 params_file</td>
+<td>完整命令、launch 参数传递、安装目录文件内容</td>
+<td>编辑源文件不等于实际输入已改变</td>
+</tr>
+<tr>
+<td>launch 改写了参数</td>
+<td><code>RewrittenYaml</code> 的 <code>param_rewrites</code> 与节点有效参数</td>
+<td>bringup 会改写 use_sim_time 和地图文件；不能只看 YAML 原值</td>
+</tr>
+<tr>
+<td>YAML 节点名/namespace 不匹配</td>
+<td><code>ros2 node list</code>、YAML 根键、参数 dump</td>
+<td>文件被读取不代表目标节点取到这段配置</td>
+</tr>
+<tr>
+<td>值已改变但模块未加载或未重新配置</td>
+<td>插件列表、lifecycle、模块日志与功能输出</td>
+<td>参数存在不证明当前代码消费了该值</td>
+</tr>
+</tbody>
+</table>
+<p>在已启动的隔离环境可用以下只读命令收集证据，实际节点名以 <code>node list</code> 为准：</p>
+<pre><code class="language-bash">ros2 pkg prefix pb2025_nav_bringup
+ros2 node list
+ros2 param dump /red_standard_robot1/controller_server
+ros2 param get /red_standard_robot1/controller_server use_sim_time
+ros2 lifecycle get /red_standard_robot1/controller_server
+</code></pre>
+<p><strong>验收</strong>：至少一组“编辑文件→启动传递→有效参数→功能输出”的闭合证据；值已生效但行为不变时也允许结论为假设错误。恢复基线后再改下一项。进阶阅读组合/非组合的 behavior remap 差异，不能因为默认组合模式正常就宣称另一条启动路径等价。</p>
+<h2 id="r5bag-s2s34560">R5：bag 倍速下的速度为何不同（S2–S3，45–60 分钟）</h2>
+<p><strong>读文件</strong>：<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp">sensor_scan_generation</a> 的 <code>laserCloudAndOdometryHandler</code> 和 <code>publishOdometry</code> 中速度差分代码，配合<a href="https://design.ros2.org/articles/clock_and_time.html">ROS 时间设计</a>。</p>
+<p><strong>题目</strong>：两帧位置相差 0.1 m，消息 stamp 相差 0.1 s。正常播放时两个回调墙钟相差 0.1 s，二倍速播放时相差 0.05 s。分别以消息 dt 与回调 dt 算速度。暂停、重复 stamp 或时间回跳应如何处理？</p>
+<p><strong>参考</strong>：消息差分两次都是 <code>1 m/s</code>；以给定回调间隔差分得到 <code>1 m/s</code> 和 <code>2 m/s</code>。真实调度会有抖动，数值未必恰好翻倍。本队此处使用 <code>steady_clock</code> 回调间隔，所以 bag 倍速可能改变计算输出；统一 use_sim_time 不会自动改写这一实现。</p>
+<p><strong>做什么</strong>：用 <a href="../../self-study/foundations/">F5 CSV 练习</a>比较两种 dt，并记录 dt≤0 时的拒绝、重置或等待策略；将首次样本、重复时间、回跳、长暂停分别列出。若有已登记 bag，再采相同片段不同倍速的输出，明确重播起止与预热，不将数据处理性能当成定位精度。</p>
+<p><strong>验收</strong>：公式、单位和时间来源正确；不把绝对值 dt 或默默跳过坏样本当成通用修复。准备改生产代码时，还要核对 Twist 的 child frame 语义、坐标旋转和第一帧状态，不能只换一个时钟就结束。</p>
+<h2 id="_3">同伴复核用这张表</h2>
+<table>
+<thead>
+<tr>
+<th>复核项</th>
+<th>通过表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>来源</td>
+<td>每个关键判断能定位到固定版本文件与函数</td>
+</tr>
+<tr>
+<td>因果</td>
+<td>能解释输入如何经过状态变成输出，不只背节点名</td>
+</tr>
+<tr>
+<td>边界</td>
+<td>主动区分源码推断、合成实验和实际运行</td>
+</tr>
+<tr>
+<td>复现</td>
+<td>输入、命令、参数和预期齐全；资源不足写明</td>
+</tr>
+<tr>
+<td>回归</td>
+<td>改动后覆盖原故障和正常输入，能恢复基线</td>
+</tr>
+</tbody>
+</table>
+<p>参考答案不是要背的口试标准句。导师可换 namespace、角度、时间间隔或目录，让新人现场重新推导；达到同样正确结论即可。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="实践任务与考核"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../self-study/" class="btn btn-neutral float-right" title="如何选资料与方向">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../self-study/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

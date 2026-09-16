@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/maintenance/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>资料、模板与维护 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u8d44\u6599\u3001\u6a21\u677f\u4e0e\u7ef4\u62a4";
+        var mkdocs_page_input_path = "navigation/maintenance/README.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/maintenance/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">资料、模板与维护</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">目录与归档规则</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">教学资料：每个链接都要对应一个任务</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">开课前由负责人补齐的资源</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">可复制的版本与资源登记模板</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_6">可复制的问题/实验记录模板</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_7">更新与发布</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+      <li class="breadcrumb-item active">资料、模板与维护</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">资料、模板与知识库维护</h1>
+<p>知识库要让下一届找到入口、完成实验、复现错误，而不只是积累链接。当前新增专题放在 <code>docs/navigation/</code>，复用原 Linux/Git 页面，保留开源项目合集和既有路径。目录按课程专题合并，避免先建二十个空目录。</p>
+<h2 id="_2">目录与归档规则</h2>
+<pre><code class="language-text">docs/navigation/
+├─ README.md                       学习入口与资源边界
+├─ onboarding/                     最终路线、16周任务单、环境基础
+├─ system/                         系统地图、固定版本源码证据
+├─ ros2-tf/                        通信、TF、时间、全向运动
+├─ sensor-lio/                     传感器、LIO、建图、重定位
+├─ planning/                       环境表达、Costmap、规划
+├─ nav2/                           Nav2、控制、BT、接口
+├─ debug-real/                     Debug、实车、比赛流程
+├─ assignments/                    任务与统一考核、带解答源码练习
+├─ self-study/                     基础、数学定位、规划控制、ROS2系统
+├─ training/                       教学代码入口、合成数据、验证状态
+├─ simulation/                     统一仿真建设与验收
+└─ maintenance/                    资源、模板、维护规则
+</code></pre>
+<p>课程模块统一包含：目标、前置、核心概念、真实代码/接口、分级要求、实践任务、验收、常见错误、参考和适用版本。后续常见错误按“现象—证据—根因—修复—回归—适用 commit”形成独立页；数量少时先放在相应专题，不建立空目录。</p>
+<p>仓库根 <code>training/</code> 存可执行教学代码与小型合成数据；<code>docs/navigation/training/</code> 存对应教程。synthetic-v1 有解析来源、校验值、生成器和回归，见<a href="../training/datasets/">数据包</a>。大体积实车 bag 仍走队内数据存储。<code>.gitattributes</code> 保留数据原始字节，跨 Windows/Linux checkout 不改换行以免破坏 SHA256。</p>
+<h2 id="_3">教学资料：每个链接都要对应一个任务</h2>
+<p>完整的指定章节、先修、学时、跳过范围与离线项目已拆到<a href="../self-study/">自学与进阶导航</a>。下面保留常用速查入口；新人按周选读，不以收藏链接数量作为学习进度。</p>
+<table>
+<thead>
+<tr>
+<th>资源</th>
+<th>指定用途</th>
+<th>任务与版本边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://missing.csail.mit.edu/">MIT Missing Semester</a></td>
+<td>Shell、Git、调试工具选读</td>
+<td>T0；不要求完整刷课</td>
+</tr>
+<tr>
+<td><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a></td>
+<td>HEAD、分支、merge 可视化</td>
+<td>T0；用练习仓库操作</td>
+</tr>
+<tr>
+<td><a href="https://www.learncpp.com/">LearnCpp</a></td>
+<td>类/引用/指针/标准库查询</td>
+<td>T1/T9；不是进入 ROS 的前置全集</td>
+</tr>
+<tr>
+<td><a href="https://fishros.com/d2lros2/#/">鱼香《动手学 ROS2》</a></td>
+<td>中文通信、包、参数与 launch 的辅助解释</td>
+<td>当前入口标注 Foxy 版；T0–T2 可参考概念，安装/API/命令以 Humble 官方原文为准，不跟随降版</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ros2/ros2_documentation/tree/humble/source/Tutorials">ROS2 官方 Humble 教程源码</a></td>
+<td>CLI、C++ 节点、Action、tf2 的准确说明</td>
+<td>T1–T3；官网受限时可读官方源码</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Concepts/Intermediate/About-Quality-of-Service-Settings.rst">Humble QoS</a></td>
+<td>offered/requested 与兼容性</td>
+<td>T1/T3</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Tf2/Debugging-Tf2-Problems.rst">tf2 Debug 教程</a></td>
+<td>frame 与时间问题分离</td>
+<td>T2/T8</td>
+</tr>
+<tr>
+<td><a href="https://design.ros2.org/articles/clock_and_time.html">ROS 时间设计</a></td>
+<td>系统/steady/ROS time、回跳</td>
+<td>T2–T4</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ros-infrastructure/rep/blob/master/rep-0103.rst">REP-103</a>、<a href="https://github.com/ros-infrastructure/rep/blob/master/rep-0105.rst">REP-105</a></td>
+<td>单位、坐标系、map/odom 语义</td>
+<td>T2/T3，不能覆盖本队 TF 实现</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AtsushiSakai/PythonRobotics">PythonRobotics</a></td>
+<td>选 Dijkstra/A* 动画后自己实现</td>
+<td>T5；其他算法按专题选读</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ros-navigation/navigation2/tree/humble">Nav2 Humble 源码</a></td>
+<td>现用服务器/插件概念和接口</td>
+<td>T5–T9；安装版本需另记录</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ros-navigation/navigation2/blob/humble/nav2_core/include/nav2_core/controller.hpp">Humble Controller 接口</a></td>
+<td>setPlan 与 computeVelocityCommands</td>
+<td>T9 进阶；现行 Rolling 接口不同</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ros-navigation/navigation2/blob/humble/nav2_regulated_pure_pursuit_controller/README.md">Humble RPP</a>、<a href="https://github.com/ros-navigation/navigation2/blob/humble/nav2_mppi_controller/README.md">Humble MPPI</a></td>
+<td>对比全向支持和适用边界</td>
+<td>了解/专项，不替代本队 OmniPid 必学</td>
+</tr>
+<tr>
+<td><a href="https://github.com/SMBU-PolarBear-Robotics-Team/rmu_gazebo_simulator">PolarBear 仿真上游</a></td>
+<td>参考已有仿真组件维护</td>
+<td>由负责人做兼容性验收，见<a href="../simulation/">仿真页</a></td>
+</tr>
+</tbody>
+</table>
+<p>核对日期 2026-09-14。外部教程只作学习资料，本队实际组件由固定 commit 的代码与运行快照证明。部分旧 Nav2 <code>.html</code> 链接已变更；优先使用官方 Humble 仓库核对 API，本机 <code>--help</code> 和有效参数决定命令是否适用。</p>
+<h2 id="_4">开课前由负责人补齐的资源</h2>
+<p>配套代码、标准合成包和两个教学故障案例已建入口，状态见<a href="../training/validation/">验证记录</a>。下表列的实测材料仍需队内建立，不是假定已存在的下载入口；负责人在首次授课前指定具体姓名、存储位置和截止日期。</p>
+<table>
+<thead>
+<tr>
+<th>优先级/责任角色</th>
+<th>交付材料</th>
+<th>最小验收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0 导航维护者</td>
+<td>实际运行的仓库、commit、依赖锁定、overlay 顺序、launch 命令和参数快照</td>
+<td>一台干净 Ubuntu/Humble 机器可复现；确认是否有未提交本地修改</td>
+</tr>
+<tr>
+<td>P0 导航+自瞄/串口+电控负责人</td>
+<td>外部串口包、协议、Topic/TF/关节状态、控制权、超时/停车约定</td>
+<td>最终命令与底盘接收一致；停止链路逐项通过</td>
+</tr>
+<tr>
+<td>P0 定位维护者</td>
+<td>配套 YAML+图像+PCD、模型/外参及校验值</td>
+<td>路径可解析，地图坐标对齐，启动无资产缺失</td>
+</tr>
+<tr>
+<td>P0 教学/定位维护者</td>
+<td>一段静止、一段运动、一段典型故障 bag；消息定义、QoS、TF、基线</td>
+<td>新人可回放同一异常；不含密钥等无关数据</td>
+</tr>
+<tr>
+<td>P1 场地/设备负责人</td>
+<td>值守时段、硬件急停方式、低速上限、停止时间/距离阈值</td>
+<td>T8 开始前填妥；未填不开展运动测试</td>
+</tr>
+<tr>
+<td>P1 仿真维护者</td>
+<td>统一模型/世界/时间单位、地图、依赖和启动入口</td>
+<td>按<a href="../simulation/">仿真验收</a>通过后才能称为统一训练环境</td>
+</tr>
+<tr>
+<td>P2 导师</td>
+<td>盲测题库、评分样例、合格作业、常见错误条目</td>
+<td>下一届导师无需口头补完所有步骤</td>
+</tr>
+</tbody>
+</table>
+<p>地图和 bag 存队伍指定数据盘/对象存储；知识库只存 manifest 和可访问入口。现阶段不虚构 URL，也不把数百 MB 数据塞进普通 Git。</p>
+<h2 id="_5">可复制的版本与资源登记模板</h2>
+<pre><code class="language-text">实验编号 / 日期 / 操作人 / 复核人：
+机器人编号 / 硬件与驱动使能状态：
+Ubuntu / ROS_DISTRO / RMW_IMPLEMENTATION / ROS_DOMAIN_ID：
+导航仓库 URL / branch / commit / git status：
+外部串口与消息包 URL / commit / overlay 来源：
+Nav2、Livox SDK、small_gicp、仿真器等安装版本：
+namespace / TF topic / use_sim_time / clock 来源：
+完整启动命令 / 有效参数快照位置：
+模型 / 外参 / 地图 YAML+图像+PCD 路径与 SHA256：
+输入 bag ID / 存储入口 / SHA256 / 消息包与 QoS：
+只读回放或闭环实车 / 预热与测试时间区间：
+速度限值 / 停车时间与距离阈值 / 值守与急停负责人：
+结果、证据路径、未验证项与回退版本：
+</code></pre>
+<p>SHA256 可用 <code>sha256sum FILE</code> 计算；填真实值。bag manifest 还要列 Topic、类型、数量、时长、原始/算法输出分类、TF 发布者和回放白名单，避免重算时同时发布旧结果。</p>
+<h2 id="_6">可复制的问题/实验记录模板</h2>
+<pre><code class="language-text">标题与适用代码版本：
+预期行为 / 实际现象 / 首次异常时间：
+最小复现命令与输入：
+观察证据（日志原文、端点/QoS、stamp、TF、有效参数）：
+已排除的原因及依据：
+当前判断 / 尚不确定的边界 / 需要哪个负责人：
+唯一修改因素与代码/配置 diff：
+改后结果、重复次数、失败样本：
+临时恢复步骤 / 根因修复 / 回退步骤：
+原任务与停止路径是否回归 / 未做的测试：
+</code></pre>
+<h2 id="_7">更新与发布</h2>
+<p>维护者每次变更启动入口、插件、Topic、TF、地图、串口或 ROS 版本，必须同步修订系统表、相关课程和受影响作业；课程明确保存审查基线。只把实测结果写入“运行已确认”，源码推断继续标注待验证。</p>
+<p>按仓库现有流程向 main 提交 PR。检查相对链接、代码来源、命令前置和 MkDocs 构建；新页面须进入 <code>mkdocs.yml</code> 的导航。main 合入后由现有 GitHub Actions 发布网站，不手工修改生成的 <code>site/</code> 文件。</p>
+<p>本地验证示例：<code>python -m mkdocs build --strict --site-dir ../knowledge-base-preview</code>，在仓库目录运行，将输出放到仓库外；不向训练材料提交临时构建产物。必要的旧页面错误修订应局部进行，保持原有入口可用。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../simulation/" class="btn btn-neutral float-left" title="仿真环境验收"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="btn btn-neutral float-right" title="Ubuntu与ROS环境入口">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../simulation/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

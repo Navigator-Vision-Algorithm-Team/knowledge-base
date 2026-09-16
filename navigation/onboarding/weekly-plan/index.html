@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/onboarding/weekly-plan/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>16周具体任务单 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "16\u5468\u5177\u4f53\u4efb\u52a1\u5355";
+        var mkdocs_page_input_path = "navigation/onboarding/weekly-plan.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/onboarding/weekly-plan/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">16周具体任务单</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-s0">第 1 周：新终端里跑通最小通信（S0）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-s0-t0">第 2 周：构建、分支与包来源（S0 / T0）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-topic-s1">第 3 周：写自己的 Topic 节点（S1）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-action-s1-t1">第 4 周：通信故障与 Action 取消（S1 / T1）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-tf-s2">第 5 周：坐标、单位与 TF 发布权（S2）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-s2-t2">第 6 周：时间、同步与运动（S2 / T2）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7-s3-t3">第 7 周：从原始输入到里程计（S3 / T3）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#8-s3-t4">第 8 周：地图包、初始化与重定位（S3 / T4）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#9-s4-t5">第 9 周：用小图学会搜索（S4 / T5）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#10-costmap-s4-t6">第 10 周：从地形点到 Costmap 格子（S4 / T6）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#11-actionbt-s5">第 11 周：导航 Action、BT 与真实插件（S5）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#12-s5-t7">第 12 周：速度坐标、限幅与输出缓存（S5 / T7）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#13-s6">第 13 周：盲测诊断与台架准备（S6）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#14-s6-t8">第 14 周：受控实车回归（S6 / T8）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#15-s7-t9">第 15 周：一项真实代码改动（S7 / T9）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#16-s7-t10">第 16 周：比赛演练与交接（S7 / T10）</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_1">每周复盘只回答四件事</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+      <li class="breadcrumb-item active">16周具体任务单</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="16">16 周任务单：每周读什么、做什么、交什么</h1>
+<p>本页是<a href="../learning-route/">培训路线</a>的执行表，正式评分仍按 <a href="../../assignments/">T0–T10</a>。每周安排约 6–8 小时，不要求看完所链接的整本教程。建议分为两次实践和一次 20–30 分钟复盘；周内先阅读指定段落，做出输出后再拓展。</p>
+<p>没有数据、设备或接口时，标记“待资源”并做该周替代任务；替代任务不抵扣未完成的实测验收。不会编程的同学可将第 1–4 周延长到 6–8 周；有基础的同学凭同伴可复现的成果申请跳过。周次不会自动授予实车资格。</p>
+<h2 id="1-s0">第 1 周：新终端里跑通最小通信（S0）</h2>
+<p><strong>读</strong>：<a href="../environment/">环境页第 1–2 节</a>、<a href="../../self-study/foundations/">F1 终端和 F3 最小语法</a>。先认识 shell、进程、包、可执行文件四个词。</p>
+<p><strong>做</strong>：完成 talker/listener；在新终端重做 source；保存系统/ROS 版本、启动命令和接收输出。自己写一个读取两个数的 C++ 程序，避免只会运行别人的节点。</p>
+<p><strong>交与验</strong>：<code>week01/README.md</code> 加文本日志，同伴按步骤能收到数据。回答“关掉一个终端，哪个进程结束”；遇安装错误保存第一条错误。<strong>加餐</strong>：F1 路径含空格与日志重定向实验。</p>
+<h2 id="2-s0-t0">第 2 周：构建、分支与包来源（S0 / T0）</h2>
+<p><strong>读</strong>：<a href="../environment/">环境页第 3–5 节</a>、<a href="../../self-study/foundations/">F2 Git、F4 CMake</a>。本队源码从 <code>package.xml</code> 和 <code>loam_interface/CMakeLists.txt</code> 开始。</p>
+<p><strong>做</strong>：建立小 ament 包并编译；完成 F3 多文件路径长度程序；练一次冲突解决和 revert；用 <code>ros2 pkg prefix</code> 找到实际安装位置。列出完整比赛工程目前缺什么依赖，先不启动实车入口。</p>
+<p><strong>交与验</strong>：T0 仓库与构建记录，排除生成目录。导师故意让你在未 source 的新终端运行，你能说明并恢复。<strong>加餐</strong>：解释普通 executable 和可加载组件的构建差别。</p>
+<h2 id="3-topic-s1">第 3 周：写自己的 Topic 节点（S1）</h2>
+<p><strong>读</strong>：<a href="../../ros2-tf/">ROS2 课程通信部分</a>、<a href="../../self-study/ros2-systems/">ROS2 系统专题的通信单元</a>、<a href="../../assignments/reading-labs/">源码 R1</a>。C++ 只补当前用到的类、智能指针和回调。</p>
+<p><strong>做</strong>：教学发布者定时发递增计数，订阅者累计收到数量；用参数决定频率或前缀，写 launch；在 <code>/training</code> 下运行，比较相对名与绝对名。只读 <code>LoamInterfaceNode</code> 的构造函数与两个回调，不读完整 LIO。</p>
+<p><strong>交与验</strong>：代码、CMake/install、launch、接口表和一次改参数结果；能指出参数由哪里读取。<strong>加餐</strong>：R1 的 TF 初始化先后问题，只写源码推断与隔离复现设计。</p>
+<h2 id="4-action-s1-t1">第 4 周：通信故障与 Action 取消（S1 / T1）</h2>
+<p><strong>读</strong>：<a href="../../self-study/ros2-systems/">系统专题 QoS、Action</a>，回看 Topic/Service/Action 的区别。</p>
+<p><strong>做</strong>：修复教学节点的错 namespace 和不兼容 QoS；按 Humble Action 示例完成目标、反馈、结果、取消。把请求被接受和最终取消完成分别记录。</p>
+<p><strong>交与验</strong>：T1 证据包，两道故障都要有修复前后端点信息。口试“为什么 CLI 能看见 Topic，订阅回调却没有数据”。<strong>加餐</strong>：进度回调慢时，取消处理是否及时；在自己的节点测，不接底盘。</p>
+<h2 id="5-tf-s2">第 5 周：坐标、单位与 TF 发布权（S2）</h2>
+<p><strong>读</strong>：<a href="../../ros2-tf/">ROS2/TF 课程</a>、<a href="../../system/">系统 TF 表</a>、<a href="../../self-study/localization/">定位专题的向量与刚体变换</a>。</p>
+<p><strong>做</strong>：手算并编码 0、±90° 的二维旋转；画出本队 map/odom/base_footprint/chassis/gimbal_yaw/front_mid360/fake frame；每条 TF 标发布者和静态/动态。完成 <a href="../../assignments/reading-labs/">R2 的坐标计算</a>。</p>
+<p><strong>交与验</strong>：计算输入输出、TF 图、唯一发布权表；能区分 Topic namespace 与 frame 字符串。<strong>加餐</strong>：用逆变换验证往返一致性，报告数值误差。</p>
+<h2 id="6-s2-t2">第 6 周：时间、同步与运动（S2 / T2）</h2>
+<p><strong>读</strong>：<a href="../../self-study/ros2-systems/">ROS 时间与 TF 排障材料</a>、<a href="../../self-study/foundations/">F5 CSV 时间练习</a>。</p>
+<p><strong>做</strong>：教学节点生成静止、前进、侧移、旋转、组合运动；记录 Pose/Twist/TF。分别构造缺边和错时故障；静态 TF 已缓存时不能仅停发布者冒充断链。完成 <a href="../../assignments/reading-labs/">R5 时间例题</a>。</p>
+<p><strong>交与验</strong>：T2 五种运动证据、非正 dt 处理、断链与时间错误的排除依据。<strong>加餐</strong>：ROS time 暂停/回跳时应用计时与墙钟计时的区别。</p>
+<h2 id="7-s3-t3">第 7 周：从原始输入到里程计（S3 / T3）</h2>
+<p><strong>读</strong>：<a href="../../sensor-lio/">传感器与定位页第 1–3 节</a>，定位专题中的点云与 IMU 基础。</p>
+<p><strong>做</strong>：用已登记 bag 列 Topic/类型/频率/QoS/stamp/frame；追踪 <code>livox/lidar → Point-LIO → aft_mapped_to_init/cloud_registered → loam_interface</code>。区分 CustomMsg 和可视化 PointCloud2。</p>
+<p><strong>交与验</strong>：T3 输入体检表，能定位三个不同层的问题。无 bag 时先读接口、制作合成时间样本并登记“动态体检待资源”。<strong>加餐</strong>：合成含噪静止数据，估计均值/方差，不能当成 MID-360 实测噪声。</p>
+<h2 id="8-s3-t4">第 8 周：地图包、初始化与重定位（S3 / T4）</h2>
+<p><strong>读</strong>：<a href="../../sensor-lio/">传感器与定位页第 4–7 节</a>、<a href="../../assignments/reading-labs/">R3 地图路径题</a>。</p>
+<p><strong>做</strong>：登记 YAML+PGM+PCD、外参、输入 bag 和校验值；在隔离条件下同参数重跑两次，再单独改变 initialpose。解释建图分支的静态 map→odom 与定位分支 small_gicp 的区别。</p>
+<p><strong>交与验</strong>：T4 地图清单、重复结果与失败初始化样本；有 TF 但未收敛不算成功。缺配套 bag 时可先完成路径题和<a href="../../self-study/localization/">合成配准实验</a>。<strong>加餐</strong>：比较初值范围对 ICP/GICP 的影响，不急着换 LIO。</p>
+<h2 id="9-s4-t5">第 9 周：用小图学会搜索（S4 / T5）</h2>
+<p><strong>读</strong>：<a href="../../planning/">环境表达与规划</a>、<a href="../../self-study/planning-control/">规划控制专题搜索部分</a>。</p>
+<p><strong>做</strong>：实现四邻接 A*，输出代价、扩展数、耗时和路径；用 h=0 参照检查最优代价；完成 T5 的六类边界测试。</p>
+<p><strong>交与验</strong>：代码、固定地图、全部自动检查结果，解释无解退出与合法索引；说明为何不等于本队 Smac Hybrid。<strong>加餐</strong>：带权地形与启发式权重对照，分别记录是否最优和是否可行。</p>
+<h2 id="10-costmap-s4-t6">第 10 周：从地形点到 Costmap 格子（S4 / T6）</h2>
+<p><strong>读</strong>：<a href="../../planning/">规划页地形/Costmap 部分</a>、<a href="../../assignments/reading-labs/">R4 参数加载题</a>。</p>
+<p><strong>做</strong>：在同一场景分别改 footprint/半径、膨胀和地形阈值，保留基线与有效参数。找一个障碍，追踪其 <code>registered_scan → terrain_map → costmap</code> 表示；关注 intensity 的离地高度语义与输出 frame。</p>
+<p><strong>交与验</strong>：T6 四组对照，每组重复三次；能解释变化发生在哪层。无数据/仿真时先用小栅格演示膨胀，运行部分待资源。<strong>加餐</strong>：比较完整 footprint 和圆半径近似对窄通道的影响。</p>
+<h2 id="11-actionbt-s5">第 11 周：导航 Action、BT 与真实插件（S5）</h2>
+<p><strong>读</strong>：<a href="../../nav2/">Nav2 课程</a>、本队 <code>navigate_to_pose_w_replanning_and_recovery.xml</code>、系统专题 BT 单元。</p>
+<p><strong>做</strong>：画 Goal→BT→GridBased→FollowPath 图，写出插件全名；记录 lifecycle、反馈、失败、取消。沿 <code>navigation_launch.py</code> 分别画组合与非组合启动分支。</p>
+<p><strong>交与验</strong>：实际节点/Action/Path 记录和 BT 状态说明，能区分“节点存在”和“服务器 active”。<strong>加餐</strong>：用假动作节点演示 RUNNING/FAILURE/retry/cancel，不接导航输出。</p>
+<h2 id="12-s5-t7">第 12 周：速度坐标、限幅与输出缓存（S5 / T7）</h2>
+<p><strong>读</strong>：<a href="../../system/nav2-and-control-evidence/">源码审查证据</a>、<a href="../../assignments/reading-labs/">R2 完整题</a>、<a href="../../self-study/planning-control/">规划与控制专题</a>。</p>
+<p><strong>做</strong>：追踪 <code>cmd_vel_controller → cmd_vel_nav2_result → cmd_vel</code>；解释 velocity_smoother、fake 变换、自旋和外部串口。隔离观察零输入、取消与输入断流；完成一次可回退参数/launch 小改动。</p>
+<p><strong>交与验</strong>：T7 全链接口表、源码推断与实际观测分列、回退结果。停止路径未通过时如实记录，仍可完成诊断作业。<strong>加餐</strong>：离线全向 PID 实验；代码开发 T9 可在本关后选题。</p>
+<h2 id="13-s6">第 13 周：盲测诊断与台架准备（S6）</h2>
+<p><strong>读</strong>：<a href="../../debug-real/">Debug 与实车流程</a>，整理自己的前 12 周故障记录。</p>
+<p><strong>做</strong>：完成三道跨层陌生软件故障；每题先写一个假设和两条检查，再允许修改。由负责人核验急停、驱动使能、最终停止路径、控制权、场地和冻结阈值。</p>
+<p><strong>交与验</strong>：T8 盲测记录及准入检查单；未确认外部串口/停车指标，运动部分保持待验收。<strong>加餐</strong>：将一道题整理为现象→根因→修复→回归的知识库条目。</p>
+<h2 id="14-s6-t8">第 14 周：受控实车回归（S6 / T8）</h2>
+<p><strong>前置</strong>：T0–T7 通过且第 13 周台架与负责人签字齐备。阅读当天有效参数、场地地图、回退版本和停止阈值。</p>
+<p><strong>做</strong>：按 T8 值守完成前进/横移/旋转/到达/取消/停止后重启，每类至少三次；任何停止检查失败就中止。记录最终 Topic、底盘接收、动作与时间线。</p>
+<p><strong>交与验</strong>：全量结果与维护者签字，才能取得对应实车资格。无车时重复离线诊断，不能以仿真替代实车认证。<strong>加餐</strong>：分析重复结果差异，不提高运动上限来追求“更快”。</p>
+<h2 id="15-s7-t9">第 15 周：一项真实代码改动（S7 / T9）</h2>
+<p><strong>读</strong>：按选题进入<a href="../../self-study/localization/">定位</a>、<a href="../../self-study/planning-control/">规划控制</a>或<a href="../../self-study/ros2-systems/">系统</a>的一组指定材料。</p>
+<p><strong>做</strong>：与维护者确定一个可复现小问题；改前复现、最小修改、原故障回归、相邻正常输入、可审查 PR 和回退。日志补充、空输入、参数校验适合首题；超时/停车改动需共同定义接口责任。</p>
+<p><strong>交与验</strong>：T9 编译与实际回归证据，同伴复现。尚未上车的修改明确标注待实车。<strong>加餐</strong>：写一页算法适用性报告，给出保留现方案或更换的证据。</p>
+<h2 id="16-s7-t10">第 16 周：比赛演练与交接（S7 / T10）</h2>
+<p><strong>前置</strong>：已通过 S6，代码/地图/参数冻结，岗位和值守明确。阅读已有 Goal 协议与问题处理记录，不假定仓库有未实现的比赛决策功能。</p>
+<p><strong>做</strong>：从开机到任务、受控失败、恢复、归档走完整流程；按 T10 保留十次固定任务所有结果；另一名同学按说明接手复现。</p>
+<p><strong>交与验</strong>：交接清单、失败归因、回归记录与维护者确认。十次至少九次的教学门槛不代表比赛可靠性指标。<strong>加餐</strong>：选择下一阶段模块方向，给下一届留下一个合格作业和一个故障样例。</p>
+<h2 id="_1">每周复盘只回答四件事</h2>
+<ol>
+<li>我本周实际运行/阅读了哪份代码、哪个版本和输入？</li>
+<li>我预期什么、看到了什么，有哪条证据支持结论？</li>
+<li>我修复或排除了哪个原因，恢复基线了吗？</li>
+<li>下周需要补哪一个知识点或资源，由谁提供？</li>
+</ol>
+<p>报告可用<a href="../../maintenance/">统一模板</a>。导师关注独立判断与证据，不用看课时长、笔记页数或背公式数量作为合格依据。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../learning-route/" class="btn btn-neutral float-left" title="最终培训路线"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../environment/" class="btn btn-neutral float-right" title="环境与工程基础">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../learning-route/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../environment/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

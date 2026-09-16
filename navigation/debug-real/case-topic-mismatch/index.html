@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/debug-real/case-topic-mismatch/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Debug案例：Topic名字不匹配 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Debug\u6848\u4f8b\uff1aTopic\u540d\u5b57\u4e0d\u5339\u914d";
+        var mkdocs_page_input_path = "navigation/debug-real/case-topic-mismatch.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/debug-real/case-topic-mismatch/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Debug案例：Topic名字不匹配</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">学生任务：先记录证据，再改配置</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">导师解答：固定输入与已生成的证据</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">假设、排除与源码联系</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">最小修复、回归与回滚</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ros2-humble">ROS2 Humble 复验：端点检查与真实通信</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+      <li class="breadcrumb-item active">Debug案例：Topic名字不匹配</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="debug-1-topic">Debug 案例 1：能看到 Topic，订阅者却没有收到</h1>
+<p>这是一道可复现的教学故障题，适合 S1/S2，建议 45–60 分钟。Python 事件路由模型和配套 Humble 节点链路都已执行，结果见<a href="../../training/validation/">验证记录</a>。下文的固定 5 条消息与 JSON 日志来自 Python 模型，ROS 测试另以真实端点和实际接收判断；没有队内事故记录或 DDS 抓包。准备方式见<a href="../../training/workspace/">教学工作区</a>。</p>
+<h2 id="_1">学生任务：先记录证据，再改配置</h2>
+<p>发布者每次发送整数 1–5。故障与修复模式中，发布者全名都为 <code>/nav_training/sequence</code>，但故障模式接收数为零。请先运行 broken，查看完整输入与两端解析后的名称，提出至少三个可能解释，随后只改变一个输入配置。</p>
+<p>提交一页记录：运行命令及退出码、原始输入、发送/接收计数、首尾事件、假设与排除证据、最小改动、修复后的同输入回归、改变 namespace 后的回归、恢复故障的步骤。不要只交“把斜杠删掉了”。</p>
+<p>从 <code>knowledge-base</code> 根目录运行，Windows 用 <code>python</code>；Ubuntu 若只有 <code>python3</code>，替换命令首词即可。每次使用新的输出目录。</p>
+<pre><code class="language-bash">python training/cases/run_case.py topic-mismatch --mode broken --input training/cases/inputs/topic-mismatch.json --out-dir training/cases/runs/topic-broken-1 --check-contract
+</code></pre>
+<p>broken 的验收退出码应为 <strong>1</strong>；<code>events.jsonl</code> 与 <code>report.json</code> 仍会写出。程序没有调用网络或 ROS，不能把这些文件贴成 <code>ros2 topic echo</code> 的输出。</p>
+<h2 id="_2">导师解答：固定输入与已生成的证据</h2>
+<p>完整输入 <code>training/cases/inputs/topic-mismatch.json</code>：</p>
+<pre><code class="language-json">{
+  &quot;namespace&quot;: &quot;/nav_training&quot;,
+  &quot;publisher&quot;: &quot;sequence&quot;,
+  &quot;subscriber_broken&quot;: &quot;/sequence&quot;,
+  &quot;subscriber_fixed&quot;: &quot;sequence&quot;,
+  &quot;sequence&quot;: [1, 2, 3, 4, 5]
+}
+</code></pre>
+<p>该文件原始字节 SHA256 为 <code>8fba88fa72aac18568b43dabbe4562a21fa8ef6664225a0bbb8ce3381d357600</code>。改换换行或内容会改变输入校验值，这是正常现象。</p>
+<p>2026-09-14 在 Windows/Python 3.12.10 运行本脚本生成了 <code>training/cases/evidence/topic-mismatch/{broken,fixed}/</code>。以下是文件中的实际结果：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>broken</th>
+<th>fixed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>publisher</td>
+<td><code>/nav_training/sequence</code></td>
+<td><code>/nav_training/sequence</code></td>
+</tr>
+<tr>
+<td>subscriber</td>
+<td><code>/sequence</code></td>
+<td><code>/nav_training/sequence</code></td>
+</tr>
+<tr>
+<td>sent / received</td>
+<td>5 / 0</td>
+<td>5 / 5</td>
+</tr>
+<tr>
+<td>收到的序列</td>
+<td>空</td>
+<td>1, 2, 3, 4, 5</td>
+</tr>
+<tr>
+<td>contract_passed / 验收退出码</td>
+<td>false / 1</td>
+<td>true / 0</td>
+</tr>
+</tbody>
+</table>
+<p>broken 的第一条 <code>events.jsonl</code> 原文为：</p>
+<pre><code class="language-json">{&quot;delivered&quot;: false, &quot;index&quot;: 0, &quot;publisher&quot;: &quot;/nav_training/sequence&quot;, &quot;sequence&quot;: 1, &quot;subscriber&quot;: &quot;/sequence&quot;}
+</code></pre>
+<p><code>run_case.py::resolve_topic</code> 保留普通绝对名，将普通相对名拼接到 namespace；<code>run_topic</code> 只有在两个全名相等时投递事件。因此这里的 <code>delivered</code> 是程序执行出来的模型结果，不是操作系统或 DDS 返回的投递状态。模型不支持完整 ROS 名称展开、remap 或私有名 <code>~</code>。</p>
+<h2 id="_3">假设、排除与源码联系</h2>
+<table>
+<thead>
+<tr>
+<th>假设</th>
+<th>此次实际证据</th>
+<th>能得出的结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发布者没有发送</td>
+<td>同一个发布全名下有 5 条带序号事件</td>
+<td>在本模型中排除未发送</td>
+</tr>
+<tr>
+<td>订阅者解析到其他名称</td>
+<td>两端全名分别是 <code>/nav_training/sequence</code> 和 <code>/sequence</code></td>
+<td>与模型唯一投递条件直接冲突，是本题根因</td>
+</tr>
+<tr>
+<td>数据类型或 QoS 不兼容</td>
+<td>本模型不实现类型协商和 QoS</td>
+<td>不属于本模型的原因；真实 ROS 中仍须另查</td>
+</tr>
+<tr>
+<td>domain、发现或网络故障</td>
+<td>本模型没有网络和 DDS</td>
+<td>不能从本结果排除真实系统的网络问题</td>
+</tr>
+</tbody>
+</table>
+<p>固定源版本为 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/tree/183a4109b0de2030bb8970a54654937c8b039ba9">Navigation-2027@183a410</a>，完整 SHA <code>183a4109b0de2030bb8970a54654937c8b039ba9</code>。本题的 <code>sequence</code> 是新建教学接口，联系的是源码中真实存在的名称差异：</p>
+<ul>
+<li><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py#L50-L54">导航 reality launch</a> 默认 namespace 为 <code>red_standard_robot1</code>。</li>
+<li><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp#L105-L108">C++ 串口订阅</a>使用相对 <code>cmd_vel</code>，<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/launch/standard_robot_pp_ros2.launch.py#L74-L78">其 launch</a> 的 namespace 默认空。</li>
+<li><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/serial_node.py#L50-L56">根目录 Python 串口脚本</a>则订阅绝对 <code>/red_standard_robot1/cmd_vel</code>。不能因为代码中都含 <code>cmd_vel</code> 就当作连接同一端点。</li>
+</ul>
+<p>这些是只读源码事实，不能推断两份串口实现已在同一部署中同时运行。完整背景见<a href="../../system/nav2-and-control-evidence/">接口证据页</a>。本实验没有启动其中任一串口实现。</p>
+<h2 id="_4">最小修复、回归与回滚</h2>
+<p>修复是改变接收端配置，让其跟随教学 namespace：</p>
+<pre><code class="language-diff">- subscriber_topic = &quot;/sequence&quot;
++ subscriber_topic = &quot;sequence&quot;
+</code></pre>
+<p>本包 <code>--mode</code> 选择 JSON 中对应的订阅名；修复只改变接收端，消息列表与发送端不变。</p>
+<pre><code class="language-bash">python training/cases/run_case.py topic-mismatch --mode fixed --input training/cases/inputs/topic-mismatch.json --out-dir training/cases/runs/topic-fixed-1 --check-contract
+python -m unittest discover -s training/cases -p 'test_*.py' -v
+</code></pre>
+<p>fixed 退出 0、接收 5/5；共享案例套件共 10 个测试，其中本题覆盖相同发布者在两模式的计数，以及 namespace 改成 <code>/second_team</code>、输入 <code>[7,8]</code> 时 fixed 仍接收 2、broken 仍为 0。导师可以要求学生把固定输入复制到自用文件，换 namespace 后通过 <code>--input</code> 再跑一次。</p>
+<p>恢复故障时不用修改源码，重新以 <code>--mode broken</code> 和新目录 <code>training/cases/runs/topic-rollback-1</code> 运行原命令，应再次得到 0/5、退出 1。恢复正常再使用 fixed。输出目录已存在时返回 2，保留旧证据；不要把目录重用错误当作故障复现成功。</p>
+<h2 id="ros2-humble">ROS2 Humble 复验：端点检查与真实通信</h2>
+<p>在已按<a href="../../training/workspace/">工作区说明</a>构建并 source 的 Ubuntu 22.04/Humble 教学环境，使用 <code>nav_training</code> 包。远程 CI 已用 rclpy 检查真实发布/订阅端点，确认故障模式无接收、参数修复后恢复递增消息；以下 CLI 步骤供学生手动观察并记录自己的输出，不是 CI 终端日志的逐字抄录。两终端应采用相同、已确认空闲的教学 domain，仅启动教学节点。</p>
+<p>终端 A：</p>
+<pre><code class="language-bash">ros2 launch nav_training bad_topic.launch.py
+</code></pre>
+<p>终端 B：</p>
+<pre><code class="language-bash">ros2 node info /nav_training/sequence_source
+ros2 node info /nav_training/sequence_sink
+ros2 topic info /nav_training/sequence --verbose
+ros2 topic info /sequence --verbose
+ros2 topic echo /nav_training/sequence --once
+timeout 5 ros2 topic echo /nav_training/received --once
+</code></pre>
+<p>教学 publisher 发布 <code>std_msgs/msg/Int64</code>，sink 把真正收到的整数转发到 <code>/nav_training/received</code>。需实际记录 source/sink 的全名、类型和 QoS，以及两个 echo 的结果和退出码；超时通常返回 124，单次超时本身不能排除发现延迟。</p>
+<p>终端 A 按 Ctrl+C 停止本次 launch，再启动相同入口并只修复 sink 参数：</p>
+<pre><code class="language-bash">ros2 launch nav_training bad_topic.launch.py sink_topic:=sequence
+</code></pre>
+<p>重复终端 B 的端点检查，并采集 <code>/nav_training/received</code> 的多条递增整数。source 持续发布，ROS 计数受订阅建立时间影响，不以“恰好 5 条”验收；5/5 仅属于固定 Python 输入。ROS 回滚是停止本次 launch 后重新运行未加覆盖参数的 bad_topic 入口。保存自己的命令、端点与接收证据，并记录对应提交和运行环境。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="Debug、实车与比赛"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../case-stale-command/" class="btn btn-neutral float-right" title="Debug案例：旧速度再次输出">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../case-stale-command/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

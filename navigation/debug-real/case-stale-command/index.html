@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/debug-real/case-stale-command/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Debug案例：旧速度再次输出 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Debug\u6848\u4f8b\uff1a\u65e7\u901f\u5ea6\u518d\u6b21\u8f93\u51fa";
+        var mkdocs_page_input_path = "navigation/debug-real/case-stale-command.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/debug-real/case-stale-command/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Debug案例：旧速度再次输出</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">学生任务：零输出和缓存状态要分开观察</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">导师解答：完整输入与初始假设</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">实际生成的证据</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_4">假设与根因定位</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_5">最小修复与边界</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_6">同输入回归、正常功能与回滚</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+      <li class="breadcrumb-item active">Debug案例：旧速度再次输出</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="debug-2">Debug 案例 2：发过零命令，旧速度为什么再次输出</h1>
+<p>本题适合 S2 算式与 S5 状态分析，建议 60–90 分钟，是<a href="../../assignments/reading-labs/">源码练习 R2</a>的可执行版本。<strong>故障和修复都在 Python 教学状态机中实际运行；不是队内事故复盘，也没有验证生产 ROS 节点或车体停车。</strong> 本题只修复“零命令使旧缓存失效”这个契约，自旋与命令断流另行分析。</p>
+<h2 id="_1">学生任务：零输出和缓存状态要分开观察</h2>
+<p>已知初始 yaw=0、spin=0。先非零、再零、再同步回调，零之后禁止再次输出取消前的缓存；收到新的非零命令后应能正常恢复。</p>
+<p>先运行 broken，逐行写下输入、缓存、是否输出及输出值。重点比较 0.3、0.4、0.45 秒；不能只截取零命令那一行。提出至少三个解释，指出最小修复应改变什么状态，再验证修复没有吞掉后续正常命令。</p>
+<p>从 <code>knowledge-base</code> 根目录运行；仅需 Python 3.10+ 标准库。Ubuntu 按环境使用 <code>python3</code>。</p>
+<pre><code class="language-bash">python training/cases/run_case.py stale-command --mode broken --input training/cases/inputs/stale-command.json --out-dir training/cases/runs/stale-broken-1 --check-contract
+</code></pre>
+<p>预期验收退出码为 1，并输出 <code>events.jsonl</code> 和 <code>report.json</code>。提交命令、退出码、原始输入及 SHA256、完整状态表、假设/排除、最小修改、原故障与正常输入回归、回滚方法，以及自旋和 watchdog 的边界解释。</p>
+<h2 id="_2">导师解答：完整输入与初始假设</h2>
+<p><code>training/cases/inputs/stale-command.json</code> 的完整内容：</p>
+<pre><code class="language-json">{
+  &quot;initial_yaw&quot;: 0.0,
+  &quot;initial_spin&quot;: 0.0,
+  &quot;events&quot;: [
+    {&quot;at&quot;: 0.0, &quot;event&quot;: &quot;local_plan&quot;},
+    {&quot;at&quot;: 0.1, &quot;event&quot;: &quot;command&quot;, &quot;twist&quot;: [0.2, 0.0, 0.0]},
+    {&quot;at&quot;: 0.2, &quot;event&quot;: &quot;sync&quot;, &quot;yaw&quot;: 0.0},
+    {&quot;at&quot;: 0.3, &quot;event&quot;: &quot;command&quot;, &quot;twist&quot;: [0.0, 0.0, 0.0]},
+    {&quot;at&quot;: 0.4, &quot;event&quot;: &quot;sync&quot;, &quot;yaw&quot;: 0.0},
+    {&quot;at&quot;: 0.45, &quot;event&quot;: &quot;sync&quot;, &quot;yaw&quot;: 0.0},
+    {&quot;at&quot;: 0.46, &quot;event&quot;: &quot;local_plan&quot;},
+    {&quot;at&quot;: 0.47, &quot;event&quot;: &quot;command&quot;, &quot;twist&quot;: [0.0, 0.1, 0.0]},
+    {&quot;at&quot;: 0.48, &quot;event&quot;: &quot;sync&quot;, &quot;yaw&quot;: 0.0}
+  ]
+}
+</code></pre>
+<p>输入文件原始字节 SHA256 为 <code>1d542d4f5c6298712e52f2c57b3093334b68f27a0383d72bbb5db56515da14da</code>。<code>at</code> 是手工设定的逻辑秒数，不是采集到的时间戳；Twist 三分量依次为 <code>(vx m/s, vy m/s, wz rad/s)</code>。</p>
+<p>初始化使用已知 yaw、空缓存、<code>last_plan=None</code>，明确表示尚未收到 local_plan。<code>sync</code> 表示已经选择执行一次同步回调，<strong>不模拟消息过滤器配对，也不自动调用 localPlanCallback</strong>；需要更新时间时单独输入 <code>local_plan</code>。源节点启动时的未初始化角度、真实时钟、线程竞争、TF、上游 Nav2 和输出消费者都不在模型内。这个事件顺序用于检验一条可能的缓存路径，不声称实际 ROS 一定采用相同顺序。</p>
+<h2 id="_3">实际生成的证据</h2>
+<p>2026-09-14 在 Windows/Python 3.12.10 运行脚本，保存于 <code>training/cases/evidence/stale-command/{broken,fixed}/</code>。每行实际执行日志包含 <code>input</code>、<code>branch</code>、<code>cache_before</code>、<code>cache_after</code>、<code>output</code> 和 <code>stale_reissue</code>。<strong><code>output=null</code> 表示此回调没有发布，区别于发布 <code>[0,0,0]</code>。</strong></p>
+<table>
+<thead>
+<tr>
+<th>时间 / 输入</th>
+<th>broken 事件后缓存</th>
+<th>broken 输出</th>
+<th>fixed 事件后缓存</th>
+<th>fixed 输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.0 local_plan</td>
+<td>空</td>
+<td>无发布</td>
+<td>空</td>
+<td>无发布</td>
+</tr>
+<tr>
+<td>0.1 command <code>(0.2,0,0)</code></td>
+<td><code>(0.2,0,0)</code></td>
+<td>无发布</td>
+<td><code>(0.2,0,0)</code></td>
+<td>无发布</td>
+</tr>
+<tr>
+<td>0.2 sync</td>
+<td><code>(0.2,0,0)</code></td>
+<td><code>(0.2,0,0)</code></td>
+<td><code>(0.2,0,0)</code></td>
+<td><code>(0.2,0,0)</code></td>
+</tr>
+<tr>
+<td>0.3 command <code>(0,0,0)</code></td>
+<td><strong><code>(0.2,0,0)</code></strong></td>
+<td><code>(0,0,0)</code></td>
+<td><strong>空</strong></td>
+<td><code>(0,0,0)</code></td>
+</tr>
+<tr>
+<td>0.4 sync</td>
+<td><code>(0.2,0,0)</code></td>
+<td><strong><code>(0.2,0,0)</code></strong></td>
+<td>空</td>
+<td>无发布</td>
+</tr>
+<tr>
+<td>0.45 sync</td>
+<td><code>(0.2,0,0)</code></td>
+<td><strong><code>(0.2,0,0)</code></strong></td>
+<td>空</td>
+<td>无发布</td>
+</tr>
+<tr>
+<td>0.46 local_plan</td>
+<td><code>(0.2,0,0)</code></td>
+<td>无发布</td>
+<td>空</td>
+<td>无发布</td>
+</tr>
+<tr>
+<td>0.47 command <code>(0,0.1,0)</code></td>
+<td><code>(0,0.1,0)</code></td>
+<td>无发布</td>
+<td><code>(0,0.1,0)</code></td>
+<td>无发布</td>
+</tr>
+<tr>
+<td>0.48 sync</td>
+<td><code>(0,0.1,0)</code></td>
+<td><code>(0,0.1,0)</code></td>
+<td><code>(0,0.1,0)</code></td>
+<td><code>(0,0.1,0)</code></td>
+</tr>
+</tbody>
+</table>
+<p>broken 在零命令后的首个同步事件原文：</p>
+<pre><code class="language-json">{&quot;branch&quot;: &quot;sync_cached&quot;, &quot;cache_after&quot;: [0.2, 0.0, 0.0], &quot;cache_before&quot;: [0.2, 0.0, 0.0], &quot;index&quot;: 4, &quot;input&quot;: {&quot;at&quot;: 0.4, &quot;event&quot;: &quot;sync&quot;, &quot;yaw&quot;: 0.0}, &quot;output&quot;: [0.2, 0.0, 0.0], &quot;stale_reissue&quot;: true}
+</code></pre>
+<p>fixed 同一事件原文：</p>
+<pre><code class="language-json">{&quot;branch&quot;: &quot;sync_no_cache&quot;, &quot;cache_after&quot;: null, &quot;cache_before&quot;: null, &quot;index&quot;: 4, &quot;input&quot;: {&quot;at&quot;: 0.4, &quot;event&quot;: &quot;sync&quot;, &quot;yaw&quot;: 0.0}, &quot;output&quot;: null, &quot;stale_reissue&quot;: false}
+</code></pre>
+<p>两模式都是 9 个事件、1 条零命令、2 次零后同步、1 次正常恢复输出。broken 共输出 5 次、旧缓存重发 2 次，<code>contract_passed=false</code>；fixed 共输出 3 次、重发 0 次，<code>contract_passed=true</code>。判定同时要求出现零命令、后续同步和正常恢复，不以空输入或删除所有输出获得通过。</p>
+<h2 id="_4">假设与根因定位</h2>
+<table>
+<thead>
+<tr>
+<th>假设</th>
+<th>实际证据</th>
+<th>判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>零命令未到达</td>
+<td>0.3 秒日志进入 <code>zero_immediate</code> 并输出全零</td>
+<td>本模型中排除</td>
+</tr>
+<tr>
+<td>自旋偏置造成再次非零</td>
+<td>初始 spin=0，全部输入没有 spin 事件；再次输出的是 linear.x=0.2</td>
+<td>不是本次重发原因</td>
+</tr>
+<tr>
+<td>零之后收到新非零命令</td>
+<td>0.3–0.45 秒只有两个 sync，下一条非零在 0.47 秒</td>
+<td>排除该区间内的新命令</td>
+</tr>
+<tr>
+<td>旧缓存没有失效</td>
+<td>0.3 秒 <code>cache_after</code> 仍是 <code>(0.2,0,0)</code>，两个 sync 读取它</td>
+<td>与重发构成完整因果链</td>
+</tr>
+<tr>
+<td>真实同步器、DDS 或底盘再次发送</td>
+<td>本模型没有这些组件</td>
+<td>尚无运行证据，不能作外推结论</td>
+</tr>
+</tbody>
+</table>
+<p>只读源码固定为 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/tree/183a4109b0de2030bb8970a54654937c8b039ba9">Navigation-2027@183a410</a>，完整 SHA <code>183a4109b0de2030bb8970a54654937c8b039ba9</code>：</p>
+<table>
+<thead>
+<tr>
+<th>教学规则</th>
+<th>源文件位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EPSILON=1e-5</code>，local_plan 活动超时 0.5 秒</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L23-L24">fake_vel_transform.cpp L23–24</a></td>
+</tr>
+<tr>
+<td>零/活动超时立即发布，否则缓存；零分支没有清缓存</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L93-L110">cmdVelCallback L93–110</a></td>
+</tr>
+<tr>
+<td>local_plan 更新活动时间；同步回调读缓存再发布</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L112-L137">localPlanCallback / syncCallback L112–137</a></td>
+</tr>
+<tr>
+<td>自旋回调只改成员；旋转公式叠加 spin</td>
+<td><a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L80-L83">L80–83</a>、<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L147-L156">transformVelocity L147–156</a></td>
+</tr>
+</tbody>
+</table>
+<p>相关源码风险见<a href="../../system/nav2-and-control-evidence/">控制接口证据 R3/R4/R6/R7</a>。<code>training/cases/run_case.py::CacheModel.step</code> 是这些规则的有意缩小版本，<code>run_stale</code> 执行输入并记录真实模型状态。源导航仓库保持只读。</p>
+<h2 id="_5">最小修复与边界</h2>
+<p>本题契约是“收到按 EPSILON 判定的零命令后，取消之前缓存，直至新非零命令重新赋值”。教学脚本实际修复位于立即发布分支：</p>
+<pre><code class="language-python">if zero or inactive:
+    if zero and self.mode == &quot;fixed&quot;:
+        self.cache = None
+    # 随后按原公式立即输出当前输入
+</code></pre>
+<p>对应 C++ 的最小修改建议是在 <code>cmdVelCallback</code> 现有互斥锁保护下、求出 <code>is_zero_vel</code> 后增加以下三行。<strong>这是审查用建议，不是已经修改、编译或验证的生产补丁。</strong></p>
+<pre><code class="language-diff">+ if (is_zero_vel) {
++   latest_cmd_vel_.reset();
++ }
+  if (
+    is_zero_vel ||
+    (rclcpp::Clock().now() - last_controller_activate_time_).seconds() &gt; CONTROLLER_TIMEOUT) {
+</code></pre>
+<p>清缓存保留原来的零输入立即发布与正常命令路径。以下问题仍独立存在，不能因本题通过就声称完整停止链成立：</p>
+<ul>
+<li>spin=0.5 时，全零输入仍输出角速度 0.5；<code>spin</code> 事件只改成员，不立即发布。yaw=π/2、输入 <code>(0.2,0,0)</code>、spin=0.5 时，输出约 <code>(0,-0.2,0.5)</code>。</li>
+<li><code>CONTROLLER_TIMEOUT</code> 使用 local_plan 活动年龄且比较为 <code>&gt;0.5</code>。活动刚好过去 0.5 秒时非零仍走缓存；<code>sync</code> 不检查命令年龄。测试中 at=0 更新 plan、at=0.5 缓存 <code>(0.2,0,0)</code>、at=9 直接调用 sync，仍输出该缓存。这是回调级边界测试，不是实际消息配对复现。</li>
+<li>三个分量绝对值都严格小于 <code>1e-5</code> 才按零处理；<code>1e-6</code> 清缓存，但仍按原值立即变换；恰好 <code>1e-5</code> 不按零处理。</li>
+<li>没有后续发布不等于消费者停止，串口缓存、固件 watchdog、取消与控制权协议需要各自的实测和验收。</li>
+</ul>
+<h2 id="_6">同输入回归、正常功能与回滚</h2>
+<pre><code class="language-bash">python training/cases/run_case.py stale-command --mode fixed --input training/cases/inputs/stale-command.json --out-dir training/cases/runs/stale-fixed-1 --check-contract
+python -m unittest discover -s training/cases -p 'test_*.py' -v
+</code></pre>
+<p>fixed 验收退出 0。共享案例套件共 10 个行为测试，缓存相关测试覆盖零后两次同步无重发、后续侧移正常、旋转缓存、近零/阈值边界、旋转加自旋、spin 不立即发布、local_plan 超时边界，以及不接受倒序时间和非有限速度。两模式都会在测试中执行，broken 的已知重发应被检出。</p>
+<p>恢复故障时以新目录 <code>training/cases/runs/stale-rollback-1</code> 重跑首条 broken 命令，应再次得到 2 次旧缓存重发、退出 1；再以 fixed 和新目录恢复通过。输出目录已存在会返回 2，程序不会覆盖旧记录。没有必要改动源导航仓库来完成回滚练习。</p>
+<p>若推进真实 ROS 修复，需要另外记录原节点的输入、local_plan、同步 odometry、最终输出和回调顺序，在不连接驱动的独立环境先复现，再测试上述停止协议。当前<a href="../../training/validation/">验证状态</a>中，生产节点编译/同步复现/物理停止仍为待验证。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../case-topic-mismatch/" class="btn btn-neutral float-left" title="Debug案例：Topic名字不匹配"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../assignments/" class="btn btn-neutral float-right" title="实践任务与考核">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../case-topic-mismatch/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../assignments/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

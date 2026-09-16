@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/self-study/foundations/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Linux、Git与编程基础 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Linux\u3001Git\u4e0e\u7f16\u7a0b\u57fa\u7840";
+        var mkdocs_page_input_path = "navigation/self-study/foundations.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/self-study/foundations/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >自学与进阶</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Linux、Git与编程基础</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#f135">F1：终端、文件与进程（必学，3–5 小时）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#f2git-34">F2：Git 变更与恢复（必学，3–4 小时）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#f3c-812">F3：C++ 最小语法与读代码顺序（必学，分散 8–12 小时）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#f4cmake-amentcolcon-34">F4：CMake 到 ament/colcon 的桥梁（必学，3–4 小时）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#f5python-35">F5：Python 阅读与实验工具（必学最小部分，3–5 小时）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#f636">F6：从日志到调试器（了解到进阶，3–6 小时）</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">完成基础补课之后</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+          <li class="breadcrumb-item">自学与进阶</li>
+      <li class="breadcrumb-item active">Linux、Git与编程基础</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">基础自学：学到能读节点、改小代码为止</h1>
+<p>适合 S0–S2，也可在 T9 前补缺。已会的部分用交付证明跳过；完全没有编程经验时，前两周只做最小程序，不强行与有竞赛编程基础的同学同速。页面中的时间是教学估算，包含指定练习，不包含系统安装和网络排障。</p>
+<h2 id="f135">F1：终端、文件与进程（必学，3–5 小时）</h2>
+<p>先读队内 <a href="../../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux 基础</a>，再选 MIT Missing Semester 的 <a href="https://missing.csail.mit.edu/2020/course-shell/">The Shell</a> 中路径、管道和重定向，以及 <a href="https://missing.csail.mit.edu/2020/shell-tools/">Shell Tools and Scripting</a> 中查找文件、搜索内容与 shell 函数。用 Bash 练习，不将命令直接贴到 PowerShell。</p>
+<p><strong>做什么</strong>：在个人练习目录建立 <code>src/config/reports</code>，编写一个脚本输出日期、所在目录、Git commit 和 <code>ROS_DISTRO</code>；允许目录名含空格。将日志写入文件，用 <code>rg -n</code> 定位错误文本；比较标准输出和标准错误。脚本不采集口令、token 或整份环境变量。</p>
+<p><strong>过关</strong>：换一个工作目录仍可定位文件；故意给不存在的路径时能识别非零退出状态；能解释 <code>&gt;</code> 覆盖和 <code>&gt;&gt;</code> 追加。暂不要求熟练 Vim、复杂正则或 shell 花式语法。</p>
+<p>学有余力再读 <a href="https://missing.csail.mit.edu/2020/command-line/">Command-line Environment</a> 的进程/信号、终端复用与 SSH：在教学程序上区分 Ctrl+C、后台运行、进程仍存在。回到<a href="../../debug-real/">实车页</a>解释“终端退出”和“底盘停止”为何不是同一个检查项。</p>
+<h2 id="f2git-34">F2：Git 变更与恢复（必学，3–4 小时）</h2>
+<p>官方中文 Pro Git 指定阅读：<a href="https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93">2.2 记录更新</a>、<a href="https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E6%92%A4%E6%B6%88%E6%93%8D%E4%BD%9C">2.4 撤消操作</a>、<a href="https://git-scm.com/book/zh/v2/Git-%E5%88%86%E6%94%AF-%E5%88%86%E6%94%AF%E7%9A%84%E6%96%B0%E5%BB%BA%E4%B8%8E%E5%90%88%E5%B9%B6">3.2 分支的新建与合并</a>。先看工作区、暂存区、commit 和冲突；历史重写暂缓。</p>
+<p><strong>做什么</strong>：在练习仓库两个分支改同一参数说明，制造并解决冲突；保留双方有用内容。提交一次错误数值，再用 <code>git revert</code> 生成恢复提交；对比恢复前后文件。给自己的 PR 写清问题、修改、验证命令。</p>
+<p><strong>过关</strong>：口头解释为什么 <code>git diff</code> 和 <code>git diff --cached</code> 不同；展示提交图与恢复结果；<code>.gitignore</code> 排除 <code>build/install/log</code> 和大数据。不要在共享比赛分支练习强制推送或丢弃未提交文件。</p>
+<h2 id="f3c-812">F3：C++ 最小语法与读代码顺序（必学，分散 8–12 小时）</h2>
+<p>零编程基础先在 <a href="https://www.learncpp.com/">LearnCpp 目录</a> 按标题读第 1 章变量/初始化/输入输出，第 2 章函数/参数/多文件，以及第 8 章 if、for、while。先写“读入 x/y，输出距离”的命令行程序，再进入下表；不要直接跳到智能指针例子。</p>
+<table>
+<thead>
+<tr>
+<th>读哪部分</th>
+<th>读完马上做什么</th>
+<th>对应本队代码与停止条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.learncpp.com/cpp-tutorial/introduction-to-the-compiler-linker-and-libraries/">0.5 编译器、链接器和库</a>、<a href="https://www.learncpp.com/cpp-tutorial/header-files/">2.11 头文件</a></td>
+<td>把距离函数拆成 <code>.hpp/.cpp/main.cpp</code>，分别制造漏声明、漏实现两类错误</td>
+<td>能分辨编译错误与链接错误，停止刷编译器原理</td>
+</tr>
+<tr>
+<td><a href="https://www.learncpp.com/cpp-tutorial/pass-by-const-lvalue-reference/">12.6 const 引用传参</a>；不熟指针先补同章 12.3–12.8</td>
+<td>对一个点数组分别按值/const 引用传入；说明哪种允许修改和可能复制</td>
+<td>看懂回调参数与只读消息，不要求实现容器内存管理</td>
+</tr>
+<tr>
+<td><a href="https://www.learncpp.com/cpp-tutorial/introduction-to-classes/">14.2 类</a>、<a href="https://www.learncpp.com/cpp-tutorial/constructor-member-initializer-lists/">14.10 初始化列表</a></td>
+<td>写 <code>Pose2D</code>，构造时初始化 x/y/yaw；列出对象创建到销毁顺序</td>
+<td>读 <code>LoamInterfaceNode</code> 构造函数，找到成员、参数和 pub/sub</td>
+</tr>
+<tr>
+<td><a href="https://www.learncpp.com/cpp-tutorial/introduction-to-stdvector-and-list-constructors/">16.2 std::vector</a></td>
+<td>读入若干路点，空路径返回明确错误；检查索引范围</td>
+<td>为 T5 路径容器与 T9 空输入处理做准备</td>
+</tr>
+<tr>
+<td><a href="https://www.learncpp.com/cpp-tutorial/lambda-captures/">20.7 Lambda captures</a>；先看页面前置 lambda 入门</td>
+<td>写一个捕获阈值的函数，比较按值和按引用修改后的输出</td>
+<td>能说明回调捕获对象是否仍存活，不要求复杂泛型 lambda</td>
+</tr>
+<tr>
+<td><a href="https://www.learncpp.com/cpp-tutorial/stdunique_ptr/">22.5 unique_ptr</a>、<a href="https://www.learncpp.com/cpp-tutorial/stdshared_ptr/">22.6 shared_ptr</a></td>
+<td>画消息、订阅对象、节点成员的所有权关系，解释为何不用裸 <code>new/delete</code> 管理每个对象</td>
+<td>读 <code>make_unique</code>、<code>SharedPtr/ConstSharedPtr</code>，先理解生命周期，再学多线程</td>
+</tr>
+</tbody>
+</table>
+<p>本队并非统一使用最新 C++：例如 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/CMakeLists.txt">loam_interface CMake</a> 指定 C++14，<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/CMakeLists.txt">pb_nav2_plugins CMake</a> 指定 C++17。教程中的 C++20/23 写法不自动适用；以所改包和真实编译命令为准。</p>
+<p><strong>综合小作业</strong>：给 <code>Pose2D</code> 数组实现路径长度函数，输入 <code>(0,0),(3,4),(3,8)</code> 应得 <code>9</code>；单点得 <code>0</code>，空输入按自己写明的接口处理。使用 <code>-Wall -Wextra</code> 构建并解释警告。不要将“教程例子全能运行”当作读懂本队异步回调。</p>
+<h2 id="f4cmake-amentcolcon-34">F4：CMake 到 ament/colcon 的桥梁（必学，3–4 小时）</h2>
+<p>使用 CMake 3.22 教程的 <a href="https://cmake.org/cmake/help/v3.22/guide/tutorial/A%20Basic%20Starting%20Point.html">Step 1</a>、<a href="https://cmake.org/cmake/help/v3.22/guide/tutorial/Adding%20a%20Library.html">Step 2</a>、<a href="https://cmake.org/cmake/help/v3.22/guide/tutorial/Adding%20Usage%20Requirements%20for%20a%20Library.html">Step 3</a>，重点是目标、源文件、链接库和头文件使用要求。后续打包、生成器表达式、交叉编译按需查阅。</p>
+<p><strong>做什么</strong>：把 F3 函数构建为一个库和一个可执行文件；从新的构建目录编译。然后回到 <a href="../../onboarding/environment/">S0 小包</a>，在教学包里添加 executable、ament 依赖与 install 规则。再读 <code>loam_interface</code> 的 <code>ament_auto_add_library</code> 和 <code>rclcpp_components_register_node</code>，解释它为什么还可以作为组件加载。</p>
+<p><strong>过关</strong>：在构建日志找到真实的编译命令；说清 <code>package.xml</code> 依赖声明、CMake 目标、<code>colcon</code> 工作区构建的分工。能定位“找不到头文件”“undefined reference”“ros2 run 找不到 executable”的不同处理位置。无需背完整 CMake 命令表。</p>
+<h2 id="f5python-35">F5：Python 阅读与实验工具（必学最小部分，3–5 小时）</h2>
+<p>Python 官方教程面向已有一些编程基础的读者。先完成 F3 的函数与循环，再读 Python 3.10 中文版 <a href="https://docs.python.org/zh-cn/3.10/tutorial/controlflow.html">第 4 章</a> 的 for/range/函数定义、<a href="https://docs.python.org/zh-cn/3.10/tutorial/datastructures.html">第 5 章</a> 的列表和字典、<a href="https://docs.python.org/zh-cn/3.10/tutorial/inputoutput.html">第 7 章</a> 的文件读写、<a href="https://docs.python.org/zh-cn/3.10/tutorial/errors.html">第 8 章</a> 的异常。需要 import/类时再查<a href="https://docs.python.org/zh-cn/3.10/tutorial/index.html">目录</a>第 6、9 章。</p>
+<p><strong>做什么</strong>：用 Python 标准库读取 CSV，列为 <code>stamp_s,x_m,y_m</code>，输出每段 dt 和平面速度。固定样本为 <code>(0,0,0),(1,3,4),(1,3,4),(0.5,3,4)</code>：第一段速度为 <code>5 m/s</code>，后两段应报告重复/回跳并按写明策略处理，不输出无穷大或偷偷取绝对值。</p>
+<p><strong>对应代码</strong>：读 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py">reality launch</a> 的函数、字典、路径组合和 <code>LaunchConfiguration</code>。区分普通 Python 字符串与 launch 在运行上下文求值的对象；能找到参数默认值、传递位置和覆盖点。数据分析工具以后再加，不为读 launch 先学完整科学计算栈。</p>
+<h2 id="f636">F6：从日志到调试器（了解到进阶，3–6 小时）</h2>
+<p>读 <a href="https://missing.csail.mit.edu/2020/debugging-profiling/">Missing Semester Debugging and Profiling</a> 的调试、日志和性能测量部分。用自己的路径长度程序练习：断点停在入口→查看实参→单步到计算→检查调用栈。让空数组触发自己定义的错误，展示错误发生位置。</p>
+<p>初学停止于“能定位到出问题的函数和数据”；需要处理节点卡顿、内存或回调阻塞时进入 <a href="../ros2-systems/">ROS2 系统专题</a>。优化前先保存测量基线，不能凭 CPU 高就重写算法。</p>
+<h2 id="_2">完成基础补课之后</h2>
+<p>拿 <a href="../../assignments/reading-labs/">源码练习 R1</a> 检验自己能否读出一个真实节点的接口。还不能解释智能指针或回调，就只补对应 F3 行；不重新从整本 C++ 第一页开始。概念笔记应包含英文名、一个例子和本队文件路径，方便下次遇到直接查。</p>
+<p>以上资源均有免费正文；本页按 2026-09-14 可见标题核对。课程页章节会调整，以链接标题和自己保存的学习记录为准。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="如何选资料与方向"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../localization/" class="btn btn-neutral float-right" title="数学、点云与定位">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../localization/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

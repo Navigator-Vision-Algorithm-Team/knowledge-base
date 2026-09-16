@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/ros2-tf/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>ROS2、TF、时间与运动 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "ROS2\u3001TF\u3001\u65f6\u95f4\u4e0e\u8fd0\u52a8";
+        var mkdocs_page_input_path = "navigation/ros2-tf/README.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/ros2-tf/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/validation/">验证状态与复验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">ROS2、TF、时间与运动</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 第一个自己的节点</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-tf">2. TF 与命名空间</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3">3. 理想全向运动模型</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-bag-qos">4. bag、时间与 QoS 一起学</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_1">录制：先有清单，再收数据</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">回放分为两种，不能混在一起</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 常见错误与通过标准</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+      <li class="breadcrumb-item active">ROS2、TF、时间与运动</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="s1s2ros2tf">S1–S2：ROS2、TF、时间与全向运动</h1>
+<p>前置：<a href="../onboarding/environment/">最小环境</a>已通过。目标是写小节点、看懂通信关系，并用实验区分通信、坐标和时间问题。先在独立开发机完成；本页的教学 Topic 不接真实底盘。</p>
+<h2 id="1">1. 第一个自己的节点</h2>
+<p>T1 在 <code>nav_training_ws</code> 添加 publisher/subscriber：发布带递增序号的数据，订阅端输出序号、接收时间和计数。再把发布频率设为参数，用 Python launch 同时启动节点、设置 namespace 和 remap。</p>
+<p>从空包到可运行代码，按顺序做三个官方 Humble 章节：<a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.rst">C++ pub/sub</a> → <a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Beginner-Client-Libraries/Using-Parameters-In-A-Class-CPP.rst">C++ 参数</a> → <a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Launch/Creating-Launch-Files.rst">launch 入门</a>。章节中的包名可以保留在另一个练习包里；迁移到 <code>nav_training</code> 时要一致修改 CMake、依赖与运行名。</p>
+<p>在 <code>src/training_publisher.cpp</code>、<code>src/training_subscriber.cpp</code> 完成自己的节点后，CMakeLists.txt 在 <code>ament_package()</code> 之前至少需要以下目标和安装规则；这段只负责构建和安装，不会自动生成节点源码：</p>
+<pre><code class="language-cmake">add_executable(training_publisher src/training_publisher.cpp)
+ament_target_dependencies(training_publisher rclcpp std_msgs)
+add_executable(training_subscriber src/training_subscriber.cpp)
+ament_target_dependencies(training_subscriber rclcpp std_msgs)
+install(TARGETS training_publisher training_subscriber
+  DESTINATION lib/${PROJECT_NAME})
+# 创建 launch 目录并保存 training.launch.py 后再加入这一行
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
+</code></pre>
+<p>重新 <code>colcon build --symlink-install --packages-select nav_training</code>，source 后分别用 <code>ros2 run nav_training training_publisher</code>、<code>ros2 run nav_training training_subscriber</code> 验证，再用 <code>ros2 launch nav_training training.launch.py</code> 验证一起启动。节点名和 Topic 在源码/launch 中设为下例所用名称，或用查询结果替换。T1 先用启动参数设置频率，动态改频率是扩展项，不能以参数值改变就认为定时器周期自动改变。</p>
+<p>必学：workspace/package/node、消息类型、Topic、参数、Service、Action、QoS、日志和 launch。Service 适合短请求，Action 适合有持续反馈、可取消的长任务；导航 Goal 的“已接受”不等于“已到达”。</p>
+<pre><code class="language-bash"># 在两个教学节点已运行的终端旁执行
+ros2 node list
+ros2 node info /training_publisher
+ros2 topic list -t
+ros2 topic info /training_data --verbose
+ros2 topic echo /training_data --once
+ros2 topic hz /training_data
+ros2 param list /training_publisher
+ros2 action list -t
+</code></pre>
+<p>名称由自己的代码决定，若不一致先用 list 查询，不照抄改生产配置。故障练习：将订阅 Topic 改错一次，再构造 Best Effort 发布/Reliable 订阅不兼容一次；先保留现象、端点与 QoS 证据再修。<code>hz</code> 是观察端收到的数据速率，受 QoS 和工具负载影响，不能直接当作驱动真实采样率。</p>
+<p>真实代码从 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp">loam_interface</a> 开始读：找构造函数、declare/get_parameter、create_subscription、回调、create_publisher。先不推导滤波公式。</p>
+<p>Action 练习先按<a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Creating-an-Action.rst">自定义 Action</a>建立 <code>action_tutorials_interfaces/Fibonacci.action</code>，再跟随 <a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Writing-an-Action-Server-Client/Cpp.rst">Humble C++ Action 教程</a>编译服务端/客户端。GitHub 原文的 <code>literalinclude</code> 指向源码，可直接查看 <a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Writing-an-Action-Server-Client/scripts/client.cpp">client.cpp</a> 和 <a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Writing-an-Action-Server-Client/scripts/server.cpp">server.cpp</a>。</p>
+<p>官方客户端通常只发目标，T1 需要额外实现取消：在 goal_response 回调保存非空 goal_handle，在第一次或第二次 feedback 回调中用布尔标记保证只请求一次 <code>client_ptr_-&gt;async_cancel_goal(goal_handle)</code>；不要在回调里阻塞等待。记录取消响应，并在 result 回调检查 <code>rclcpp_action::ResultCode::CANCELED</code>。服务端需要接受取消，并在执行循环中检查 <code>is_canceling()</code> 后调用 <code>canceled(result)</code>。选择足够长的 Fibonacci 任务避免取消前已完成。提交自己的改动与实际状态，不能只关闭客户端充当取消。</p>
+<h2 id="2-tf">2. TF 与命名空间</h2>
+<p>坐标变换采用 <code>p_A = T_A_B · p_B</code>：T_A_B 把 B 中的坐标转换到 A。理解平移、旋转、齐次变换和四元数归一化；不需要先学李群推导。米、秒、弧度与右手系见 <a href="https://github.com/ros-infrastructure/rep/blob/master/rep-0103.rst">REP-103</a>。</p>
+<p>用教学帧 <code>training_base</code>、<code>training_lidar</code> 做静态实验，避免和实车帧重名：</p>
+<pre><code class="language-bash">ros2 run tf2_ros static_transform_publisher --x 0.2 --y 0.0 --z 0.3 \
+  --roll 0 --pitch 0 --yaw 0 \
+  --frame-id training_base --child-frame-id training_lidar
+</code></pre>
+<p>另一个终端运行 <code>ros2 run tf2_ros tf2_echo training_base training_lidar</code>，应看到设定平移和单位旋转。RViz Fixed Frame 设 <code>training_base</code>，添加 TF，解释为什么雷达原点在该位置。不要把所有传感器机械地串成一条链；本队树见<a href="../system/">系统地图</a>。</p>
+<p>本队 bringup 将 TF topic 放入机器人 namespace，但 frame ID 保留 <code>map</code>/<code>odom</code> 等。只读检查示例（节点已启动且使用默认 namespace）：</p>
+<pre><code class="language-bash">export ROBOT_NS=/red_standard_robot1
+ros2 run tf2_ros tf2_echo map base_footprint --ros-args \
+  -r /tf:=$ROBOT_NS/tf -r /tf_static:=$ROBOT_NS/tf_static
+ros2 run tf2_tools view_frames --ros-args \
+  -r /tf:=$ROBOT_NS/tf -r /tf_static:=$ROBOT_NS/tf_static
+ros2 topic info &quot;$ROBOT_NS/tf&quot; --verbose
+ros2 topic info &quot;$ROBOT_NS/tf_static&quot; --verbose
+</code></pre>
+<p>工具参数以本机 <code>--help</code> 为准。若回放，工具也需要适配回放时间；不要同时混入另一台机器同名帧。报告每条边的发布者、静态/动态、时间源和所属模式；一个 child 在同一树里不能有两个父亲。</p>
+<h2 id="3">3. 理想全向运动模型</h2>
+<p>T2 自写教学节点：输入 <code>/training/cmd_vel</code>（Twist），输出 <code>/training/odom</code>（Odometry）和 <code>training_odom→training_base</code> TF；用实际 dt 积分。</p>
+<p>创建独立运动包可用 <code>ros2 pkg create --build-type ament_cmake nav_training_motion --dependencies rclcpp geometry_msgs nav_msgs tf2 tf2_ros</code>。若沿用旧包，将这些依赖加入 package.xml、CMake 的 find_package 和 ament_target_dependencies；消息与 TF 发布方式参考<a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Tf2/Writing-A-Tf2-Broadcaster-Cpp.rst">Humble C++ tf2 广播器</a>。</p>
+<pre><code class="language-text">xdot = cos(yaw) * vx - sin(yaw) * vy
+ydot = sin(yaw) * vx + cos(yaw) * vy
+yawdot = wz
+x += xdot * dt; y += ydot * dt; yaw += wz * dt
+</code></pre>
+<p>vx/vy 是机器人坐标系速度；Odometry 的 pose 对应 header.frame_id，twist 按 child_frame_id 语义填写。处理第一帧、dt≤0、时钟回跳、输入超时和角度归一化。至少做直行、侧移、纯旋转、yaw=90° 后前进、组合运动五例。</p>
+<p>这只是运动积分和消息接口教学。没有轮速反馈、碰撞、打滑和传感器噪声，不能称为真实里程计，也不能用于给 Nav2 实车验收打分。</p>
+<h2 id="4-bag-qos">4. bag、时间与 QoS 一起学</h2>
+<p>先读 <a href="https://design.ros2.org/articles/clock_and_time.html">ROS 时间设计</a>、<a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Concepts/Intermediate/About-Quality-of-Service-Settings.rst">Humble QoS</a>、<a href="https://github.com/ros2/rosbag2/tree/humble">rosbag2 Humble</a>。</p>
+<h3 id="_1">录制：先有清单，再收数据</h3>
+<p>S1 先录自己的 <code>/training_data</code>：<code>ros2 bag record -o training_intro /training_data</code>，结束后 <code>ros2 bag info training_intro</code>，检查类型、时长、数量。后续由负责人采集本队原始 LiDAR/IMU、关节状态、TF、定位输出及必要导航诊断数据，按<a href="../maintenance/">数据清单</a>登记。</p>
+<p>不要无条件给实车录制加 <code>--use-sim-time</code>；只有原系统依赖仿真时钟且 <code>/clock</code> 正常时才使用相应选项。录制完成当场检查关键 topic 和静态 TF 是否齐全。</p>
+<h3 id="_2">回放分为两种，不能混在一起</h3>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>回放什么</th>
+<th>同时不应启动什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>系统观察</td>
+<td>已记录的输入、输出、完整 TF；输出接 RViz/观察工具</td>
+<td>同名算法输出发布者与底盘执行端</td>
+</tr>
+<tr>
+<td>重跑算法</td>
+<td>原始 LiDAR/IMU 和必要关节/静态 TF；具体按本次算法输入白名单</td>
+<td>旧 LIO、旧 map→odom、旧 odom→base TF 等与重算结果重复的发布者</td>
+</tr>
+</tbody>
+</table>
+<p>在独立开发机/独立 ROS domain 中进行，不加载真实串口和驱动执行端。先执行 <code>ros2 bag info BAG_DIR</code>，这里 <code>BAG_DIR</code> 替换为已登记数据集路径。再根据清单准备节点的 <code>use_sim_time=true</code>，最后 <code>ros2 bag play BAG_DIR --clock --topics ...</code>（<code>...</code> 必须替换成数据集中确认过的白名单；完整语法查本机帮助）。同一回放环境只保留一个预期 <code>/clock</code> 源。</p>
+<p><code>--clock</code> 不会修好传感器原始错误时间戳。回放暂停/跳转/重播会考验节点状态，重新开始实验时必要地重启算法，记录预热区间。bag 不响应新 cmd_vel，不能证明闭环控制或避障成功。</p>
+<p>先用自己的教学数据走完整命令：停止原来的 publisher，在保存了 <code>training_intro</code> 的目录执行 <code>ros2 bag play training_intro --clock --topics /training_data</code>；另一终端执行 <code>ros2 topic echo /training_data</code>，应重新看到录制的序号。需要检查依赖 ROS 时间的订阅节点时，用 <code>ros2 run nav_training training_subscriber --ros-args -p use_sim_time:=true</code> 启动，并通过 <code>ros2 param get /training_subscriber use_sim_time</code> 验证。T2 的 TF bag 可用 <code>rviz2 --ros-args -p use_sim_time:=true</code> 观察，Fixed Frame 设 <code>training_odom</code>；<code>ros2 param get /rviz2 use_sim_time</code> 和 <code>ros2 topic echo /clock --once</code> 用于核对时间源。S1 的 std_msgs 序号 bag 不包含 TF，不能要求它在 RViz 显示机器人。</p>
+<p>QoS 先通过端点证据定位。仅在确实不兼容时，按照<a href="https://github.com/ros2/ros2_documentation/blob/humble/source/How-To-Guides/Overriding-QoS-Policies-For-Recording-And-Playback.rst">官方覆盖说明</a>创建覆盖 YAML；<code>/tf_static</code> 的 transient local 历史数据也要验证。</p>
+<h2 id="5">5. 常见错误与通过标准</h2>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>优先检查</th>
+<th>不应直接做</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>能看到 Topic，但订阅没数据</td>
+<td>完整名字、类型、端点 QoS、发布计数</td>
+<td>先重装 ROS</td>
+</tr>
+<tr>
+<td>TF 树有边但查某个时刻失败</td>
+<td>header.stamp、use_sim_time、/clock、缓存、数据是否停止</td>
+<td>随便加大 tolerance</td>
+</tr>
+<tr>
+<td>单车正常，多机帧乱</td>
+<td>ROS domain、namespace、TF topic remap、frame ID、重复发布者</td>
+<td>把所有 topic 改成全局名</td>
+</tr>
+<tr>
+<td>侧移方向错</td>
+<td>vx/vy 定义、yaw 旋转、接口坐标约定</td>
+<td>直接把某轴乘 -1 掩盖问题</td>
+</tr>
+<tr>
+<td>倍速回放速度变了</td>
+<td>时间差分使用消息 stamp 还是墙钟/steady_clock</td>
+<td>把回放结果当实车速度结论</td>
+</tr>
+</tbody>
+</table>
+<p>按 <a href="../assignments/">T1–T3</a>提交代码、TF 图和至少两个不同根因的故障记录。完成后进入<a href="../sensor-lio/">传感器与定位</a>。</p>
+<p>具体官方章节与进阶实验见<a href="../self-study/ros2-systems/">ROS2 系统自学</a>；二维变换和时间差分可先做<a href="../assignments/reading-labs/">带解答源码练习</a>。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../system/" class="btn btn-neutral float-left" title="本队系统地图"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../sensor-lio/" class="btn btn-neutral float-right" title="传感器、LIO与重定位">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../system/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../sensor-lio/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
