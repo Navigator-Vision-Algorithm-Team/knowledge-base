@@ -1,0 +1,9 @@
+{"branch": "plan_activity", "cache_after": null, "cache_before": null, "index": 0, "input": {"at": 0.0, "event": "local_plan"}, "output": null, "stale_reissue": false}
+{"branch": "cache_command", "cache_after": [0.2, 0.0, 0.0], "cache_before": null, "index": 1, "input": {"at": 0.1, "event": "command", "twist": [0.2, 0.0, 0.0]}, "output": null, "stale_reissue": false}
+{"branch": "sync_cached", "cache_after": [0.2, 0.0, 0.0], "cache_before": [0.2, 0.0, 0.0], "index": 2, "input": {"at": 0.2, "event": "sync", "yaw": 0.0}, "output": [0.2, 0.0, 0.0], "stale_reissue": false}
+{"branch": "zero_immediate", "cache_after": [0.2, 0.0, 0.0], "cache_before": [0.2, 0.0, 0.0], "index": 3, "input": {"at": 0.3, "event": "command", "twist": [0.0, 0.0, 0.0]}, "output": [0.0, 0.0, 0.0], "stale_reissue": false}
+{"branch": "sync_cached", "cache_after": [0.2, 0.0, 0.0], "cache_before": [0.2, 0.0, 0.0], "index": 4, "input": {"at": 0.4, "event": "sync", "yaw": 0.0}, "output": [0.2, 0.0, 0.0], "stale_reissue": true}
+{"branch": "sync_cached", "cache_after": [0.2, 0.0, 0.0], "cache_before": [0.2, 0.0, 0.0], "index": 5, "input": {"at": 0.45, "event": "sync", "yaw": 0.0}, "output": [0.2, 0.0, 0.0], "stale_reissue": true}
+{"branch": "plan_activity", "cache_after": [0.2, 0.0, 0.0], "cache_before": [0.2, 0.0, 0.0], "index": 6, "input": {"at": 0.46, "event": "local_plan"}, "output": null, "stale_reissue": false}
+{"branch": "cache_command", "cache_after": [0.0, 0.1, 0.0], "cache_before": [0.2, 0.0, 0.0], "index": 7, "input": {"at": 0.47, "event": "command", "twist": [0.0, 0.1, 0.0]}, "output": null, "stale_reissue": false}
+{"branch": "sync_cached", "cache_after": [0.0, 0.1, 0.0], "cache_before": [0.0, 0.1, 0.0], "index": 8, "input": {"at": 0.48, "event": "sync", "yaw": 0.0}, "output": [0.0, 0.1, 0.0], "stale_reissue": false}

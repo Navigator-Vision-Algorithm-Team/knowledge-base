@@ -1,0 +1,5 @@
+{"delivered": true, "index": 0, "publisher": "/nav_training/sequence", "sequence": 1, "subscriber": "/nav_training/sequence"}
+{"delivered": true, "index": 1, "publisher": "/nav_training/sequence", "sequence": 2, "subscriber": "/nav_training/sequence"}
+{"delivered": true, "index": 2, "publisher": "/nav_training/sequence", "sequence": 3, "subscriber": "/nav_training/sequence"}
+{"delivered": true, "index": 3, "publisher": "/nav_training/sequence", "sequence": 4, "subscriber": "/nav_training/sequence"}
+{"delivered": true, "index": 4, "publisher": "/nav_training/sequence", "sequence": 5, "subscriber": "/nav_training/sequence"}

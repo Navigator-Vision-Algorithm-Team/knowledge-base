@@ -1,0 +1,15 @@
+{
+  "initial_yaw": 0.0,
+  "initial_spin": 0.0,
+  "events": [
+    {"at": 0.0, "event": "local_plan"},
+    {"at": 0.1, "event": "command", "twist": [0.2, 0.0, 0.0]},
+    {"at": 0.2, "event": "sync", "yaw": 0.0},
+    {"at": 0.3, "event": "command", "twist": [0.0, 0.0, 0.0]},
+    {"at": 0.4, "event": "sync", "yaw": 0.0},
+    {"at": 0.45, "event": "sync", "yaw": 0.0},
+    {"at": 0.46, "event": "local_plan"},
+    {"at": 0.47, "event": "command", "twist": [0.0, 0.1, 0.0]},
+    {"at": 0.48, "event": "sync", "yaw": 0.0}
+  ]
+}

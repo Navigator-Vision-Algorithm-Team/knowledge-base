@@ -1,5 +1,18 @@
-# Navigator视觉与导航算法组
+# Navigator 视觉与导航算法组
 
+本库用于成员教学与项目文档。新加入导航组的同学从[导航新人学习入口](navigation/README.md)开始，按阶段完成实践和验收。
 
+| 入口 | 内容 |
+|---|---|
+| [导航新人培训路线](navigation/onboarding/learning-route.md) | 对齐 Navigation-2027 的必学/了解/进阶与 16 周建议路线 |
+| [16 周任务单](navigation/onboarding/weekly-plan.md) | 每周阅读、代码、实验、交付与可选加餐 |
+| [可运行教学工作区](navigation/training/workspace.md) / [合成数据包](navigation/training/datasets.md) | 节点、运动/TF、Action、真值与可复现故障 |
+| [自学材料与进阶项目](navigation/self-study/README.md) | 指定章节、网站、先修、离线项目与验收 |
+| [源码导读与参考解答](navigation/assignments/reading-labs.md) | 从真实节点、Topic 和参数推导运行行为 |
+| [实际系统地图](navigation/system/README.md) | 代码、节点、Topic、TF、Nav2 与底盘接口 |
+| [实践任务与考核](navigation/assignments/README.md) | 从环境、数据和代码到独立 Debug、值守实车调试 |
+| [Linux 基础](Linux教学/2.0Linux基础.md) / [配套练习](Linux教学/2.1Linux基础配套练习.md) | 共用工程基础 |
+| [Git 教学](git教学/1.git下载和如何使用github.md) | 版本管理与协作 |
+| [RoboMaster 开源项目合集](开源项目合集/index.md) | 按问题查找参考项目与适用边界 |
 
-用于存放教学与在开发项目文档，修改内容请对main分支的docs目录提交pull requests.
+文档修改请向 main 分支提交 Pull Request；合入后自动构建网站。导航代码和实车验证状态见各页面的版本说明。

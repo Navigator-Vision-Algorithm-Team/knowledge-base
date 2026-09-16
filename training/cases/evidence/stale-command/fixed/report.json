@@ -1,0 +1,14 @@
+{
+  "case": "stale-command",
+  "contract_passed": true,
+  "event_count": 9,
+  "evidence_kind": "synthetic_python_teaching_model",
+  "input_sha256": "1d542d4f5c6298712e52f2c57b3093334b68f27a0383d72bbb5db56515da14da",
+  "mode": "fixed",
+  "outputs": 3,
+  "post_zero_syncs": 2,
+  "resumed_nonzero_outputs": 1,
+  "source_reference_sha": "183a4109b0de2030bb8970a54654937c8b039ba9",
+  "stale_reissues": 0,
+  "zero_commands": 1
+}

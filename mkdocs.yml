@@ -1,4 +1,51 @@
 site_name: Navigator Vision Algorithm Knowledge Base
+site_url: https://navigator-vision-algorithm-team.github.io/knowledge-base/
 theme:
   name: readthedocs
+
+nav:
+  - 首页: index.md
+  - 导航新人培训:
+      - 学习入口: navigation/README.md
+      - 最终培训路线: navigation/onboarding/learning-route.md
+      - 16周具体任务单: navigation/onboarding/weekly-plan.md
+      - 环境与工程基础: navigation/onboarding/environment.md
+      - 配套教学工作区:
+          - 从运行到修改代码: navigation/training/workspace.md
+          - 标准合成数据包: navigation/training/datasets.md
+          - 验证状态与复验: navigation/training/validation.md
+      - 本队系统地图: navigation/system/README.md
+      - ROS2、TF、时间与运动: navigation/ros2-tf/README.md
+      - 传感器、LIO与重定位: navigation/sensor-lio/README.md
+      - 环境表达与规划: navigation/planning/README.md
+      - Nav2与控制链: navigation/nav2/README.md
+      - 源码审查证据: navigation/system/nav2-and-control-evidence.md
+      - Debug、实车与比赛: navigation/debug-real/README.md
+      - Debug案例：Topic名字不匹配: navigation/debug-real/case-topic-mismatch.md
+      - Debug案例：旧速度再次输出: navigation/debug-real/case-stale-command.md
+      - 实践任务与考核: navigation/assignments/README.md
+      - 源码导读与参考解答: navigation/assignments/reading-labs.md
+      - 自学与进阶:
+          - 如何选资料与方向: navigation/self-study/README.md
+          - Linux、Git与编程基础: navigation/self-study/foundations.md
+          - 数学、点云与定位: navigation/self-study/localization.md
+          - 规划、控制与算法对照: navigation/self-study/planning-control.md
+          - ROS2与系统工程: navigation/self-study/ros2-systems.md
+      - 仿真环境验收: navigation/simulation/README.md
+      - 资料、模板与维护: navigation/maintenance/README.md
+  - Linux教学:
+      - Ubuntu与ROS环境入口: Linux教学/1.Ubuntu虚拟机安装以及ros环境配置.md
+      - Linux基础: Linux教学/2.0Linux基础.md
+      - 配套练习: Linux教学/2.1Linux基础配套练习.md
+      - SSH使用与排错: Linux教学/3.ubuntu-ssh-guide.md
+  - Git教学:
+      - Git与GitHub: git教学/1.git下载和如何使用github.md
+  - 开源项目合集:
+      - 项目索引: 开源项目合集/index.md
+      - 起源战队开源工具: 开源项目合集/01.华东理工大学起源战队哨兵机器人开源工具.md
+      - HelloWorld轮腿导航: 开源项目合集/02.浙江大学HelloWorld战队轮腿哨兵导航.md
+      - Odin1与MID360融合: 开源项目合集/03.Odin1与Mid360标定及点云融合.md
+      - FAST-LIO重定位: 开源项目合集/04.基于FAST-LIO的ROS2重定位.md
+      - 崇实战队综合开源: 开源项目合集/05.武汉科技大学崇实战队算法综合开源.md
+      - 追梦战队哨兵导航: 开源项目合集/06.北京理工大学追梦战队哨兵自主导航.md
 

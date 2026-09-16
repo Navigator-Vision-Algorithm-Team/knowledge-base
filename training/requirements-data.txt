@@ -1,0 +1,7 @@
+# Python 3.10+; data generation/readback only, not ROS runtime dependencies.
+rosbags==0.10.11
+numpy==2.2.6
+ruamel.yaml==0.19.1
+lz4==4.4.5
+typing_extensions==4.16.0
+zstandard==0.25.0
