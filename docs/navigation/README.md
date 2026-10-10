@@ -12,6 +12,7 @@
 4. 按[实践任务与考核](assignments/README.md)交付代码、日志、对照结果和恢复记录。完成一次作业不等于取得实车操作资格。
 5. 用[16 周任务单](onboarding/weekly-plan.md)确定每周具体阅读与交付；读源码困难时做[带参考解答的练习](assignments/reading-labs.md)。当期任务完成后，从[自学与进阶导航](self-study/README.md)选择一个方向深入。
 6. 需要可运行基线时使用[教学工作区](training/workspace.md)和[标准合成数据包](training/datasets.md)，按两个完整 Debug 案例练习复现、诊断、修复与回归。
+7. 看不懂调试命令时，先读[零基础 Debug 代码详解](debug-real/command-guide.md)，再使用[按现象检索的排查手册](debug-real/runbook.md)。两版配套，区分本队源码基线与旧实机案例。
 
 ## 学习目录
 
@@ -30,6 +31,7 @@
 | [Nav2、控制与接口](nav2/README.md) | 实际插件、BT、速度链、串口与控制权 | S5 |
 | [源码审查证据](system/nav2-and-control-evidence.md) | 当前配置差异与需要复测的风险 | S5–S7 |
 | [Debug、实车与比赛](debug-real/README.md) | 故障分层、停止、恢复、比赛交接 | 每阶段练习，S6–S7 实车 |
+| [Debug 命令详解](debug-real/command-guide.md) / [排查手册](debug-real/runbook.md) | 从逐行命令与字段理解到故障排查，包含重复实例与历史实机案例 | S0–S2 入门，S6–S7 复查 |
 | [实践任务与考核](assignments/README.md) | 作业输入、验收方法、量化门槛 | 全程 |
 | [源码导读与参考解答](assignments/reading-labs.md) | 节点接口、速度缓存、地图路径、参数加载、时间差分五道题 | S1–S5 |
 | [自学与进阶材料](self-study/README.md) | 基础补课、数学定位、规划控制、ROS2 系统，指定章节与离线项目 | 随阶段选学 |

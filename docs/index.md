@@ -9,6 +9,7 @@
 | [可运行教学工作区](navigation/training/workspace.md) / [合成数据包](navigation/training/datasets.md) | 节点、运动/TF、Action、真值与可复现故障 |
 | [自学材料与进阶项目](navigation/self-study/README.md) | 指定章节、网站、先修、离线项目与验收 |
 | [源码导读与参考解答](navigation/assignments/reading-labs.md) | 从真实节点、Topic 和参数推导运行行为 |
+| [Debug 命令详解](navigation/debug-real/command-guide.md) / [排查手册](navigation/debug-real/runbook.md) | 零基础先读懂代码，再按现象查检查、判断与修复 |
 | [实际系统地图](navigation/system/README.md) | 代码、节点、Topic、TF、Nav2 与底盘接口 |
 | [实践任务与考核](navigation/assignments/README.md) | 从环境、数据和代码到独立 Debug、值守实车调试 |
 | [Linux 基础](Linux教学/2.0Linux基础.md) / [配套练习](Linux教学/2.1Linux基础配套练习.md) | 共用工程基础 |

@@ -8,6 +8,8 @@
 
 [配套教学代码](training/README.md)包含独立 ROS2 小工作区、可重复生成的标准合成 rosbag2/地图和两个 Debug 案例；从[工作区教程](docs/navigation/training/workspace.md)开始，验证范围见[运行记录](docs/navigation/training/validation.md)。
 
+零基础新人先读[Debug 代码详解](docs/navigation/debug-real/command-guide.md)，再使用[按故障检索的排查手册](docs/navigation/debug-real/runbook.md)。两版保留完整命令、输出字段和处理依据，并区分 Navigation-2027 源码基线与本地化 PB2025 历史案例；附[只读采集脚本](docs/navigation/debug-real/assets/collect_navigation_debug.sh)。
+
 main分支的修改会自动触发Github Action编译文档为web界面
 
 访问[https://navigator-vision-algorithm-team.github.io/knowledge-base/](https://navigator-vision-algorithm-team.github.io/knowledge-base/)查看文档内容

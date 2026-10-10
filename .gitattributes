@@ -2,3 +2,4 @@
 training/datasets/** -text
 training/cases/inputs/** -text
 training/cases/evidence/** -text
+docs/navigation/debug-real/assets/*.sh text eol=lf

@@ -1,0 +1,30 @@
+name: Knowledge base documentation
+
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths: ['docs/**', 'mkdocs.yml', 'training/tests/test_debug_assets.py', '.github/workflows/docs.yml']
+  pull_request:
+    paths: ['docs/**', 'mkdocs.yml', 'training/tests/test_debug_assets.py', '.github/workflows/docs.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install documentation builder
+        run: python -m pip install mkdocs==1.6.1
+      - name: Check diagnostic script syntax
+        run: bash -n docs/navigation/debug-real/assets/collect_navigation_debug.sh
+      - name: Check portable docs and offline collector behavior
+        run: python -m unittest discover -s training/tests -p test_debug_assets.py -v
+      - name: Build documentation strictly
+        run: python -m mkdocs build --strict
