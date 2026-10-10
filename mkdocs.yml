@@ -21,6 +21,8 @@ nav:
       - Nav2与控制链: navigation/nav2/README.md
       - 源码审查证据: navigation/system/nav2-and-control-evidence.md
       - Debug、实车与比赛: navigation/debug-real/README.md
+      - Debug命令详解（零基础先读）: navigation/debug-real/command-guide.md
+      - Debug排查手册（按现象查）: navigation/debug-real/runbook.md
       - Debug案例：Topic名字不匹配: navigation/debug-real/case-topic-mismatch.md
       - Debug案例：旧速度再次输出: navigation/debug-real/case-stale-command.md
       - 实践任务与考核: navigation/assignments/README.md
