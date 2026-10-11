@@ -5,6 +5,10 @@ theme:
 
 nav:
   - 首页: index.md
+  - 导航通识知识:
+      - 通识入门与当前进度: navigation-general/index.md
+      - 建图和导航验证: navigation-general/建图和导航验证.md
+      - 导航过程: navigation-general/导航过程.md
   - 导航新人培训:
       - 学习入口: navigation/README.md
       - 最终培训路线: navigation/onboarding/learning-route.md

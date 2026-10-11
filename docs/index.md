@@ -2,8 +2,12 @@
 
 本库用于成员教学与项目文档。新加入导航组的同学从[导航新人学习入口](navigation/README.md)开始，按阶段完成实践和验收。
 
+电控、机械及其他非导航方向队员从[导航通识知识](navigation-general/index.md)开始，了解导航流程、跨组联调与当前进度视频；该栏目不要求学习算法或编写 ROS 代码。
+
 | 入口 | 内容 |
 |---|---|
+| [导航通识知识](navigation-general/index.md) | 面向电控、机械等队员的通俗说明与当前进度视频 |
+| [建图和导航验证](navigation-general/建图和导航验证.md) / [导航过程](navigation-general/导航过程.md) | 分步操作、简短目的说明及 TXT 指令下载 |
 | [导航新人培训路线](navigation/onboarding/learning-route.md) | 对齐 Navigation-2027 的必学/了解/进阶与 16 周建议路线 |
 | [16 周任务单](navigation/onboarding/weekly-plan.md) | 每周阅读、代码、实验、交付与可选加餐 |
 | [可运行教学工作区](navigation/training/workspace.md) / [合成数据包](navigation/training/datasets.md) | 节点、运动/TF、Action、真值与可复现故障 |
