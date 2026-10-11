@@ -1,0 +1,124 @@
+建图和导航验证
+适用：本队 Ubuntu / ROS 2 Humble 实车部署；整理日期：2026-10-11。
+
+用途：重新建立场地地图、放好地图文件，再验证新地图能否用于导航。
+常用地图 louxia 对应我们 T8 楼下架空层的实地场地。
+只用现有 louxia 地图时，直接看《导航过程.txt》，不用重新建图。
+以下所有“地图名”替换成同一个新名字，不带后缀；不要直接照抄“地图名”。
+建议另取新名字，避免覆盖常用地图 louxia。逐节执行，报错先停下。
+
+准备
+串口用终端 1，建图/导航及 RViz 用终端 2；保存时临时开终端 3。
+先退出旧导航、旧建图及单独运行的雷达驱动，不要重复启动。
+确认电池、雷达连接和现场接管/急停可用，周围人员离开运动范围。
+
+1. 终端 1：启动串口（已经启动就跳过）
+目的：连接电脑与电控，下发运动指令并接收机器人状态。
+
+cd /home/ubuntu/ros_ws
+unset LD_LIBRARY_PATH
+source install/setup.bash
+ros2 launch rm_serial_driver serial_driver.launch.py
+
+验证：没有持续的串口打开失败或断连报错。此终端一直保留。
+
+2. 终端 2：启动建图和 RViz
+目的：采集当前场地数据，生成地图，并显示建图结果。
+
+cd /home/ubuntu/navigation_2025/ros_ws
+unset LD_LIBRARY_PATH
+source install/setup.bash
+ros2 launch pb2025_nav_bringup rm_navigation_reality_launch.py slam:=True use_robot_state_pub:=True use_rviz:=True
+
+验证：点云持续更新，机器人移动时模型位置合理，地图随经过的区域扩展。
+按现场已验证的操控方式缓慢覆盖场地；出现明显重影、跳变或掉线时先排查。
+保存前取消 Goal、停稳机器人，之后保持静止。
+
+3. 终端 3：保存二维地图
+目的：保存用于表示障碍和可通行区域的地图，此时建图不能退出。
+.pgm 是地图图片；.yaml 记录图片位置、分辨率、原点等信息。
+
+cd /home/ubuntu/navigation_2025/ros_ws
+unset LD_LIBRARY_PATH
+source install/setup.bash
+
+下面 A、B 任选一种，不要重复执行。
+
+A. 一句版本：直接保存到最终地图目录，省略复制。
+
+ros2 run nav2_map_server map_saver_cli -f /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/map/reality/地图名 --ros-args -r __ns:=/red_standard_robot1
+
+结果：地图名.yaml 和地图名.pgm 直接生成在命令指定的 map/reality/ 目录。
+
+B. 两句版本：先保存到当前目录，再复制到最终地图目录。
+
+# 第一句：在当前工作空间目录生成二维地图文件。
+ros2 run nav2_map_server map_saver_cli -f 地图名 --ros-args -r __ns:=/red_standard_robot1
+# 第二句：复制这两个文件到导航包的地图目录，原文件仍保留。
+cp -i 地图名.yaml 地图名.pgm /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/map/reality/
+
+B 的文件来源：/home/ubuntu/navigation_2025/ros_ws/ 下刚保存的两个文件。
+B 的文件去向：上面 cp 命令末尾的 pb2025_nav_bringup/map/reality/ 目录。
+看到 Map saved successfully 后才执行 cp，中间不要切换目录。
+不要只改文件名：若另行重命名 PGM，YAML 的 image 字段也要同步修改。
+
+4. 正常退出建图，保存三维点云
+目的：保存重定位要用的三维场景；只保存二维地图还不够。
+
+回到终端 2，按一次 Ctrl+C，等待点云保存完成、命令提示符回来。
+不要连续 Ctrl+C、强杀或断电。根据保存日志确认本次输出的文件。
+然后回到终端 3：
+
+# 复制三维地图，并把副本改名为与二维地图相同的名字。
+cp -i /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/point_lio/PCD/scans.pcd /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/pcd/reality/地图名.pcd
+
+来源：point_lio/PCD/scans.pcd，本次建图生成的三维点云。
+去向：pb2025_nav_bringup/pcd/reality/地图名.pcd，导航读取的先验点云。
+以上相对位置均位于 /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/ 下。
+这条命令是“复制并改名”，不是删除原文件后移动。
+Wiki 写 scan.pcd，你们此前用 scans.pcd；以本次保存日志为准，必要时改命令中的源文件名。
+验证：map/reality/ 里有同名 .yaml、.pgm，pcd/reality/ 里有同名 .pcd；均来自本次建图且不是空文件。
+可用文件管理器查看大小和修改时间。找不到新的 PCD 时，不要拿旧 PCD 混用。
+
+5. 终端 3：安装新地图资源
+目的：将新地图更新到 install 中，让启动程序能够找到它们。
+
+cd /home/ubuntu/navigation_2025/ros_ws
+colcon build --symlink-install --packages-select pb2025_nav_bringup
+
+验证：出现 1 package finished，且没有失败。这里只更新地图所在的 bringup 包。
+
+6. 终端 2：用新地图启动导航
+目的：确认刚保存的地图能够加载、定位，并完成目标点任务。
+确认建图已完全退出，终端 1 的串口保持运行。
+
+cd /home/ubuntu/navigation_2025/ros_ws
+unset LD_LIBRARY_PATH
+source install/setup.bash
+ros2 launch pb2025_nav_bringup rm_navigation_reality_launch.py world:=地图名 slam:=False use_robot_state_pub:=True use_rviz:=True
+
+验证顺序：
+1. 地图加载正常，墙面点云和地图对应，机器人位置、朝向与现场一致。
+2. 画面持续稳定，没有明显跳变、重影或持续报错，再进行运动测试。
+3. 用现场已确认的低速配置，在近处空旷可通行位置设置 Nav2 Goal 并拖出朝向。
+4. 确认车辆朝正确方向行走、接近目标后停稳，并显示任务成功。
+5. 在受控空旷区域测试取消 Goal，确认车辆确实停止；异常时用现场接管/急停。
+
+通过标准：地图与定位正确、能完成近距离 Goal、能可靠停止，三项缺一不可。
+仅 RViz 打开或出现 Auto-initialized 日志不算定位成功；一次通过也不代表所有场景已验收。
+
+7. 结束与记录
+目的：避免遗留程序影响下一次测试，也方便其他人复现问题。
+先取消 Goal、确认车停稳，再在终端 2 按 Ctrl+C；全部结束后再关闭终端 1。
+记录：日期____ 地图名____ 操作人____ 定位是否正确____ Goal结果____ 停止是否正常____
+若报 |target|=0，先检查先验 PCD 是否有效及加载路径，不要反复发 Goal。
+
+简短注释
+- cd：进入目录；source install/setup.bash：加载环境，每个新终端都要执行。
+- unset LD_LIBRARY_PATH：清理本机此前冲突的库路径，再由 source 加载所需环境。
+- cp -i：复制文件，覆盖同名文件前先询问；这里不使用 mv 删除源文件。
+- slam:=True 建图；slam:=False 导航；world:= 后面填写地图名。
+- 本文按官方 Wiki 的 SLAM 建图流程整理，使用本队已经运行过的本地启动文件名。
+- 本轮仅检查了文档和命令，未远程执行建图，也未验证新地图实际可用。
+
+参考：https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav/wiki/建图指南
