@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420" role="img" aria-labelledby="title desc">
+  <title id="title">教学巡逻系统的数据流</title>
+  <desc id="desc">客户端通过Action向巡逻服务器发目标和取消。服务器接收模型里程计和虚拟障碍，输出速度，调用到点日志Service。所有端点位于nav_training/patrol命名空间。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#475569"/></marker></defs>
+  <rect width="720" height="420" rx="12" fill="#f8fafc"/>
+  <g font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#253346" text-anchor="middle">
+    <text x="360" y="28" font-size="18" font-weight="bold">一个目标怎样成为移动、反馈和日志</text>
+    <g fill="#fff" stroke="#94a3b8" stroke-width="1.5">
+      <rect x="250" y="48" width="200" height="58" rx="8"/>
+      <rect x="250" y="177" width="200" height="80" rx="8" fill="#e0f2fe" stroke="#0072b2"/>
+      <rect x="20" y="177" width="170" height="80" rx="8"/>
+      <rect x="520" y="177" width="180" height="80" rx="8"/>
+      <rect x="250" y="327" width="200" height="58" rx="8"/>
+    </g>
+    <g font-size="16" font-weight="bold">
+      <text x="350" y="73">patrol_client</text><text x="350" y="204">patrol_server</text>
+      <text x="105" y="204">fake_sensor</text><text x="610" y="204">motion_model</text>
+      <text x="350" y="351">waypoint_logger</text>
+    </g>
+    <g font-size="13">
+      <text x="350" y="94">提交目标、读反馈、发取消</text><text x="350" y="226">拥有任务状态，决定走停</text>
+      <text x="350" y="246">/nav_training/patrol/</text>
+      <text x="105" y="226">固定障碍时间表</text><text x="610" y="226">积分速度、回报位姿</text>
+      <text x="350" y="374">去重保存到点记录</text>
+    </g>
+    <g fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)">
+      <path d="M300,106 V175"/><path d="M400,177 V108" stroke-dasharray="5,4"/>
+      <path d="M190,194 H248"/><path d="M250,239 H192" stroke-dasharray="5,4"/>
+      <path d="M450,194 H518"/><path d="M520,239 H452" stroke-dasharray="5,4"/>
+      <path d="M300,257 V325"/><path d="M400,327 V259" stroke-dasharray="5,4"/>
+    </g>
+    <g font-size="12">
+      <text x="245" y="137">goal / cancel</text><text x="458" y="137">feedback / result</text>
+      <text x="218" y="164">障碍距离</text><text x="218" y="279">scenario_start</text>
+      <text x="486" y="164">cmd_vel</text><text x="486" y="279">odom</text>
+      <text x="253" y="296">日志请求</text><text x="446" y="296">成功 / 失败</text>
+      <text x="360" y="406" fill="#64748b">概念接线图；ROS 多节点由学生实现，离线参考不连接这些端点。</text>
+    </g>
+  </g>
+</svg>

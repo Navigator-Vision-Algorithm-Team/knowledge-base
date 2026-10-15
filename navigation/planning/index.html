@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/planning/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>环境表达与规划 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u73af\u5883\u8868\u8fbe\u4e0e\u89c4\u5212";
+        var mkdocs_page_input_path = "navigation/planning/README.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/planning/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航通识知识</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation-general/">通识入门与当前进度</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation-general/%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/">建图和导航验证</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation-general/%E5%AF%BC%E8%88%AA%E8%BF%87%E7%A8%8B/">导航过程</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/validation/">验证状态与复验</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/patrol-workshop/">轻量巡逻：把节点串成任务</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/astar-workshop/">A*两步练习：补全到独立实现</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../training/controlled-experiments/">TF、地图与滤波对照实验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">环境表达与规划</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#5">先玩 5 分钟：给小车找条路</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_1">有路线了，为什么还要离墙远一点？</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">接下来读什么</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 三类地图与地形输入</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#11">1.1 先把一格的位置算对</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#12">1.2 一个箱子怎样成为障碍格</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-costmap">2. 当前 Costmap 应读什么</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#21">2.1 三个图层分别解决什么</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#22-marking-clearing">2.2 marking 与 clearing 不是“有点”和“没点”的简单开关</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-a">3. A* 必做，但不要求先完成算法大全</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#31">3.1 在一张五格宽的小图上手算</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#32">3.2 你要实现的搜索骨架</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-planner">4. 再读本队 Planner</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#41">4.1 为什么同一格还要记录朝向</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">验收与排错</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/command-guide/">Debug命令详解（零基础先读）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/runbook/">Debug排查手册（按现象查）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+      <li class="breadcrumb-item active">环境表达与规划</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="s4">S4：机器人怎样绕开一堵墙？</h1>
+<p><small>整理与维护：24cst朱鑫鹏</small></p>
+<p>你在墙的这一侧，目标在另一侧。小车应该往哪走？先看动画，不急着读公式。</p>
+<div data-nav-visuals="查看A*搜索动图"></div>
+
+<p><img alt="A星搜索逐格尝试并找到绕墙路径的教学动图" src="../visuals/assets/astar.gif" /></p>
+<h2 id="5">先玩 5 分钟：给小车找条路</h2>
+<p>点「单步」，看搜索一格格向外展开；再点「开始」，看看最后留下的路线。颜色的含义直接写在图里，暂时记住：<strong>最终路径要连得上，也不能穿墙。</strong></p>
+<iframe src="../visuals/playground.html?scene=astar" title="可以播放和单步观察的A星绕墙演示" width="100%" height="620" loading="lazy" style="border:0;border-radius:12px"></iframe>
+
+<p><a href="../visuals/playground.html?scene=astar">单独打开搜索演示</a>。这个演示可以暂停、重播和逐步看；需要快速回顾时，再展开上面的动图。</p>
+<p>现在试三下：</p>
+<ol>
+<li>跑完「可绕障地图」，用手指数一数路径走了几步，和显示的代价比一比。</li>
+<li>切到「无路可走地图」。墙封住以后，程序该继续等，还是告诉你没有路？</li>
+<li>切回原图重播。用一句话说出“正在尝试的格子”和“最后要走的路径”有什么不同。</li>
+</ol>
+<p>这一步看懂后，再做<a href="../training/astar-workshop/">A* 两步练习</a>。先把动画里的过程写成小程序，暂时不用接 ROS。</p>
+<h2 id="_1">有路线了，为什么还要离墙远一点？</h2>
+<p>图里的线没有宽度，机器人有。把它想成一个圆：圆心不能贴着墙走，否则车身会碰上。</p>
+<div data-nav-visuals="查看障碍与代价圈示意图"></div>
+
+<p><img alt="障碍、机器人不可进入的范围和外围渐淡代价圈" src="../visuals/assets/costmap.svg" /></p>
+<iframe src="../visuals/playground.html?scene=costmap" title="调节障碍代价圈的入门演示" width="100%" height="620" loading="lazy" style="border:0;border-radius:12px"></iframe>
+
+<p><a href="../visuals/playground.html?scene=costmap">单独打开代价地图演示</a>。拖动滑块，看障碍周围的影响范围怎样变化。<strong>外围变浅的区域表示经过有代价，不是整圈都禁止通行。</strong> 这些是教学数值，实际参数在下面的本队代码里查。</p>
+<p><link rel="stylesheet" href="../visuals/reader.css"></p>
+<script src="../visuals/reader.js" defer></script>
+<div data-nav-fold></div>
+
+<h2 id="_2">接下来读什么</h2>
+<p>前置：TF、消息坐标、二维全向运动；真实地形实验还需 S3 数据包。目标是解释机器人为何可走/不可走、如何生成路径，以及规划模型和实际全向底盘的差异。必学一份 A* 和本队 Costmap 数据路径；无需把所有搜索算法各写一遍。</p>
+<h2 id="1">1. 三类地图与地形输入</h2>
+<p>机器人找路前，需要把“空间里有一张桌子”变成算法能查询的表达。PCD保存三维点，适合对齐几何；OccupancyGrid把地面划成格子，表达占据情况；Costmap在栅格上再叠加障碍和靠近障碍的代价，帮助规划/控制选择通路。可以把占据图看成“哪里有东西”，代价图看成“机器人从这里经过有多困难”。空闲、未知、障碍是不同状态；“没看到”并不推出“肯定没有”。</p>
+<table>
+<thead>
+<tr>
+<th>表达</th>
+<th>数据和用途</th>
+<th>常见误解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCD 点云地图</td>
+<td>small_gicp 对齐先验地图</td>
+<td>以为 map_server 直接加载 PCD</td>
+</tr>
+<tr>
+<td>YAML+图像/OccupancyGrid</td>
+<td>map_server/SLAM 提供二维占据地图；resolution、origin、free/occupied/unknown</td>
+<td>同名文件必然坐标对齐</td>
+</tr>
+<tr>
+<td>global/local Costmap</td>
+<td>叠加静态图、实时障碍、足迹清除和膨胀后的规划/控制代价</td>
+<td>把未知当自由，把可视化颜色当算法全部输入</td>
+</tr>
+</tbody>
+</table>
+<p>本队路径是 <code>registered_scan + lidar_odometry → terrain_analysis → terrain_map → IntensityObstacleLayer</code>。地形节点把相对地面高度等结果写入 intensity，<strong>不是直接用雷达反射强度当碰撞代价</strong>。先核对点云 frame、字段、地面处理与阈值，再调 Costmap。<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/terrain_analysis/src/terrain_analysis.cpp">terrain_analysis 实现</a>，<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/layers/intensity_obstacle_layer.cpp">IntensityObstacleLayer 实现</a>。</p>
+<h3 id="11">1.1 先把一格的位置算对</h3>
+<p>resolution 是每格对应多少米，origin 是栅格原点在参考系中的位姿，像素下标不是米。知识库路径 <code>training/datasets/synthetic-v1/map/teaching_map.yaml</code> 的<a href="https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/datasets/synthetic-v1/map/teaching_map.yaml">教学地图</a>给出 <code>resolution=0.25</code>、<code>origin=[-1,-1,0]</code>。用从0开始、从地图下方向上计数的网格 <code>(i,j)=(4,6)</code>，格心坐标为：</p>
+<pre><code class="language-text">x = -1 + (4 + 0.5) × 0.25 = 0.125 m
+y = -1 + (6 + 0.5) × 0.25 = 0.625 m
+</code></pre>
+<p>加0.5是走到格子中心，而不是停在格边。PGM图像的第一行在上方，若直接用图像row作j，y会翻转；本教学图高度16，图像row=9对应 <code>j=16−1−9=6</code>。生成规则可在知识库路径 <code>training/tools/generate_data.py</code> 的<a href="https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/tools/generate_data.py#L134-L149"><code>write_map</code> L134–149</a>看到：第143行明确使用 <code>height−1−row</code>。如果origin带yaw，还要对局部格心进行旋转后再加平移。本例yaw=0，不代表所有地图都可省略旋转。</p>
+<h3 id="12">1.2 一个箱子怎样成为障碍格</h3>
+<p>假设箱子点的地面高度差为0.22 m，这个数被terrain节点写入intensity；Costmap看到它后还要检查强度范围、距离、坐标是否落在图内。主仓库路径 <code>ros_ws/src/pb2025_sentry_nav/terrain_analysis/src/terrain_analysis.cpp</code> 的<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/terrain_analysis/src/terrain_analysis.cpp#L499-L514">高度编码 L499–514</a>产生该字段；路径 <code>ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/layers/intensity_obstacle_layer.cpp</code> 的<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/layers/intensity_obstacle_layer.cpp#L400-L435"><code>updateBounds</code> L400–435</a>消费它：</p>
+<ol>
+<li>第400–403行按x/y/z/intensity字段逐点读取。</li>
+<li>第406–407行跳过不在intensity范围内的点；这步不是直接设置“代价=0.22”。</li>
+<li>第411–423行按观测原点检查点的距离范围。</li>
+<li>第429行将世界坐标转为栅格索引；第435行把保留点对应格子标记为 <code>LETHAL_OBSTACLE</code>。</li>
+</ol>
+<p>因此点云在RViz很亮不说明一定被标记，点云有数据也不说明TF、字段或范围正确。先拿一个已知高度箱子的点追完这四步，再进行阈值实验。</p>
+<h2 id="2-costmap">2. 当前 Costmap 应读什么</h2>
+<p>基线 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml">reality YAML</a> 的 global/local 都使用 StaticLayer、IntensityObstacleLayer、InflationLayer；local 以 odom 为 global_frame，global 以 map 为 global_frame，robot_base_frame 为 gimbal_yaw_fake。这些是本课必读项。</p>
+<p>VoxelLayer 与 IntensityVoxelLayer 先了解，不因代码存在就称其已加载。默认 <code>robot_radius=0.2</code>、<code>inflation_radius=0.7</code> 是仓库值，不能作为未知尺寸实车的安全参数。实车须记录测量外形、云台转动后包络与实际 footprint；用半径还是多边形由维护者确认。</p>
+<h3 id="21">2.1 三个图层分别解决什么</h3>
+<p>StaticLayer把先前保存的占据图带进来，比如固定墙；IntensityObstacleLayer把现在看到的箱子等实时观测带进来；InflationLayer给障碍周围加上代价，让路径不必紧贴边缘。局部图随着机器人移动而滚动，关注附近控制；全局图在map里覆盖去目标的路线。当前local为5×5 m、0.05 m/格，约100×100格；这个数是窗口格数，不是实时点云点数。</p>
+<p>圆形半径0.2 m意味着直径0.4 m。宽0.5 m的理想通道中，若车位于正中，几何上每侧只有0.05 m余量，定位误差、外形测量和实际控制都可能消耗它。膨胀半径0.7 m相当于14个0.05 m格子的影响范围，但整个0.7 m圈并非都被当成不可通行；不同距离的代价不同，必须看代价值和算法碰撞条件。不能把“膨胀圈有颜色”直接读成“通道封死”。</p>
+<p>真实配置路径是 <code>ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml</code> 的<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L368-L451">local/global图层 L368–451</a>。第一遍只圈 <code>global_frame</code>、<code>robot_base_frame</code>、尺寸、resolution和plugins；第二遍再查每层数据源、marking/clearing和阈值。</p>
+<h3 id="22-marking-clearing">2.2 marking 与 clearing 不是“有点”和“没点”的简单开关</h3>
+<p>marking用命中的观测标记障碍；clearing沿观测射线清理可确定的自由空间。箱子移走以后，若雷达看到后面的墙，射线扫过原来的箱子位置，才提供了更新自由空间的证据；若雷达断流，则只是什么也没收到，不能等同于障碍消失。手工清图能重置状态，但它不证明正常clearing链路已经修好。</p>
+<p>主仓库路径 <code>ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/layers/intensity_obstacle_layer.cpp</code> 的<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/layers/intensity_obstacle_layer.cpp#L377-L394"><code>updateBounds</code> L377–394</a>先分别收集marking与clearing观测，再对clearing观测调用 <code>raytraceFreespace</code>。实验要记录“箱子移走且后方有新观测”和“停止发布点云”两种条件，预期不能混写。</p>
+<p>T6 每次只改变一个参数类别：</p>
+<ol>
+<li>足迹/半径：固定地图、起终点，比较窄通道能否通过及膨胀区域；不得通过缩小足迹“解决”碰撞。</li>
+<li>inflation_radius/cost_scaling_factor：解释通道中心偏好与墙边代价变化，不能只写“更流畅”。</li>
+<li>obstacle 的 marking/clearing、观测距离：添加/移除障碍，区分真实清除、数据断流和手工清图。</li>
+<li>terrain intensity 阈值：对同一平地/坡面/低障碍数据，记录哪些点被保留、Costmap 如何变化。不能凭注释承诺“开启就能上坡”。</li>
+</ol>
+<p>对照表至少包括：commit、地图校验值、输入 bag/场景、有效参数、唯一改动、Costmap 截图、路径长度、规划成功/失败、耗时与失败日志。每组重复三次；无闭环环境时只验输入与规划，不计算实车到达率。</p>
+<p>一次参数实验可以这样写：同一地图、同一箱子、同一起终点，基线与对照只改inflation参数，比较路径距墙的距离和规划代价；机器人半径、地形阈值都保持记录值。若同时改四类参数，即使路径变好了，也无法知道哪一项起作用。参数先查运行值再填表，launch会重写YAML里的时间设置，详见<a href="../system/">系统地图</a>。</p>
+<h2 id="3-a">3. A* 必做，但不要求先完成算法大全</h2>
+<p>先了解 BFS 用于等权图、Dijkstra 用于非负权图，再实现 A*：<code>f(n)=g(n)+h(n)</code>。推荐先固定四邻接、每步代价 1、曼哈顿启发式；八邻接作为扩展时，明确对角代价和禁止穿角规则。加权地图必须保持启发式与代价单位一致。</p>
+<h3 id="31">3.1 在一张五格宽的小图上手算</h3>
+<p>以下是<strong>手算示意图，不是现有教学PGM的内容</strong>。x向右、y向上，<code>#</code>为障碍，<code>.</code>为空闲，四邻接每步代价1：</p>
+<pre><code class="language-text">y=2  . . . . .
+y=1  S . # . G
+y=0  . . . . .
+     0 1 2 3 4   x
+</code></pre>
+<p>S在 <code>(0,1)</code>，G在 <code>(4,1)</code>。<code>g</code> 是从起点走过来的已知代价，<code>h=|x−4|+|y−1|</code> 是忽略障碍估计的剩余步数，<code>f=g+h</code> 用来挑下一格。起点g=0、h=4、f=4；往右到 <code>(1,1)</code> 得g=1、h=3、f=4，但下一步 <code>(2,1)</code> 被挡。改到 <code>(1,2)</code> 得g=2、h=4、f=6，再沿上方走到G一共6步；绕下方也有6步。h=4是下界，不是声称真实路径一定只有4步。</p>
+<p>BFS像一圈一圈展开，当每步同价时能找最少步数；Dijkstra优先展开当前g最小的格，适合代价不同；A*再加一个不会过高估计的h，把搜索朝目标引导。这里的曼哈顿h适合四邻接单位代价；八邻接若允许1.414的对角步，不能继续原样用曼哈顿距离，因为它可能高估。</p>
+<h3 id="32">3.2 你要实现的搜索骨架</h3>
+<p>下面是<strong>待作业实现的伪代码</strong>，配套<a href="../training/astar-workshop/">A* 两步练习</a>提供待填写框架、固定输入和离线参考实现。这里的二维教学搜索由知识库独立编写，不是从本队 Planner 复制的函数：</p>
+<pre><code class="language-text">best_g[S] = 0；把 (h(S), S, 0) 放入优先队列
+while 队列不空:
+    取出 f 最小的一项 (f, n, 入队时的g)
+    若入队时的g已不是best_g[n]：跳过旧条目
+    若 n == G：沿 parent 反向追踪，翻转后返回路径
+    for 每个合法、可通行的邻格 m:
+        candidate = best_g[n] + step_cost(n,m)
+        若 candidate &lt; best_g[m]（未访问时为无穷大）:
+            更新best_g[m]与parent[m]，把(candidate+h(m),m,candidate)入队
+返回“无通路”
+</code></pre>
+<p>优先队列负责选最有希望的格；<code>best_g</code>保证新路线确实更便宜时才更新；parent记录“从哪一格来到这里”，用来恢复有序路径；跳过旧条目避免同一格改善后，旧的较贵记录又被当成当前结果使用。只维护visited却不允许更便宜路径改写，是带权搜索里很容易出现的错误。</p>
+<p>实现要求：输入地图和起终点，输出有序网格路径、总代价、扩展节点数、运行耗时或清楚的失败原因。处理边界/障碍上的起终点、无解、起终点相同、窄通道、unknown 策略；没有路径时不能无限循环。路径每一段都必须可通行。用 Dijkstra（或 A* 的 h=0 模式）作为小图代价参照，不能只看动画。</p>
+<p>先在框架中补全启发式、搜索和路径回溯，再在个人仓库独立实现同一接口。两阶段使用相同固定输入，由独立 BFS 检查单位代价图的最优代价；路径绕上侧还是下侧可以不同。参考代码供完成后对照，验收还会换地图，不能把参考实现输出当成自己的作业。</p>
+<p>将网格路径转换为 <code>nav_msgs/msg/Path</code> 可作加分：格子中心要结合地图 resolution 与 origin 旋转转换到 map 坐标；不直接把像素坐标当米。T5 先用教学地图，不能把作业包替换上车 Planner。</p>
+<p>从真实资源开始做：用知识库路径 <code>training/datasets/synthetic-v1/map/teaching_map.pgm</code> 的<a href="https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/datasets/synthetic-v1/map/teaching_map.pgm">20×16教学网格</a>与本页1.1的YAML读取占据状态。先在小示意图上验代价6、无解和起终点相同，再跑这张固定地图；Dijkstra参考结果与A*总代价应一致，扩展节点数可以不同。把搜索输入/输出保存到自己的作业目录，图像和生成器仍作为基准资源保留。</p>
+<h2 id="4-planner">4. 再读本队 Planner</h2>
+<p>当前 <code>GridBased</code> 选择的是 <strong><code>nav2_smac_planner/SmacPlannerHybrid</code></strong>，<code>motion_model_for_search=DUBIN</code>、<code>angle_quantization_bins=64</code>、<code>minimum_turning_radius=0.05</code>；不是普通二维 A*。Hybrid-A* 在位置和朝向状态上考虑运动约束。DUBIN 不包含横向平移原语，因此全向控制器能侧移不代表 Planner 充分利用了全向能力。</p>
+<h3 id="41">4.1 为什么同一格还要记录朝向</h3>
+<p>教学A*把机器人缩成一个能向上下左右走的点；Hybrid搜索把“位置+朝向”一起作为状态。站在窄门前，同一个位置朝向门口或横着站，接下来可执行的转弯动作不同，所以不能合并成一个状态。64个角度桶相当于每桶 <code>360/64=5.625°</code>；若用20×20教学网格演示，位置状态400个，加朝向后可有25,600个离散状态。这个乘法帮助理解搜索规模，不是本队运行扩展节点数。</p>
+<p>DUBIN模型用前进直线和左右弧线连接状态，最小转弯半径限制弧线弯曲程度；配置中的0.05 m是0.05 m/格时的一格长度尺度，不意味着真实车在任何速度下都能完成这样的转弯。全向底盘可以侧移，但Planner的运动原语未必包含“原姿态横向平移”这一步。要通过同场景路径和跟踪数据评估适配，不凭底盘名称决定换算法。</p>
+<p>本仓库提供的是插件选择和配置，Smac算法实现属于Nav2依赖。先读主仓库路径 <code>ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml</code> 的<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L468-L503"><code>GridBased</code> L468–503</a>，区分插件名、<code>allow_unknown</code>、搜索时间、角度桶与平滑选项；再读主仓库路径 <code>ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml</code> 的<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml#L8-L16"><code>ComputePathToPose</code> L8–16</a>，确认BT请求的 <code>planner_id="GridBased"</code>确实对应这段配置。不能把依赖库实现写成主仓库自研A*。</p>
+<p>学习结论：<em><em>读懂和调试现用 Planner 必学，从零实现 Hybrid-A</em> 进阶。</em>* 不能仅凭“全向”就判定现配置错误，也不能说它已经最合适。后续专项可在同一 footprint、代价图和任务集下对照 Smac2D/Hybrid/Lattice，比较可达性、路径长度、计算时间、跟踪误差和碰撞余量，再决定是否换插件。</p>
+<p>Humble 配置/API 交叉核对 <a href="https://github.com/ros-navigation/navigation2/tree/humble/nav2_smac_planner">Nav2 Humble Smac 源码</a>。现行 <a href="https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/planners_plugins/smac/">Nav2 Smac 文档</a>用于概念阅读，Rolling/Jazzy 参数和插件分隔符不能直接照抄到 Humble。</p>
+<h2 id="_3">验收与排错</h2>
+<p>完成 <a href="../assignments/">T5–T6</a>。能分别解释：地图无通路、unknown 策略、起点碰撞、TF 不可用、规划超时；知道清 Costmap 不能修复地图坐标错位。下一步沿<a href="../nav2/">Nav2 与控制链</a>检查路径如何变成最终速度。</p>
+<p>用三个相似的“规划失败”练习拆根因：S被放进墙格，属于输入位置不可通行；墙中留有未知区域但策略禁止经过，属于unknown策略；S/G和地图正确却查不到map→机器人TF，属于无法得到起点位姿。前两项可用自己的A*小图复现，第三项必须看ROS运行证据。报告应先定位失败发生在哪一层，再引用配置/BT/图层函数；“规划算法差”不是可复核的根因。</p>
+<p>自学指定章节与固定地图实验见<a href="../self-study/planning-control/">规划与控制专题</a>：先读 Red Blob A*，完成 T5 后再选带权搜索和 Smac 对照；不需要同时实现所有候选算法。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../sensor-lio/" class="btn btn-neutral float-left" title="传感器、LIO与重定位"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../nav2/" class="btn btn-neutral float-right" title="Nav2与控制链">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../sensor-lio/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../nav2/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

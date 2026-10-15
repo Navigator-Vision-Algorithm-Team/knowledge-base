@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/debug-real/runbook/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Debug排查手册（按现象查） - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Debug\u6392\u67e5\u624b\u518c\uff08\u6309\u73b0\u8c61\u67e5\uff09";
+        var mkdocs_page_input_path = "navigation/debug-real/runbook.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/debug-real/runbook/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航通识知识</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../navigation-general/">通识入门与当前进度</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../navigation-general/%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/">建图和导航验证</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../navigation-general/%E5%AF%BC%E8%88%AA%E8%BF%87%E7%A8%8B/">导航过程</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/validation/">验证状态与复验</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/patrol-workshop/">轻量巡逻：把节点串成任务</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/astar-workshop/">A*两步练习：补全到独立实现</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../training/controlled-experiments/">TF、地图与滤波对照实验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../command-guide/">Debug命令详解（零基础先读）</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Debug排查手册（按现象查）</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 怎么使用这份手册</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#11">1.1 新开诊断终端，先加载已登记环境</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#12">1.2 路径与名字</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#13">1.3 快速按现象找问题</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2">2. 先理解两条数据链</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#21">2.1 定位与点云链</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#22-goal">2.2 Goal 到底盘链</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3">3. 两套导航同时存在、同一容器重复加载</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_1">检查</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">输出判断</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">处理</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">检查开机自启动</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">复查</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-odom-base_footprint-tf">4. odom → base_footprint 不存在、TF 树断开</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_6">检查</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tf">生成实际 TF 树</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-odometry">5. 雷达正常，但 odometry 没数据</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_7">逐段检查频率</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_8">怎么判断断在哪</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_9">深入看端点</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6">6. 点云队列满、旧时间戳、向未来外推</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_10">检查</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7-goal-action">7. 点击 Goal 没反应、Action 不可用、车不走</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#71">7.1 先确认接收目标的服务</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#72-action">7.2 点击是否真的进入 Action</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#73">7.3 沿速度链读取</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#8">8. 重定位跳动、地图与点云不重合</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_11">导航模式核对实际加载的地图</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_12">根据日志处理</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#9">9. 串口冲突、掉线、底盘收不到速度</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_13">检查设备与占用</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_14">检查返回反馈</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#10">10. 撞桌腿、绕障失败、膨胀半径该不该改</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#11_1">11. 底盘一顿一顿、前进后退、恢复频繁</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_15">读频率与速度值</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_16">查恢复与进展参数</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#12_1">12. 底盘在自旋，云台/雷达没有跟随</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#13-30">13. 机器人斜着、点云斜着，雷达安装倾斜 30°</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#14-rviz-opengl">14. RViz 白色模型、OpenGL 报错、显示冻结</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#15-0">15. 参数改了没效果、构建 0 个包、环境错误</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_17">检查实际运行的包</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bringup">更新 bringup 配置</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ros-runtimeerror-rclpyok">ROS 命令自己报 RuntimeError: !rclpy.ok()</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#16-11-9">16. 驱动退出、-11、-9、库冲突</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_18">查首次错误与退出时序</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#17-ssh">17. SSH 连不上时怎么分段判断</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#18">18. 每次重启后的复测流程</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1_1">终端 1：串口</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2_1">终端 2：建图，二选一</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2_2">终端 2：导航，二选一</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_19">历史试验参数核对表</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#19">19. 一键收集报告</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+      <li class="breadcrumb-item active">Debug排查手册（按现象查）</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="debug">导航与建图 Debug 排查手册</h1>
+<p><small>整理与维护：24cst朱鑫鹏</small></p>
+<p>知识库适配日期：2026-10-10。工具语法面向 Ubuntu 22.04 / ROS 2 Humble；实机结果来自 2026-09 的本地化 PB2025 历史案例。</p>
+<p><strong>本队学习主线是 Navigation-2027，审查基线 <code>183a4109b0de2030bb8970a54654937c8b039ba9</code>。</strong> 本文保留通用排障方法和历史修复证据，不把本地 PB2025 改动当成本队当前功能。先登记实际 commit、overlay、命名空间、串口接口与地图，参见<a href="../../system/">系统地图</a>和<a href="../../system/nav2-and-control-evidence/">源码审查证据</a>。所有 <code>/home/ubuntu/navigation_2025/...</code>、独立 <code>/home/ubuntu/ros_ws</code>、PID/IP/地图名均为历史示例，执行时以本次登记替换。</p>
+<p>实车操作与停止验证沿用<a href="../">实车流程</a>，本轮只更新知识库，不改生产导航源码。</p>
+<p>给零基础新人：先阅读 <a href="../command-guide/">导航 Debug 代码详解：零基础新人版</a>，再按本手册的故障章节排查。两份文档配套保留。</p>
+<p>本文依据此前贴出的 Linux 输出、保存的源码和修改记录整理。<strong>历史上成功的结果不代表机器人现在仍是同一状态；现场判断以本次命令输出为准。</strong> 本文不修改机器人程序，也不修改底盘电控协议。</p>
+<h2 id="1">1. 怎么使用这份手册</h2>
+<p>按“检查命令 → 输出判断 → 处理 → 复查”使用。先找到数据链断在哪一段，再改对应模块。</p>
+<p>把故障先写成一句带条件的事实，例如“导航模式、本次 Goal 执行中、上游有速度而最终 Topic 没消息”，不要只写“车不动”。这句话决定你应看控制转换还是传感器。每做一次检查就缩小候选原因，改动后再用原检查复验；重新启动后能跑属于恢复证据，还需要找出原触发条件。</p>
+<p>所有 <code>bash</code> 命令都在机器人 Ubuntu 终端执行，不在 Windows PowerShell 执行。只复制代码块，不复制 <code>ubuntu@ubuntu:...$</code> 提示符。一次粘贴一个代码块，等待提示符回来再粘贴下一块，避免出现 <code>*.xmlcd</code>、<code>pb2025_nav_bringupcd</code>。</p>
+<p>诊断终端里的 <code>Ctrl+C</code> 只停止正在运行的诊断命令；导航启动终端里的 <code>Ctrl+C</code> 才停止对应 launch。<code>timeout</code> 命令会自动结束检查，结束时打印信号或出现退出码 <code>124</code> 不等于导航崩溃。</p>
+<h3 id="11">1.1 新开诊断终端，先加载已登记环境</h3>
+<p>以下完整代码块属于历史双工作空间部署；Navigation-2027 的实际工作空间/串口依赖另见<a href="../../onboarding/environment/">环境页</a>。先确认路径和 overlay，不直接覆盖生产终端环境。</p>
+<pre><code class="language-bash">cd /home/ubuntu/navigation_2025/ros_ws
+unset LD_LIBRARY_PATH
+source /opt/ros/humble/setup.bash
+source /home/ubuntu/ros_ws/install/setup.bash
+source /home/ubuntu/navigation_2025/ros_ws/install/setup.bash
+</code></pre>
+<p>这里依次加载 Humble、串口工作空间、导航工作空间。<code>unset LD_LIBRARY_PATH</code> 用来清掉这台机器上可能干扰 ROS/PCL 的旧库路径，之后 <code>source</code> 会重新设置需要的路径。</p>
+<p>以前 <code>source install/setup.bash</code> 能单独工作，是因为它可以加载构建时记录的父工作空间；它必须在正确的工作空间目录下执行。出现环境问题时，优先使用上面的完整步骤。</p>
+<h3 id="12">1.2 路径与名字</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>本项目使用的值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>导航工作空间</td>
+<td><code>/home/ubuntu/navigation_2025/ros_ws</code></td>
+</tr>
+<tr>
+<td>导航源码</td>
+<td><code>/home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav</code></td>
+</tr>
+<tr>
+<td>串口工作空间</td>
+<td><code>/home/ubuntu/ros_ws</code></td>
+</tr>
+<tr>
+<td>主参数文件</td>
+<td><code>/home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml</code></td>
+</tr>
+<tr>
+<td>行为树目录</td>
+<td><code>/home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees</code></td>
+</tr>
+<tr>
+<td>ROS 命名空间</td>
+<td><code>/red_standard_robot1</code></td>
+</tr>
+<tr>
+<td>导航 TF 话题</td>
+<td><code>/red_standard_robot1/tf</code>、<code>/red_standard_robot1/tf_static</code></td>
+</tr>
+<tr>
+<td>最近一次确认过的底盘尺寸</td>
+<td>长 <code>0.60 m</code>、宽 <code>0.45 m</code></td>
+</tr>
+</tbody>
+</table>
+<p>注意：话题名带命名空间，TF 中的 frame 名通常仍是 <code>map</code>、<code>odom</code>、<code>base_footprint</code>，不要直接给 frame 名前加命名空间。</p>
+<h3 id="13">1.3 快速按现象找问题</h3>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>优先检查</th>
+<th>对应章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>点云重叠、位置跨米跳、同名节点很多</td>
+<td>重复 launch、重复组件、TF 多个发布者</td>
+<td>3、4、8</td>
+</tr>
+<tr>
+<td>雷达有数据，但车模型不动</td>
+<td>数据链中间断开、<code>odometry</code>、TF</td>
+<td>4、5</td>
+</tr>
+<tr>
+<td><code>queue is full</code>、旧时间戳被丢弃</td>
+<td>TF、时间、数据积压、重复发布</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Goal 点了没反应</td>
+<td>Action、生命周期、Goal 状态、速度链</td>
+<td>7</td>
+</tr>
+<tr>
+<td>规划有速度，底盘不动</td>
+<td>串口订阅、端口、使能和反馈</td>
+<td>7、9</td>
+</tr>
+<tr>
+<td>会撞桌腿、绕不开</td>
+<td>是否看见障碍、是否入代价地图、足迹与控制器</td>
+<td>10</td>
+</tr>
+<tr>
+<td>前后退、顿挫</td>
+<td>Action 是否进入恢复、进展检查、速度链</td>
+<td>11</td>
+</tr>
+<tr>
+<td>底盘转、云台不跟随</td>
+<td>云台接口、真实关节反馈</td>
+<td>12</td>
+</tr>
+<tr>
+<td>模型斜着、雷达斜着</td>
+<td>安装外参、<code>odom → base_footprint</code></td>
+<td>13</td>
+</tr>
+<tr>
+<td>RViz 白色、地图显示报错</td>
+<td>显示状态、材质、OpenGL、TF</td>
+<td>14</td>
+</tr>
+<tr>
+<td>参数改了没效果</td>
+<td>source 的包路径、install 内容、运行参数</td>
+<td>15</td>
+</tr>
+<tr>
+<td>驱动退出、<code>-11</code>、<code>-9</code></td>
+<td>首次错误、退出时序、进程与系统日志</td>
+<td>16</td>
+</tr>
+<tr>
+<td>SSH 超时</td>
+<td>当前 IP、路由、22 端口、抓包</td>
+<td>17</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2">2. 先理解两条数据链</h2>
+<h3 id="21">2.1 定位与点云链</h3>
+<p>定位链像加工流水线：驱动给原始测量，LIO 估计传感器运动，接口换到导航需要的坐标，重定位再把局部运动对到先验地图。每一层都需要前一层的正确输入。因此“雷达有数据”只证明第一站，不能替最后一站作证。</p>
+<pre><code class="language-text">Livox 驱动
+  ├─ livox/lidar、livox/lidar/pointcloud
+  └─ livox/imu
+        ↓
+Point-LIO
+  ├─ aft_mapped_to_init：里程计
+  └─ cloud_registered：已配准点云
+        ↓
+loam_interface
+  ├─ lidar_odometry
+  └─ registered_scan
+        ↓
+sensor_scan_generation
+  └─ odometry，以及本项目使用的相关运动 TF
+
+导航模式：small_gicp_relocalization + 先验 PCD → map → odom
+建图模式：slam_toolbox + 启动文件配置的 map/odom 关系 → 在线二维地图
+</code></pre>
+<p>这里的模块输出对应此前这套本地化工程；若工程后来修改过，用 <code>ros2 node info</code> 查实际输入输出。<code>sensor_scan_generation</code> 在本项目实机链路中也参与工作，不能只把它当作仿真节点。</p>
+<p>本队可对照 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp#L23-L51">ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp</a> 的输入参数与发布端点，以及 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L38-L59">ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp</a> 的双输入同步。例如 <code>lidar_odometry</code> 持续更新、<code>registered_scan</code> 不更新，后者的同步回调就缺一侧输入，最终 <code>odometry</code> 也可能停住。查两侧类型、stamp、QoS，再看日志；不能只数里程计频率。</p>
+<h3 id="22-goal">2.2 Goal 到底盘链</h3>
+<p>Goal 是任务，路径是路线，速度是当前动作，串口是硬件接口。看路径成功，不代表控制器已输出；看速度非零，也不代表底盘已认可。按这个顺序查，就能把“导航失败”拆成请求、规划、跟踪、转换和执行几个有证据的边界。</p>
+<pre><code class="language-text">RViz 的 Nav2 Goal
+  → /red_standard_robot1/navigate_to_pose Action
+  → bt_navigator
+  → planner_server / controller_server
+  → cmd_vel_controller
+  → velocity_smoother
+  → cmd_vel_nav2_result
+  → fake_vel_transform
+  → cmd_vel
+  → rm_serial_driver
+  → 串口导航数据包
+  → 电控执行
+</code></pre>
+<p>恢复行为也可能直接向 <code>cmd_vel_nav2_result</code> 发布，所以该话题出现控制器之外的发布者不一定是重复启动。必须结合节点名称判断。</p>
+<p>上图的 <code>rm_serial_driver</code> 属于历史部署末端；本队末端必须换成登记的实际消费者。控制器/smoother remap 及组合模式行为服务器输出可查 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L160-L306">ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py</a>。把源码中的相对名、launch 的 namespace/remap 与现场端点全名对应起来，再判断连接。</p>
+<h2 id="3">3. 两套导航同时存在、同一容器重复加载</h2>
+<p>重复来源会让下游收到相互矛盾的状态。示意：两份 Point-LIO 对同一时刻分别报告 x=1 与 x=3 米，下游交替接收时表现为跳变，而两个程序都可能没有崩溃。这里要验证的是“同一用途是否存在多个独立来源”，不是把所有多发布者话题都删成一个。</p>
+<p>组件应装到哪里，见 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L253-L286">ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py</a> 的 <code>target_container</code> 和列表。对照现场列表，若同容器同名组件出现两份，才把“重复加载”作为直接证据；若本机只有一份，继续检查同 ROS 域其他主机。</p>
+<h3 id="_1">检查</h3>
+<pre><code class="language-bash">ps -eo pid,ppid,stat,etimes,args | grep -E '[r]m_navigation_reality_launch|[c]omponent_container.*nav2_container|[p]ointlio_mapping|[l]ivox_ros_driver2_node|[r]m_serial_driver'
+</code></pre>
+<pre><code class="language-bash">ros2 node list | sort | uniq -d
+</code></pre>
+<pre><code class="language-bash">ros2 component list
+</code></pre>
+<pre><code class="language-bash">ros2 topic info /red_standard_robot1/aft_mapped_to_init -v
+</code></pre>
+<h3 id="_2">输出判断</h3>
+<table>
+<thead>
+<tr>
+<th>输出</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ps</code> 中两个同命名空间的导航 launch</td>
+<td>本机确实运行了两套启动程序，检查是否一套建图、一套导航</td>
+</tr>
+<tr>
+<td>只有一个 launch，但组件列表里同名组件出现两次</td>
+<td>组件确实重复加载；一个进程不等于一套组件</td>
+</tr>
+<tr>
+<td><code>uniq -d</code> 输出 <code>loam_interface</code>、<code>sensor_scan_generation</code>、<code>fake_vel_transform</code> 等</td>
+<td>图中有重名节点，继续结合组件、进程和话题端点确认来源</td>
+</tr>
+<tr>
+<td>本应唯一的 <code>aft_mapped_to_init</code> 有两个不同 Point-LIO 发布端点</td>
+<td>两个来源可能交替输入下游，容易引起位置、时间和点云异常</td>
+</tr>
+<tr>
+<td><code>/tf</code> 有很多发布者</td>
+<td>不足以判定冲突，多个不同 TF 边的发布者是正常的；冲突指同一个 child frame 被重复驱动</td>
+</tr>
+<tr>
+<td>Foxglove 组件管理器单独无响应</td>
+<td>先查 Foxglove 自身，不能据此认定 Nav2 容器也坏了</td>
+</tr>
+</tbody>
+</table>
+<p><strong>我们以前确实出现过：开机自动启动 <code>world:=final2 slam:=False</code>，随后又手动启动建图。</strong> 后来组件/节点中出现多份 <code>loam_interface</code>、<code>sensor_scan_generation</code>、<code>fake_vel_transform</code>，TF 和点云异常。清理旧实例后，无重复节点，<code>odometry</code> 恢复约 <code>20 Hz</code>。</p>
+<p>重名节点也可能来自同一 ROS_DOMAIN_ID 下的另一台电脑。<code>ps</code> 只显示本机进程；若本机进程正常但重复端点还在，检查同实验室其他电脑和 ROS 域配置。</p>
+<h3 id="_3">处理</h3>
+<p>优先回到旧 launch 的终端，按一次 <code>Ctrl+C</code>，等待完整退出。若旧终端找不到，先通过下面命令核对 PID：</p>
+<pre><code class="language-bash">ps -p 3199 -o pid,ppid,stat,args
+</code></pre>
+<p><code>3199</code> 只是历史例子，<strong>必须换成这次查到且属于旧导航 launch 的 PID</strong>。确认后才执行：</p>
+<pre><code class="language-bash">kill -INT 3199
+</code></pre>
+<p>等待退出后重新运行本节最上面的 <code>ps</code> 检查。仍有残留时，逐个核对残留 PID 的命令和所属 launch，再定向处理。不要直接复制旧 PID，不要批量杀掉实验室所有 ROS 进程。</p>
+<p>如果同一容器已经重复加载，通常完整停止对应 launch/容器并重新启动更清楚；逐个卸载可能破坏 lifecycle manager 与其他组件的依赖。</p>
+<h3 id="_4">检查开机自启动</h3>
+<pre><code class="language-bash">grep -RniE 'nav_test|rm_navigation_reality_launch|start_nav_tuned|world:=final2' /home/ubuntu/.config/autostart /etc/xdg/autostart 2&gt;/dev/null
+</code></pre>
+<pre><code class="language-bash">ls -l /home/ubuntu/.config/autostart /home/ubuntu/.config/autostart-disabled
+</code></pre>
+<p>此前找到的是 <code>/home/ubuntu/.config/autostart/nav_test.desktop</code>，其中 <code>Exec=/home/ubuntu/start_nav_test.sh</code>。若它现在又出现在 autostart 中，可保留文件并移出自动启动目录：</p>
+<pre><code class="language-bash">mkdir -p /home/ubuntu/.config/autostart-disabled
+mv -i /home/ubuntu/.config/autostart/nav_test.desktop /home/ubuntu/.config/autostart-disabled/nav_test.desktop
+</code></pre>
+<p>已经在 disabled 中就不用再移动。这只影响后续桌面登录，<strong>不会停止已经启动的导航</strong>。若进程停止后又自动出现，还要查其他启动来源：</p>
+<pre><code class="language-bash">systemctl --user list-units --all | grep -Ei 'nav|robot|ros'
+systemctl list-units --all | grep -Ei 'nav|robot|ros'
+crontab -l
+</code></pre>
+<h3 id="_5">复查</h3>
+<p><code>uniq -d</code> 不再列出关键导航节点；组件没有重复；Point-LIO 等应唯一的话题只剩预期发布端点；相关 TF 连通。这些证据一起满足，才认为重复启动问题解决。</p>
+<h2 id="4-odom-base_footprint-tf">4. <code>odom → base_footprint</code> 不存在、TF 树断开</h2>
+<p>TF 是将传感器位置换算到机器人、再换算到地图的坐标关系。一个 frame 存在，不代表它和另一个 frame 连通；链路连通，也不代表查询时刻在缓存范围内。先分别检查安装、局部运动、全局校正三段，就能知道缺的是哪种关系。</p>
+<p>本队 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L62-L85">ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp</a> 在同步回调里发布 odom 到 base_frame 的关系，并使用点云 stamp。若点云与里程计有数据、这条边却缺失，查看是否真正进入回调和参数 frame 名；若边存在但查旧消息时失败，则转第 6 节查时间。</p>
+<h3 id="_6">检查</h3>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 8s ros2 run tf2_ros tf2_echo odom base_footprint --ros-args -r /tf:=/red_standard_robot1/tf -r /tf_static:=/red_standard_robot1/tf_static
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 8s ros2 run tf2_ros tf2_echo map odom --ros-args -r /tf:=/red_standard_robot1/tf -r /tf_static:=/red_standard_robot1/tf_static
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 8s ros2 run tf2_ros tf2_echo base_footprint front_mid360 --ros-args -r /tf:=/red_standard_robot1/tf -r /tf_static:=/red_standard_robot1/tf_static
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>输出</th>
+<th>判断与下一步</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最初一条 <code>Invalid frame ID</code>，随后持续打印矩阵</td>
+<td>通常是订阅刚建立；此前我们也遇到过，不能把第一条警告当最终结果</td>
+</tr>
+<tr>
+<td>一直 <code>frame does not exist</code></td>
+<td>当前监听范围里没有该 frame，查是否启动、名称是否正确、TF 话题是否选对</td>
+</tr>
+<tr>
+<td><code>two or more unconnected trees</code></td>
+<td>两端 frame 存在，但缺少中间 TF 边，沿第 2 节链路检查发布节点</td>
+</tr>
+<tr>
+<td>时间持续推进、数值连续</td>
+<td>动态 TF 存在；还要确认静止时没有大跳</td>
+</tr>
+<tr>
+<td><code>map → odom</code> 为 <code>At time 0.0</code>，平移零、单位旋转</td>
+<td>表示读到静态单位变换；在之前的建图配置中正常，导航模式则应核对是不是错误保留了建图用静态发布者</td>
+</tr>
+<tr>
+<td><code>/tf</code> 有 <code>500 Hz</code>，但上述检查失败</td>
+<td>总 TF 频率不能证明需要的两帧已经连通</td>
+</tr>
+</tbody>
+</table>
+<p>不能在缺少真实里程计时，用静态 <code>odom → base_footprint</code> 假装修好，它会把运动位置固定住。</p>
+<h3 id="tf">生成实际 TF 树</h3>
+<p>在下面目录生成图文件，不覆盖导航配置：</p>
+<pre><code class="language-bash">mkdir -p /home/ubuntu/nav_debug_tf
+cd /home/ubuntu/nav_debug_tf
+ros2 run tf2_tools view_frames --ros-args -r /tf:=/red_standard_robot1/tf -r /tf_static:=/red_standard_robot1/tf_static
+</code></pre>
+<p>执行后检查该目录里的 <code>frames*.pdf</code>、<code>.gv</code>；不同 Humble 版本生成的文件名可能带时间。若提示缺少 <code>dot</code>，是绘图依赖问题，前面三个 <code>tf2_echo</code> 仍可用于检查。树中至少应能沿正确路径连接 <code>map</code>、<code>odom</code>、<code>base_footprint</code> 和雷达。</p>
+<p>ROS 官方也使用 <code>tf2_echo</code>、<code>view_frames</code> 和 <code>tf2_monitor</code> 区分 frame 与时间问题：<a href="https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Tf2/Debugging-Tf2-Problems.rst">Humble TF2 调试说明</a>。</p>
+<h2 id="5-odometry">5. 雷达正常，但 <code>odometry</code> 没数据</h2>
+<p>找“第一处断点”比找“最后一个没数据的话题”有用。假设原始点云、IMU、LIO 输出都在更新，而 <code>lidar_odometry</code> 没有，先查 loam_interface；若两路转接输入都有，最终没有，再查同步与外参。这里的逐段命令就是让你画出一个带实测值的流水线。</p>
+<p>尤其注意 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp#L63-L97">ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp</a> 的首次 TF 查询失败会直接返回，不发布该次里程计。源码中的这个分支能解释“节点活着、publisher 存在、却没消息”；现场仍需用 <code>TF lookup failed</code> 日志及对应变换查询支持判断。</p>
+<h3 id="_7">逐段检查频率</h3>
+<p>这些命令每条运行约 6 秒，<strong>按顺序逐条执行</strong>：</p>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic hz /red_standard_robot1/livox/lidar/pointcloud
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic hz /red_standard_robot1/livox/imu
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic hz /red_standard_robot1/aft_mapped_to_init
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic hz /red_standard_robot1/cloud_registered
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic hz /red_standard_robot1/lidar_odometry
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic hz /red_standard_robot1/registered_scan
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic hz /red_standard_robot1/odometry
+</code></pre>
+<h3 id="_8">怎么判断断在哪</h3>
+<table>
+<thead>
+<tr>
+<th>上游结果</th>
+<th>下游结果</th>
+<th>优先检查</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>雷达点云、IMU 都没有</td>
+<td>Point-LIO 没有</td>
+<td>雷达供电、网卡/地址、Livox 驱动、重复占用</td>
+</tr>
+<tr>
+<td>雷达点云有，IMU 没有</td>
+<td>Point-LIO 无输出或不稳定</td>
+<td>IMU 驱动输出、配置的订阅话题、QoS</td>
+</tr>
+<tr>
+<td>雷达和 IMU 有</td>
+<td><code>aft_mapped_to_init</code> 没有</td>
+<td>Point-LIO 是否存活、实际输入话题、日志、时间戳</td>
+</tr>
+<tr>
+<td><code>aft_mapped_to_init</code> 有</td>
+<td><code>lidar_odometry</code> 没有</td>
+<td><code>loam_interface</code> 是否加载、参数与 remap</td>
+</tr>
+<tr>
+<td><code>lidar_odometry</code>、<code>registered_scan</code> 有</td>
+<td><code>odometry</code> 没有</td>
+<td><code>sensor_scan_generation</code> 的订阅与外参 TF</td>
+</tr>
+<tr>
+<td><code>odometry</code> 有</td>
+<td><code>odom → base_footprint</code> 不通</td>
+<td>TF 发布逻辑、frame 名、命名空间、重复发布</td>
+</tr>
+</tbody>
+</table>
+<p>以前稳定的观测值是雷达点云约 <code>20 Hz</code>，最终 <code>odometry</code> 约 <code>20 Hz</code>。Point-LIO 里程计可能比点云频率高很多；不能因为 <code>aft_mapped_to_init</code> 高达几百或上千 Hz，就直接认定重复发布。</p>
+<p><code>registered_scan</code> 低频可能来自处理负载、过滤、同步或重复程序，必须看上下游对比。<code>ros2 topic hz</code> 是这个诊断订阅者收到数据的频率，不是发布者内部计时器的绝对频率。</p>
+<h3 id="_9">深入看端点</h3>
+<pre><code class="language-bash">ros2 topic info /red_standard_robot1/odometry -v
+ros2 node info /red_standard_robot1/loam_interface
+ros2 node info /red_standard_robot1/sensor_scan_generation
+</code></pre>
+<p>发布数为 <code>1</code> 只说明注册了发布端点，还需 <code>hz</code> 或 <code>echo</code> 确认真有数据。订阅数很多也不直接代表重复，RViz、控制器和调试终端都会增加订阅者。</p>
+<p>QoS 中发布者为 <code>BEST_EFFORT</code>、订阅者要求 <code>RELIABLE</code> 时可能收不到数据。可先用兼容的诊断订阅读取一条消息头：</p>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 8s ros2 topic echo /red_standard_robot1/registered_scan sensor_msgs/msg/PointCloud2 --qos-reliability best_effort --field header --once
+</code></pre>
+<p>实际模块的 QoS 仍需根据 <code>topic info -v</code> 和源码核对，诊断终端能读到不代表其他订阅者也兼容。</p>
+<h2 id="6">6. 点云队列满、旧时间戳、向未来外推</h2>
+<p>点云可能已经到达，但处理器在等“这条消息采集时刻”的 TF。一直等不到，排队的消息就越来越多，最终显示队列满。示意：当前 TF 只到 10.00 秒，点云请求 10.03 秒，就需要后续数据或合理等待；把队列从 10 改成 100 并不会生成缺失的变换。</p>
+<p>本队 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L88-L100">ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp</a> 按点云 stamp 查询安装关系，失败时返回单位变换；这又可能表现为“输出还在，但位置不对”。因此同时记录 stamp、请求/最新 TF 时间和日志，不以话题存在判定该级处理正确。</p>
+<p>常见日志：<code>queue is full</code>、<code>earlier than all the data in the transform cache</code>、<code>extrapolation into the future</code>。</p>
+<h3 id="_10">检查</h3>
+<p>先完成第 3 节的去重检查和第 4 节的 TF 连通检查，再读取消息时间：</p>
+<pre><code class="language-bash">date +%s
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 8s ros2 topic echo /red_standard_robot1/livox/lidar/pointcloud sensor_msgs/msg/PointCloud2 --qos-reliability best_effort --field header --once
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 8s ros2 topic echo /red_standard_robot1/registered_scan sensor_msgs/msg/PointCloud2 --qos-reliability best_effort --field header --once
+</code></pre>
+<pre><code class="language-bash">ros2 param get /red_standard_robot1/point_lio use_sim_time
+ros2 param get /red_standard_robot1/sensor_scan_generation use_sim_time
+ros2 param get /red_standard_robot1/bt_navigator use_sim_time
+ros2 param get /red_standard_robot1/rviz use_sim_time
+</code></pre>
+<pre><code class="language-bash">top -b -n 1 | head -n 25
+free -h
+timedatectl status
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>判断</th>
+<th>对应处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>消息时间正常推进，TF 链一直断</td>
+<td>等不到正确变换导致队列积压</td>
+<td>补回真正缺失的节点或 TF 边</td>
+</tr>
+<tr>
+<td>点云时间比当前时间持续落后十几秒</td>
+<td>可能是积压、错误时间源或旧发布者</td>
+<td>比较原始点云与注册点云，定位延迟首次出现的模块</td>
+</tr>
+<tr>
+<td><code>use_sim_time: true</code>，实机却没有有效 <code>/clock</code></td>
+<td>节点时钟配置不一致</td>
+<td>改对应实机参数为 false，重建并完整重启相关 launch</td>
+</tr>
+<tr>
+<td>仅启动最初几条旧消息，随后恢复</td>
+<td>可能是 TF 缓存建立阶段</td>
+<td>观察后续数据，避免把瞬时启动日志当持续故障</td>
+</tr>
+<tr>
+<td><code>Requested time</code> 只比 <code>latest data</code> 晚几毫秒，但持续刷屏</td>
+<td>TF 到达稍晚或查询时序不匹配</td>
+<td>查该模块是否按消息时间查询、是否支持合理等待；不能直接返回单位变换当成功</td>
+</tr>
+<tr>
+<td>CPU/内存持续紧张，注册点云明显比原始点云落后</td>
+<td>处理能力不足或队列积压</td>
+<td>先减少重复实例，再考虑下采样、处理频率和显示负载</td>
+</tr>
+</tbody>
+</table>
+<p><code>queue is full</code> 是消息等不到处理条件的结果，不一定是 queue 数值太小。直接扩大队列可能让旧数据积压更久。用于点云融合时，应保留消息时间对应的变换语义，不随意改成“最新 TF”。</p>
+<h2 id="7-goal-action">7. 点击 Goal 没反应、Action 不可用、车不走</h2>
+<p>“没反应”要拆开：点击有没有成为本次 Action，请求有没有被接受，规划有没有给路径，控制有没有给速度，最终有没有消费者。比如新目标 UUID 已是 EXECUTING，说明任务进入系统，重点应转到路径和控制日志；只有旧目标 SUCCEEDED 则还无法判断这次点击。</p>
+<h3 id="71">7.1 先确认接收目标的服务</h3>
+<pre><code class="language-bash">ros2 action list -t | grep navigate_to_pose
+ros2 action info /red_standard_robot1/navigate_to_pose
+</code></pre>
+<pre><code class="language-bash">ros2 lifecycle get /red_standard_robot1/bt_navigator
+ros2 lifecycle get /red_standard_robot1/planner_server
+ros2 lifecycle get /red_standard_robot1/controller_server
+</code></pre>
+<p>预期：存在 <code>nav2_msgs/action/NavigateToPose</code>，有 <code>1</code> 个预期的 Action server，三项 lifecycle 都为 <code>active [3]</code>。Action clients 有多个很正常；<code>inactive</code>/<code>unconfigured</code> 时先查 lifecycle manager 的配置失败日志。</p>
+<p><code>navigate_to_pose action server is not available. Is the initial pose set?</code> 后半句是提示，不是已经证明定位失败。可能是服务器没启动、命名空间错误、DDS 未发现或 lifecycle 没激活。</p>
+<p>本工程此前建图模式也启动 Nav2，可以使用顶部 <code>Nav2 Goal</code>。不要把别的工程“建图只负责建图”的结论套过来；如果 launch 后来改过，以上 Action 与 lifecycle 输出才是依据。</p>
+<h3 id="72-action">7.2 点击是否真的进入 Action</h3>
+<p>在诊断终端运行下面命令，再在 RViz 点击一次 Goal：</p>
+<pre><code class="language-bash">ros2 topic echo /red_standard_robot1/navigate_to_pose/_action/status action_msgs/msg/GoalStatusArray --qos-durability transient_local --qos-reliability reliable
+</code></pre>
+<table>
+<thead>
+<tr>
+<th><code>status</code></th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1</code></td>
+<td>ACCEPTED：目标已接收</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>EXECUTING：正在执行</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>CANCELING：正在取消</td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td>SUCCEEDED：成功</td>
+</tr>
+<tr>
+<td><code>5</code></td>
+<td>CANCELED：已取消</td>
+</tr>
+<tr>
+<td><code>6</code></td>
+<td>ABORTED：失败中止</td>
+</tr>
+</tbody>
+</table>
+<p>数组可能包含历史目标，结合新 Goal 的 UUID、时间和本次日志判断。没有新的目标状态变化时检查 RViz 的命名空间和所用按钮；有 <code>2</code> 后变 <code>6</code> 时，说明请求到达了，继续找运行失败原因。</p>
+<p>有些工具通过 <code>goal_pose</code> 转发目标，有些直接用 Action。<strong>不能只凭 <code>/goal_pose</code> 没消息就说 RViz 没发出 Goal。</strong></p>
+<h3 id="73">7.3 沿速度链读取</h3>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic echo /red_standard_robot1/cmd_vel_controller geometry_msgs/msg/Twist
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic echo /red_standard_robot1/cmd_vel_nav2_result geometry_msgs/msg/Twist
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic echo /red_standard_robot1/cmd_vel geometry_msgs/msg/Twist
+</code></pre>
+<pre><code class="language-bash">ros2 topic info /red_standard_robot1/cmd_vel -v
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>结果</th>
+<th>问题位置</th>
+<th>处理方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Goal 执行，但控制器无消息或始终零</td>
+<td>规划、TF、代价地图、控制器或到达判断</td>
+<td>查执行日志和路径，不先改串口</td>
+</tr>
+<tr>
+<td><code>cmd_vel_controller</code> 非零，<code>cmd_vel_nav2_result</code> 无消息</td>
+<td>velocity_smoother 或 remap</td>
+<td>查 smoother lifecycle、输入输出端点</td>
+</tr>
+<tr>
+<td><code>cmd_vel_nav2_result</code> 非零，<code>cmd_vel</code> 无消息</td>
+<td>fake_vel_transform 或同步依赖</td>
+<td>查 odometry、local_plan、节点参数和端点</td>
+</tr>
+<tr>
+<td><code>cmd_vel</code> 非零，没有预期串口订阅者</td>
+<td>串口 launch 没运行或订阅名不匹配</td>
+<td>只启动一套正确串口驱动</td>
+</tr>
+<tr>
+<td><code>cmd_vel</code> 非零，串口发送日志也非零，底盘仍不动</td>
+<td>串口后端、模式/使能、通信或执行</td>
+<td>接着查第 9 节反馈</td>
+</tr>
+<tr>
+<td>输入零，输出还持续非零</td>
+<td>旧命令缓存、其他发布者或转发逻辑</td>
+<td>查唯一发布者与零命令路径，不能归因于“Goal 没发布”</td>
+</tr>
+</tbody>
+</table>
+<p><code>linear.x</code>/<code>linear.y</code> 为平移速度，<code>angular.z</code> 为绕 Z 轴角速度。我们以前见过另一个工程将 <code>wz</code> 从 <code>linear.z</code> 取值的代码；若当前实际消费者仍这样取值，要交给对应模块维护者核对。仅有 <code>angular.z</code> 非零不能证明串口使用了同一个字段。</p>
+<h2 id="8">8. 重定位跳动、地图与点云不重合</h2>
+<p>重定位把当前局部点云与先验 PCD 对齐，结果决定 map 到 odom 的校正。错地图、错初值、错坐标或重复发布，都可能让它找到错误关系；连续稳定的 TF 也可能稳定地错在另一处墙角。判断要同时看“是否收敛”和“是否对到当前场地的正确位置”。</p>
+<p>打开 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/small_gicp_relocalization/src/small_gicp_relocalization.cpp#L95-L167">ros_ws/src/pb2025_sentry_nav/small_gicp_relocalization/src/small_gicp_relocalization.cpp</a>：从 PCD 加载，到累积点云，再到 <code>align</code> 与 <code>result.converged</code> 分支。若日志是 <code>Couldn't read PCD</code>，先处理路径/资产；若是 <code>GICP did not converge</code>，再核对输入和初值。这两种错误不应通过反复发送 initialpose 混为一类。</p>
+<p>先在静止状态比较两段 TF：</p>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 10s ros2 run tf2_ros tf2_echo odom base_footprint --ros-args -r /tf:=/red_standard_robot1/tf -r /tf_static:=/red_standard_robot1/tf_static
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 10s ros2 run tf2_ros tf2_echo map odom --ros-args -r /tf:=/red_standard_robot1/tf -r /tf_static:=/red_standard_robot1/tf_static
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>结果</th>
+<th>判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>odom → base_footprint</code> 自己就跨米跳</td>
+<td>优先查重复 Point-LIO/TF、原始传感器和外参，尚不能归因于 GICP</td>
+</tr>
+<tr>
+<td><code>odom → base_footprint</code> 连续，<code>map → odom</code> 大跳</td>
+<td>优先查全局重定位、先验地图、重复 map/odom 发布者</td>
+</tr>
+<tr>
+<td>两段连续但整体错位</td>
+<td>可能是错误初始匹配、错误地图或外参；“稳定”不代表“正确”</td>
+</tr>
+<tr>
+<td>只在转云台时异常</td>
+<td>查真实云台关节反馈、雷达运动外参和 TF；不是静态雷达安装角能完全解释</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_11">导航模式核对实际加载的地图</h3>
+<p>下方 <code>auto_initialize</code> 为历史可选扩展，前两项用于核对地图路径：</p>
+<pre><code class="language-bash">ros2 param get /red_standard_robot1/map_server yaml_filename
+ros2 param get /red_standard_robot1/small_gicp_relocalization prior_pcd_file
+ros2 param get /red_standard_robot1/small_gicp_relocalization auto_initialize
+</code></pre>
+<pre><code class="language-bash">ls -lh /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/map/reality/lab_20260826_01.yaml /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/map/reality/lab_20260826_01.pgm /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/pcd/reality/lab_20260826_01.pcd
+</code></pre>
+<p><code>lab_20260826_01</code> 是例子，替换为当前地图名。文件名一致、非零大小只是必要检查；还必须来自同一次建图，二维 YAML 的 <code>image</code> 也要指向对应图片。<code>final2</code> 若不是当前场地，不应期待正确匹配。</p>
+<h3 id="_12">根据日志处理</h3>
+<p>下表的自动初始化参数与日志来自历史本地 GICP 修改；当前 Navigation-2027 基线没有据此被证明支持免 initialpose 自动重定位。运行参数不存在时登记版本差异，按<a href="../../sensor-lio/">重定位专题</a>查当前入口。</p>
+<table>
+<thead>
+<tr>
+<th>日志</th>
+<th>意义</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Couldn't read PCD file</code></td>
+<td>先验 PCD 加载失败</td>
+<td>查实际参数路径、文件、权限与格式</td>
+</tr>
+<tr>
+<td><code>GICP did not converge</code></td>
+<td>本轮匹配未收敛</td>
+<td>查 registered_scan、外参、场地与地图、起始位置</td>
+</tr>
+<tr>
+<td><code>Rejected GICP jump</code></td>
+<td>本轮校正超过限幅，被拒绝</td>
+<td>看是否起始匹配不对，不直接无限放宽限幅</td>
+</tr>
+<tr>
+<td><code>Auto-initialized at the map origin...</code></td>
+<td>从地图原点开始初始化</td>
+<td>不是已经找到真实位置的证明</td>
+</tr>
+<tr>
+<td><code>Automatic GICP initialization is complete</code></td>
+<td>自动初始化阶段结束</td>
+<td>仍需静止点云、真实环境、二维地图对应关系确认</td>
+</tr>
+</tbody>
+</table>
+<p>保存源码里的自动初始化采用地图原点附近的 GICP 初值，不是任意地点的全地图搜索。以前配置的启动限幅是 <code>3 m / 45°</code>，持续校正限幅是 <code>0.4 m / 10°</code>，<code>smoothing_alpha=0.15</code>；现场用 <code>ros2 param get</code> 核对当前值。</p>
+<p>必要时用一次 <code>2D Pose Estimate</code> 提供正确位置与方向，等待匹配稳定。只有确认真实场地与旧图已经不符，或旧图本身存在明显失真，才把重新建图作为下一步；单纯 TF 断开或重复实例不靠重建地图解决。</p>
+<h2 id="9">9. 串口冲突、掉线、底盘收不到速度</h2>
+<p>把这节当作边界核对：ROS 一侧是否有正确消息和消费者，系统一侧是否打开正确设备，协议一侧是否被接收认可，硬件一侧是否允许执行。设备名存在只支持其中一项。示意：最终速度有 <code>0.2 m/s</code> 而订阅数为 0，先找消费者；消费者已连上而 CRC 连续失败，则需要串口/电控负责人查数据包。</p>
+<p>本队 C++ 实现的字段映射可读 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp#L658-L663">standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp</a>：<code>cmdVelCallback</code> 将 x、y、angular.z 写入发送状态。它说明这份实现如何取字段，不能证明当前部署用它，也不能证明固件已经执行这些数值。下方独立 rm_serial_driver 的反馈命令仍属于历史条件。</p>
+<p>本节 <code>/rm_serial_driver</code> 及 <code>/serial/chassis_*</code> 来自历史独立驱动。Navigation-2027 克隆中另有不同 Python/C++ 串口实现，节点名、状态类型与设备配置不等价；先按<a href="../../system/nav2-and-control-evidence/">接口证据 R1–R2</a>登记本次使用哪一套。</p>
+<h3 id="_13">检查设备与占用</h3>
+<pre><code class="language-bash">ls -l /dev/ttyACM* /dev/ttyUSB* /dev/serial/by-id/* 2&gt;/dev/null
+</code></pre>
+<pre><code class="language-bash">ros2 param get /rm_serial_driver device_name
+</code></pre>
+<pre><code class="language-bash">sudo fuser -v /dev/ttyACM0
+</code></pre>
+<pre><code class="language-bash">sudo lsof /dev/ttyACM0
+</code></pre>
+<p><code>ttyACM0</code> 必须换成上面参数里的实际端口。<code>lsof</code> 未安装时使用 <code>fuser</code>。若同时有 <code>rm_serial_driver</code> 和 SP 视觉工程串口程序占用同一设备，是我们曾经遇到的冲突方式；两者不能同时作为这个端口的控制者。</p>
+<h3 id="_14">检查返回反馈</h3>
+<pre><code class="language-bash">ros2 topic info /serial/chassis_enabled -v
+ros2 topic info /serial/chassis_velocity_feedback -v
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic echo /serial/chassis_enabled std_msgs/msg/UInt8
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic echo /serial/chassis_velocity_feedback geometry_msgs/msg/Twist
+</code></pre>
+<p>这些是之前加到串口驱动的只读诊断话题，旧版本驱动可能没有。没有诊断话题不能直接证明电控没回包，先查驱动版本。<code>enabled</code> 的取值是直接转发的电控字段，具体值/位含义由电控协议确认，不能一律把任意非零都解释为使能成功。</p>
+<table>
+<thead>
+<tr>
+<th>结果</th>
+<th>判断与处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>No such file</code></td>
+<td>拔插后设备号改变、未识别或参数不对；查真实设备路径</td>
+</tr>
+<tr>
+<td><code>Permission denied</code></td>
+<td>查 <code>id</code> 和设备所属组；若确为缺少 <code>dialout</code>，由管理员授予并重新登录</td>
+</tr>
+<tr>
+<td>两个程序打开相同端口</td>
+<td>定向停止重复程序，只保留本次使用的串口驱动</td>
+</tr>
+<tr>
+<td>不断 <code>reopen port</code>、接收错误</td>
+<td>查线缆、供电、设备重枚举、占用和驱动日志</td>
+</tr>
+<tr>
+<td>CRC 错误反复出现</td>
+<td>查通信/数据包解析、协议一致性，不能靠改 Nav2 参数修复</td>
+</tr>
+<tr>
+<td>输入速度非零，发送成功但反馈为零</td>
+<td>发送 API 成功不代表电控已执行；查控制模式、使能和返回数据</td>
+</tr>
+<tr>
+<td>反馈持续非零而实际运动不符</td>
+<td>查反馈字段单位/来源以及硬件执行，由电控维护者核对</td>
+</tr>
+</tbody>
+</table>
+<p>设备重连日志：</p>
+<pre><code class="language-bash">sudo journalctl -k -b --no-pager | grep -Ei 'ttyACM|ttyUSB|usb|disconnect|reset' | tail -n 60
+</code></pre>
+<p>处理后复查：仅预期程序占用端口，<code>cmd_vel</code> 有正确订阅者，回包恢复，物理运动与请求一致。共享实验室设备上不要通过给串口 <code>chmod 777</code> 掩盖权限和占用问题。</p>
+<h2 id="10">10. 撞桌腿、绕障失败、膨胀半径该不该改</h2>
+<p>障碍要先被感知和保留，再进入 costmap，最后才影响路径与运动。若桌腿在点云中消失，增加膨胀半径只会膨胀其他已识别障碍；若桌腿已标记而车角扫过去，则要看足迹、坐标与最终旋转。按这些层级观察，才能知道参数该改在哪一层。</p>
+<p>本队输入与门限在 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L368-L450">ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml</a>，控制器速度/采样调用在 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp#L219-L277">ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp</a> 的 <code>computeVelocityCommands</code>。先把现场障碍与 costmap 标记对上，再读代码使用了什么检查；不能由源码存在 <code>isCollisionDetected</code> 就宣称实车完整扫掠已验收。</p>
+<p>先在 RViz 打开原始点云、<code>terrain_map</code>、局部/全局代价地图和足迹，确认桌腿依次出现在这些层里。</p>
+<pre><code class="language-bash">ros2 node info /red_standard_robot1/local_costmap/local_costmap
+ros2 param get /red_standard_robot1/local_costmap/local_costmap obstacle_layer.observation_sources
+ros2 param get /red_standard_robot1/local_costmap/local_costmap obstacle_layer.terrain_map.topic
+</code></pre>
+<p>以前的配置使用 <code>pb_nav2_costmap_2d::IntensityObstacleLayer</code>，其直接观测输入是 <code>terrain_map</code> 点云。<strong><code>obstacle_scan</code> 正常不等于代价地图一定收到、采纳了障碍。</strong> 以运行参数和订阅端点确认实际输入。</p>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic hz /red_standard_robot1/terrain_map
+</code></pre>
+<pre><code class="language-bash">ros2 param get /red_standard_robot1/local_costmap/local_costmap footprint
+ros2 param get /red_standard_robot1/local_costmap/local_costmap footprint_padding
+ros2 param get /red_standard_robot1/local_costmap/local_costmap robot_base_frame
+ros2 param get /red_standard_robot1/local_costmap/local_costmap inflation_layer.inflation_radius
+ros2 param get /red_standard_robot1/global_costmap/global_costmap inflation_layer.inflation_radius
+ros2 param get /red_standard_robot1/controller_server FollowPath.enable_collision_guard
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>观察</th>
+<th>问题位置</th>
+<th>处理方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原始点云就看不到桌腿</td>
+<td>视野盲区、遮挡、距离或传感器</td>
+<td>改进传感覆盖；膨胀不能创造缺失障碍</td>
+</tr>
+<tr>
+<td>原始点云看得到，terrain_map 没有</td>
+<td>地面/高度/强度过滤、动态清除或坐标变换</td>
+<td>定位是哪一级把桌腿滤掉</td>
+</tr>
+<tr>
+<td>terrain_map 看得到，costmap 没标记</td>
+<td>观测话题、QoS、marking、TF 或强度/高度门限</td>
+<td>查代价地图运行参数和日志</td>
+</tr>
+<tr>
+<td>costmap 标记了，但路径贴障碍</td>
+<td>足迹、规划器代价权重、膨胀势场</td>
+<td>小步调整对应参数并复查路径</td>
+</tr>
+<tr>
+<td>路径安全但实际轨迹扫到障碍</td>
+<td>速度坐标系、旋转扫掠、跟踪误差或反馈</td>
+<td>对比轨迹、足迹 TF 与真实车体</td>
+</tr>
+</tbody>
+</table>
+<p>长 <code>0.60 m</code>、宽 <code>0.45 m</code> 且底盘坐标原点在矩形中心时，角点旋转扫掠半径为 <code>sqrt(0.30² + 0.225²) = 0.375 m</code>，还要计入余量与定位误差。若代价地图足迹挂在 <code>gimbal_yaw_fake</code>，必须核对它的位置/朝向是否真实代表底盘；云台与底盘独立转动时，这一点尤其重要。</p>
+<p><strong>此前我们将膨胀从 <code>0.50</code> 调到 <code>0.60 m</code>，但不能据此承诺实际绕障距离增加 <code>10 cm</code>。</strong> 膨胀是对已识别障碍建立代价势场，不是整圈都不可走的硬墙；<code>cost_scaling_factor</code> 越大，代价衰减通常越快。影响还取决于规划器如何使用代价与足迹。参数含义见 <a href="https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/costmap_2d/costmap_plugins/inflation/">Nav2 Inflation Layer</a>，本文只使用 Humble 已有参数。</p>
+<p>历史本地控制器曾增加可选 <code>enable_collision_guard</code> 并设置为 <code>false</code>。该参数不属于所有版本；Navigation-2027 审查基线有不同的采样碰撞逻辑与边界，见<a href="../../system/nav2-and-control-evidence/">风险 R8</a>。若当前仍为 false，不能假设“有代价地图就一定有完整轨迹碰撞检查”。后置 <code>fake_vel_transform</code> 添加的自旋也可能改变控制器原本检查的运动，需要核对最终输出轨迹。把膨胀变大、把速度变慢都不能替代这项核对。</p>
+<h2 id="11_1">11. 底盘一顿一顿、前进后退、恢复频繁</h2>
+<p>顿挫可能来自上游主动停止/恢复，也可能来自转换同步间断或执行端反馈。把同一时间区间的三段速度、Action 和底盘反馈放在一起，才能区分。示意：控制器先报进展失败，随后上游速度改成恢复动作，这是任务决策；上游始终稳定、最终输出忽零忽非零，则先查转换节点。</p>
+<p>恢复顺序可读 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml#L5-L38">ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml</a>：规划与跟踪各有清图恢复，外层还会轮换恢复动作。XML 说明“可能走哪些分支”，日志、反馈与时间顺序才说明“这次走了哪条”。</p>
+<h3 id="_15">读频率与速度值</h3>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic hz /red_standard_robot1/cmd_vel_nav2_result
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic hz /red_standard_robot1/cmd_vel
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic echo /red_standard_robot1/cmd_vel geometry_msgs/msg/Twist --field angular.z
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 6s ros2 topic echo /red_standard_robot1/cmd_vel geometry_msgs/msg/Twist --field linear
+</code></pre>
+<p>以前输入约 <code>20 Hz</code>，输出约 <code>17–19 Hz</code>，最大间隔约 <code>0.1 s</code>。它显示转发存在间隔变化，但<strong>不能单独证明这是物理顿挫的根因</strong>。看非零、零、反向速度是否与停顿同步，再结合反馈区分控制决策和硬件执行。</p>
+<h3 id="_16">查恢复与进展参数</h3>
+<p><code>BackUp</code> 的名字不保证是标准沿车后退：本队基线可能装载 <code>BackUpFreeSpace</code> 搜索自由方向。先查运行插件与<a href="../../nav2/">BT/控制链</a>，下方距离和速度仅为历史案例。</p>
+<pre><code class="language-bash">ros2 param get /red_standard_robot1/controller_server progress_checker.required_movement_radius
+ros2 param get /red_standard_robot1/controller_server progress_checker.movement_time_allowance
+ros2 param get /red_standard_robot1/bt_navigator default_nav_to_pose_bt_xml
+</code></pre>
+<pre><code class="language-bash">grep -nE 'BackUp|backup_dist|backup_speed' /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml
+</code></pre>
+<pre><code class="language-bash">grep -RniE 'Failed to make progress|BackUp|Collision|collision|Failed to control|abort|Failed to find' /home/ubuntu/.ros/log/latest 2&gt;/dev/null | tail -n 80
+</code></pre>
+<p><code>~/.ros/log/latest</code> 可能已经指向后来启动的 RViz/其他 launch，也可能没有保存控制器终端的全部输出。无匹配行只能说明这批日志没搜到，不能证明没有恢复。需要结合本次导航终端、Action 状态与实际速度。</p>
+<table>
+<thead>
+<tr>
+<th>证据</th>
+<th>处理方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Failed to make progress</code> 后开始后退</td>
+<td>查平移是否真实受阻、进展距离/时间是否过严</td>
+</tr>
+<tr>
+<td>只看到了行为树里有 BackUp</td>
+<td>只能说明“具备这个行为”，不能证明本次正在执行恢复</td>
+</tr>
+<tr>
+<td>Nav2 输入先归零，输出跟着归零</td>
+<td>上游停止决策，查规划、控制和恢复</td>
+</tr>
+<tr>
+<td>输入稳定，输出间断或异常</td>
+<td>fake_vel_transform 的同步、缓存、TF 或其他发布者</td>
+</tr>
+<tr>
+<td>命令稳定，串口反馈仍顿挫</td>
+<td>通信与执行链，交给相关维护者结合反馈查</td>
+</tr>
+</tbody>
+</table>
+<p>之前按你的选择改为：进展距离 <code>0.15 m</code>、时间 <code>7 s</code>、恢复后退 <code>0.50 m</code>、速度 <code>0.20 m/s</code>。这是历史试验值，不是已证明适合所有场地的标准值。<code>7 s</code> 比 <code>10 s</code> 更容易触发超时。</p>
+<p><code>SimpleProgressChecker</code> 看的是相对基准位置的平移，不是累计路程，也不把原地自旋当作平移进展。因此一直旋转或短距离来回可能仍超时。依据：<a href="https://github.com/ros-navigation/navigation2/blob/humble/nav2_controller/plugins/simple_progress_checker.cpp">Humble SimpleProgressChecker 源码</a>。</p>
+<h2 id="12_1">12. 底盘在自旋，云台/雷达没有跟随</h2>
+<p>底盘和云台是两个控制对象。给 Twist 的 angular.z 加值只提出底盘旋转请求，没有自动产生云台关节位置请求。示意：底盘转了 90°，云台保持世界朝向时，相对底盘关节就可能反向转 90°；如果只是模型 TF 被固定，看起来一起转也不能证明硬件跟随。</p>
+<p>接口位置可对照 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp#L665-L680">standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp</a> 的 <code>cmdGimbalJointCallback</code>：它按 JointState 的 joint name 读取 position，和底盘 Twist 是不同订阅。实际控制模式与反馈仍需部署登记；先查消费者、类型与关节反馈，再由负责人安排硬件验证。</p>
+<p>历史案例的云台跟随尚未完成接口/反馈验证。Navigation-2027 的 C++ 串口接口另有 JointState 云台通路，不能把历史 rm_serial_driver 没有订阅等结论直接套到本队部署；先查实际订阅者，不猜格式发送新命令。</p>
+<pre><code class="language-bash">ros2 topic info /red_standard_robot1/cmd_gimbal_joint -v
+</code></pre>
+<pre><code class="language-bash">ros2 topic list | grep -Ei 'gimbal|joint|serial'
+ros2 node info /rm_serial_driver
+ros2 param get /red_standard_robot1/fake_vel_transform init_spin_speed
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>输出</th>
+<th>判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>存在 cmd_gimbal_joint，但 Subscription count 为 0</td>
+<td>该 ROS 话题没有消费者；向它发布也不会经这个话题控制硬件</td>
+</tr>
+<tr>
+<td>有发布者、无订阅者</td>
+<td>发布者并不能构成完整云台控制通路</td>
+</tr>
+<tr>
+<td>有订阅者</td>
+<td>继续查消费者源码、协议和控制模式，不猜角度/角速度含义</td>
+</tr>
+<tr>
+<td>cmd_vel.angular.z 非零、底盘转</td>
+<td>只证明底盘旋转请求与现象，不能证明云台也收到旋转请求</td>
+</tr>
+<tr>
+<td>RViz 的云台跟车转，但实物不转</td>
+<td>检查关节反馈是否真实，模型显示不是硬件执行证据</td>
+</tr>
+</tbody>
+</table>
+<p>已读过的 <code>fake_vel_transform</code> 只将附加自旋加到 <code>Twist.angular.z</code>，没有云台控制发布。云台可能在世界坐标下保持朝向，也可能受独立控制模式约束；<strong>具体原因尚未通过接口和反馈验证，不能直接下定论。</strong></p>
+<p>历史修改后的实现按“非零平移速度”添加自旋，并没有直接监听 Goal 状态。<strong>Navigation-2027 审查基线却是始终叠加 spin_speed，全零输入也可能输出旋转</strong>；见<a href="../../system/nav2-and-control-evidence/">停止路径证据 R3–R7</a>，两者不可混作同一版本。因此前进、后退或其他经过同一通路的平移都可能触发附加自旋；不能严格称为已经实现“仅 Goal 期间整体旋转”。</p>
+<p><code>init_spin_speed</code> 是初始化参数。<code>/cmd_spin</code> 回调可以直接改内部速度，参数读数未必同步反映这个变量；最终仍需对比输入输出速度。云台相对底盘固定的真实状态应由实际关节反馈验证，不能添加假的静态 TF 让 RViz 看起来跟随。</p>
+<h2 id="13-30">13. 机器人斜着、点云斜着，雷达安装倾斜 30°</h2>
+<p>先分清“传感器相对车斜”与“车相对地面斜”。真实安装角应该进入外参，使雷达坐标中的斜地面换算到车体时成为正确地面；把外参归零反而可能把安装倾角留在点云里。下面同时看安装 TF 与车体 TF，正是为了分离这两种角度。</p>
+<p>模型差异也要查来源：<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_robot_description/resource/xmacro/uic2025_sentry_robot.sdf.xmacro#L15-L22">ros_ws/src/pb2025_robot_description/resource/xmacro/uic2025_sentry_robot.sdf.xmacro</a> 的雷达在 gimbal_yaw 上、roll 为 -π/6；<a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_robot_description/resource/xmacro/pb2025_sentry_robot.sdf.xmacro#L14-L27">ros_ws/src/pb2025_robot_description/resource/xmacro/pb2025_sentry_robot.sdf.xmacro</a> 则在 chassis 上、roll 为 -π/12。下方历史 -30° 记录不能自动套到选用 PB 模型的仿真，先确认本次模型与实物。</p>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 8s ros2 run tf2_ros tf2_echo base_footprint front_mid360 --ros-args -r /tf:=/red_standard_robot1/tf -r /tf_static:=/red_standard_robot1/tf_static
+</code></pre>
+<pre><code class="language-bash">timeout --signal=INT --kill-after=2s 8s ros2 run tf2_ros tf2_echo odom base_footprint --ros-args -r /tf:=/red_standard_robot1/tf -r /tf_static:=/red_standard_robot1/tf_static
+</code></pre>
+<p>以前 <code>base_footprint → front_mid360</code> 输出 <code>RPY [-30°, 0°, 0°]</code>，平移约 <code>[-0.036, 0.093, 0.576] m</code>，你也确认雷达确实倾斜 <code>30°</code>。</p>
+<p>这表示安装变换中存在约 <code>-30°</code> 的 <strong>roll</strong>，并不等于云台 pitch 向下 <code>30°</code>。判断方向必须结合轴定义和实物。正确外参本来就应保留真实安装角，不能为了模型好看直接归零。</p>
+<table>
+<thead>
+<tr>
+<th>结果</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>雷达相对车倾斜符合安装，车体相对 odom 近似水平</td>
+<td>雷达斜着本身正常</td>
+</tr>
+<tr>
+<td>静止平地，车体 TF 也出现大角度倾斜</td>
+<td>查外参组合、IMU 轴、Point-LIO 变换、是否重复补偿</td>
+</tr>
+<tr>
+<td>地面点云变成倾斜平面或障碍物高度错误</td>
+<td>查点云 frame_id 与安装变换是否一致</td>
+</tr>
+<tr>
+<td>实物云台朝下但 TF 正常</td>
+<td>查云台反馈/控制模式，显示变换不一定能解释物理姿态</td>
+</tr>
+</tbody>
+</table>
+<p>小幅几度姿态变化要结合实际地面、车体和 IMU 误差评估；单纯 yaw 约 <code>96°</code> 只是朝向，不能叫“车体倾斜”。</p>
+<h2 id="14-rviz-opengl">14. RViz 白色模型、OpenGL 报错、显示冻结</h2>
+<p>RViz 是数据的观察窗口。窗口的渲染失败、订阅配置错误与导航内部失败可以有相同的“画面不动”，所以先用 CLI 独立确认数据和 TF，再判断窗口。比如 odometry 连续更新、TF 可查、只有 Map 的 GLSL 报错，先查显示链；若 odometry 本身没消息，转回第 5 节。</p>
+<p>独立显示入口在 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rviz_launch.py#L27-L62">ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rviz_launch.py</a>，只创建 RViz 并 remap TF。它解释了为什么单独重开显示不必再启动整个导航，也提醒你核对 RViz namespace 与 TF Topic。</p>
+<p>此前出现过：<code>active samplers with a different type refer to the same texture image unit</code>，属于渲染器/显卡/材质相关错误，不直接证明串口或 Goal 坏了。</p>
+<p>先展开 RViz 左侧 <code>RobotModel</code>、点云、Map 的 <code>Status</code>，记录具体红色错误。再用第 4、5、7 节独立确认 TF、odometry、Action 和速度。</p>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>优先检查</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>白色但 TF 和数据正常</td>
+<td>模型材质、资源路径、光照/OpenGL</td>
+</tr>
+<tr>
+<td>模型不更新且 odometry 也没有</td>
+<td>运动数据链问题</td>
+</tr>
+<tr>
+<td>模型状态显示缺少 TF</td>
+<td>frame 链或消息时间问题</td>
+</tr>
+<tr>
+<td>地图出现 GLSL 错误、其他话题仍正常</td>
+<td>RViz 渲染问题，可单独测试软件渲染</td>
+</tr>
+</tbody>
+</table>
+<p>如需单独测试 RViz 软件渲染，先关闭原 RViz；不要额外启动第二套导航。在 Ubuntu 桌面、已加载环境的诊断终端执行：</p>
+<pre><code class="language-bash">LIBGL_ALWAYS_SOFTWARE=1 ros2 launch pb2025_nav_bringup rviz_launch.py namespace:=red_standard_robot1
+</code></pre>
+<p>软件渲染可能增加 CPU 负载，若显示恢复也要复查点云处理没有明显积压。此前的 <code>start_rviz_safe.sh</code> 还固定了显示会话路径；换用户或桌面会话后不要假设它仍通用。</p>
+<h2 id="15-0">15. 参数改了没效果、构建 0 个包、环境错误</h2>
+<p>同一名字的包可能有多份：src 是编辑来源，install 是启动通常使用的产物，旧进程还保存着启动时读入的值。示意：你改了工作区 A 的 YAML，prefix 却在 B，运行参数不变是合理结果。按“prefix→安装文件→启动选择→有效参数”查，才能确定改变真正到达了节点。</p>
+<p>本队 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L52-L63">ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py</a> 会用 <code>RewrittenYaml</code> 改写 namespace、use_sim_time 与 autostart。这解释了为什么原文件与最终参数可能有差异；读原文件之后还要读 launch 的覆盖来源与本次 param dump。</p>
+<h3 id="_17">检查实际运行的包</h3>
+<pre><code class="language-bash">ros2 pkg prefix pb2025_nav_bringup
+</code></pre>
+<p>预期指向 <code>/home/ubuntu/navigation_2025/ros_ws/install/...</code>，而不是另一个旧工作空间。isolated/merged install 的具体层级可能不同。</p>
+<pre><code class="language-bash">cd /home/ubuntu/navigation_2025/ros_ws
+colcon list | grep pb2025_nav_bringup
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>输出</th>
+<th>意义与处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ros2: command not found</code></td>
+<td>没加载环境，先执行 1.1</td>
+</tr>
+<tr>
+<td>包找不到</td>
+<td>工作空间/overlay 不对或包没安装，核对 colcon list 和 pkg prefix</td>
+</tr>
+<tr>
+<td><code>unknown package 'pb2025_nav_bringupcd'</code></td>
+<td>两条命令粘连，重新输入正确包名</td>
+</tr>
+<tr>
+<td><code>Summary: 0 packages finished</code></td>
+<td>没完成目标包构建，不能当成功</td>
+</tr>
+<tr>
+<td><code>Summary: 1 package finished</code> 且无失败</td>
+<td>本次选中的包构建完成；仍需重新加载环境并检查运行配置</td>
+</tr>
+<tr>
+<td>源文件与 install 内容相同</td>
+<td>只证明文件一致，不能证明旧进程已重新读取它</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bringup">更新 bringup 配置</h3>
+<p>先完整退出相关 launch，再执行：</p>
+<pre><code class="language-bash">cd /home/ubuntu/navigation_2025/ros_ws
+unset LD_LIBRARY_PATH
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+colcon build --symlink-install --packages-select pb2025_nav_bringup
+</code></pre>
+<p>确认成功后：</p>
+<pre><code class="language-bash">source /home/ubuntu/navigation_2025/ros_ws/install/setup.bash
+</code></pre>
+<p>只改 YAML/XML，更新 bringup 即可；修改 C++ 则必须构建对应 C++ 包，例如 <code>fake_vel_transform</code> 或 <code>small_gicp_relocalization</code>，仅构建 bringup 不会编译这些源码。</p>
+<p><code>--symlink-install</code> 可以让部分文件改动直接反映到 install，但已有进程不会因此自动重新加载启动参数。比较 install 文件时，以实际包路径为准：</p>
+<pre><code class="language-bash">grep -nE 'init_spin_speed|required_movement_radius|movement_time_allowance|inflation_radius' &quot;$(ros2 pkg prefix pb2025_nav_bringup)/share/pb2025_nav_bringup/config/reality/nav2_params.yaml&quot;
+</code></pre>
+<p>最后用 <code>ros2 param get</code> 查运行节点，这比只看 YAML 更接近真正在使用的值。行为树还要查 <code>default_nav_to_pose_bt_xml</code> 的实际路径与 XML 文件；它不一定会直接作为已展开参数显示。</p>
+<h3 id="ros-runtimeerror-rclpyok">ROS 命令自己报 <code>RuntimeError: !rclpy.ok()</code></h3>
+<p>这是此前出现过的 ROS CLI daemon 故障。可执行：</p>
+<pre><code class="language-bash">ros2 daemon stop
+ros2 daemon start
+</code></pre>
+<p>然后重新运行诊断命令。重启 daemon 不会停止或重启导航，也不会修复断开的真实 TF。显式写出消息类型有助于排除类型自动发现问题，但不能保证绕过所有 daemon/QoS 查询。</p>
+<p><code>Invalid field 'angular.zvvvvvv'</code> 是字段名粘贴错误，应改回 <code>angular.z</code>。若出现 <code>^[[200~</code> 一类字符，按 <code>Ctrl+C</code> 清掉当前输入，再重新粘贴干净的一条。</p>
+<h2 id="16-11-9">16. 驱动退出、<code>-11</code>、<code>-9</code>、库冲突</h2>
+<p>退出码告诉你“怎么结束”，根因要靠此前发生的事件定位。-11 是段错误，但可能涉及错误数据、对象生命周期或库兼容；-9 可能来自 OOM，也可能来自 launch 停止超时。先记下首条异常和按停止键的时刻，再看内核日志，就不会把退出清理失败误记成导航运行崩溃。</p>
+<h3 id="_18">查首次错误与退出时序</h3>
+<pre><code class="language-bash">ls -lt /home/ubuntu/.ros/log | head -n 12
+</code></pre>
+<pre><code class="language-bash">grep -RniE 'process has died|ERROR|segmentation|symbol lookup|undefined symbol|cannot open shared object|failed to terminate' /home/ubuntu/.ros/log/latest 2&gt;/dev/null | tail -n 100
+</code></pre>
+<pre><code class="language-bash">ps -eo pid,ppid,stat,args | grep -E '[l]ivox_ros_driver2_node|[p]ointlio_mapping|[c]omponent_container.*nav2_container'
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>输出</th>
+<th>判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exit code -11</code></td>
+<td>进程收到 SIGSEGV，需找崩溃位置；错误码本身不告诉你根因</td>
+</tr>
+<tr>
+<td><code>exit code -9</code> 且前面有 launch 升级到 SIGKILL</td>
+<td>launch 等待退出超时后强制终止，不一定是运行阶段崩溃</td>
+</tr>
+<tr>
+<td>内核有 <code>Out of memory</code>、<code>Killed process</code></td>
+<td>查内存压力与 OOM，区别于 launch 主动 SIGKILL</td>
+</tr>
+<tr>
+<td><code>undefined symbol</code>、库加载错误</td>
+<td>查 overlay 与实际加载库，使用干净环境重新 source</td>
+</tr>
+<tr>
+<td>只在 Ctrl+C 后驱动出现错误</td>
+<td>可能是退出清理路径问题，和正常运行时崩溃分开记录</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-bash">sudo journalctl -k -b --no-pager | grep -Ei 'out of memory|oom|killed process|segfault' | tail -n 60
+</code></pre>
+<pre><code class="language-bash">printenv LD_LIBRARY_PATH
+</code></pre>
+<p>若需要进一步查 Point-LIO 库加载，可先读：</p>
+<pre><code class="language-bash">ldd /home/ubuntu/navigation_2025/ros_ws/install/point_lio/lib/point_lio/pointlio_mapping | grep -Ei 'not found|pcl|usb|MVS'
+</code></pre>
+<p>先确认程序没有重复运行，再处理库路径和驱动错误。重复启动、时间问题、网络问题不能单靠升级到 SIGKILL 修复。建图正常退出时可能写 PCD，强制终止会影响保存，先区分“正常停止保存”与“清理已坏掉的残留”。</p>
+<h2 id="17-ssh">17. SSH 连不上时怎么分段判断</h2>
+<p>SSH 连线分为找地址、走路由、建立 TCP、认证四步。示意：<code>TcpTestSucceeded=True</code> 后仍 Permission denied，网络已走到认证边界，应查用户和密钥；一直 timeout 时，还没有证据支持修改用户口令。抓包是用来确认请求走到了哪一端，必须用本次客户端/服务器地址。</p>
+<p>在 Linux 检查当前地址和监听：</p>
+<pre><code class="language-bash">hostname -I
+ip -br addr
+sudo ss -lntp | grep ':22'
+sudo ufw status verbose
+</code></pre>
+<p>在 Windows PowerShell 检查选中的地址：</p>
+<pre><code class="language-powershell">Test-NetConnection 192.168.1.50 -Port 22
+</code></pre>
+<p>历史 IP <code>172.16.183.83</code>、<code>192.168.1.50</code>、<code>192.168.1.48</code> 不能保证现在仍有效。根据本次双方的 IP 和路由选择可达的网卡，<code>172.17.0.1</code> 通常是 Docker 网桥，先用 <code>ip -br addr</code> 确认。</p>
+<table>
+<thead>
+<tr>
+<th>结果</th>
+<th>意义与处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TcpTestSucceeded: True</code></td>
+<td>TCP 22 可达，再检查用户名、密钥或认证</td>
+</tr>
+<tr>
+<td><code>Connection timed out</code></td>
+<td>没收到有效建立连接响应，查网络、路由、防火墙和目标地址</td>
+</tr>
+<tr>
+<td><code>Connection refused</code></td>
+<td>通常到达了拒绝连接的主机/设备，查 sshd 服务与监听</td>
+</tr>
+<tr>
+<td><code>Permission denied</code></td>
+<td>已进入 SSH 认证阶段，查用户、密钥或口令</td>
+</tr>
+<tr>
+<td><code>Could not resolve hostname lab-linux</code></td>
+<td>Windows SSH 别名配置缺失或写错</td>
+</tr>
+<tr>
+<td>Ping <code>TtlExpired</code></td>
+<td>可能存在路由循环；不说明 sshd 未启动</td>
+</tr>
+</tbody>
+</table>
+<p>Linux 抓包时将 Windows 地址换成这次实际地址：</p>
+<pre><code class="language-bash">sudo tcpdump -ni any 'tcp port 22 and host 192.168.1.64'
+</code></pre>
+<p>然后 Windows 再连接一次。无任何匹配包：请求可能没到 Linux，先查客户端地址/路由和中间网络；重复 SYN 没有回复：查 Linux 网络/过滤；能看到 SYN、SYN-ACK 但没有完成握手：查回程或客户端过滤。空抓包前提是选对本次客户端 IP。</p>
+<h2 id="18">18. 每次重启后的复测流程</h2>
+<p>重启会清空部分状态，但不一定消除触发条件。复测要重复原来的模式、地图和输入，让“这次又通过”能与“原来在哪失败”比较。比如清掉重复启动后，除了节点数正常，还要看原先跳动的里程计、TF 与任务是否恢复；若改了停止路径，则零、取消、断流也应回归。</p>
+<p>以下两终端启动代码仅对应已登记的历史双工作空间案例。当前 Navigation-2027 先按<a href="../../onboarding/environment/">环境页</a>补齐实际串口包/地图/模型，并按<a href="../">实车流程</a>确认停止链；不要直接把历史路径与参数作为本队默认启动。</p>
+<ol>
+<li>先查第 3 节进程，确认开机没有意外自动启动导航；已有实例就不要再启动一套。</li>
+<li>终端 1 启动串口，终端 2 启动所需模式并包含 RViz。</li>
+<li>等数据稳定，检查无重复组件、<code>odometry</code> 有数据、三段 TF 连通。</li>
+<li>建图确认在线地图更新；导航确认加载的二维图与先验 PCD 是同一次建图且定位正确。</li>
+<li>确认 Action server 与三个 lifecycle 状态，再测试 Goal。</li>
+<li>有异常时先收集数据，记录模式、地图名、机器人是否静止、异常时间和本次日志目录。</li>
+<li>只改有证据指向的参数或模块，重启对应程序后用同一流程复查。</li>
+</ol>
+<h3 id="1_1">终端 1：串口</h3>
+<pre><code class="language-bash">cd /home/ubuntu/ros_ws
+unset LD_LIBRARY_PATH
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+ros2 launch rm_serial_driver serial_driver.launch.py
+</code></pre>
+<h3 id="2_1">终端 2：建图，二选一</h3>
+<pre><code class="language-bash">cd /home/ubuntu/navigation_2025/ros_ws
+unset LD_LIBRARY_PATH
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+ros2 launch pb2025_nav_bringup rm_navigation_reality_launch.py slam:=True use_robot_state_pub:=True use_rviz:=True
+</code></pre>
+<h3 id="2_2">终端 2：导航，二选一</h3>
+<pre><code class="language-bash">cd /home/ubuntu/navigation_2025/ros_ws
+unset LD_LIBRARY_PATH
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+ros2 launch pb2025_nav_bringup rm_navigation_reality_launch.py world:=lab_20260826_01 slam:=False use_robot_state_pub:=True use_rviz:=True
+</code></pre>
+<p>根据当前地图替换 <code>world</code>，不要同时执行建图和导航两条。诊断或保存地图需要临时再开一个终端，不是另启动一套导航。</p>
+<h3 id="_19">历史试验参数核对表</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>最近一次对话确认的值</th>
+<th>当前怎么确认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始附加底盘自旋</td>
+<td><code>0.8 rad/s</code></td>
+<td>fake_vel_transform 的初始化参数 + 最终 cmd_vel；云台跟随未完成</td>
+</tr>
+<tr>
+<td>进展距离</td>
+<td><code>0.15 m</code></td>
+<td>controller_server 的 progress_checker.required_movement_radius</td>
+</tr>
+<tr>
+<td>进展等待</td>
+<td><code>7.0 s</code></td>
+<td>controller_server 的 progress_checker.movement_time_allowance</td>
+</tr>
+<tr>
+<td>恢复后退距离</td>
+<td><code>0.50 m</code></td>
+<td>实际使用的行为树 XML</td>
+</tr>
+<tr>
+<td>恢复后退速度</td>
+<td><code>0.20 m/s</code></td>
+<td>实际使用的行为树 XML</td>
+</tr>
+<tr>
+<td>局部/全局膨胀</td>
+<td><code>0.60 m</code></td>
+<td>两个 costmap 的 inflation_layer.inflation_radius</td>
+</tr>
+<tr>
+<td>足迹余量</td>
+<td><code>0.03 m</code></td>
+<td>两个 costmap 的 footprint_padding</td>
+</tr>
+</tbody>
+</table>
+<p>这些值是调试记录，不是碰撞安全保证。此前老文档中的 <code>0.0</code> 自旋、<code>0.5</code> 膨胀等值属于更早状态，不用老文档替代运行参数。</p>
+<h2 id="19">19. 一键收集报告</h2>
+<p>报告是一张按顺序拍出的快照，不是同时录下所有量的电影。前半段 Action 在执行，后半段速度已归零，可能只是任务在采样期间结束；不能凭两段输出说“执行中却没速度”。需要因果时序时，还要结合本次连续日志或短 bag。</p>
+<p>源码蓝色入口是 <a href="https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/docs/navigation/debug-real/assets/collect_navigation_debug.sh#L106-L225">docs/navigation/debug-real/assets/collect_navigation_debug.sh</a>。读 <code>run_probe</code> 时看它如何记录命令与退出码，再看后面的循环如何依次查询；它返回 0 是为了继续收集，真实探测退出码写在报告中。</p>
+<p>下载<a href="../assets/collect_navigation_debug.sh">只读采集脚本</a>。从知识库根目录，先在当前终端加载已登记的 ROS/工作空间，再执行：</p>
+<pre><code class="language-bash">bash docs/navigation/debug-real/assets/collect_navigation_debug.sh --help
+</code></pre>
+<pre><code class="language-bash">bash docs/navigation/debug-real/assets/collect_navigation_debug.sh --namespace /red_standard_robot1
+</code></pre>
+<p>默认快速检查当前终端的图信息；加 <code>--full</code> 采样频率和三段 TF。只有显式提供 <code>--nav-workspace</code>、可选 <code>--serial-workspace</code> 时，脚本才 source 这些工作空间。<code>--serial-node</code> 使用本次登记的节点名；缺失的历史接口不会被当成已提供功能。</p>
+<p>报告保存在当前用户的 <code>$HOME/nav_debug_reports/时间_随机后缀</code>，可用 <code>--report-root</code> 指定新位置。包含 report.txt、nodes.txt、topics.txt。脚本只查询状态、写报告，不发 Goal/速度/云台命令，不停止进程、不改参数、不重启 daemon、不自动 sudo。</p>
+<p>采样顺序执行；空闲时零速度正常。源参数文件与运行参数不是同一层，latest 日志也可能来自另一条 launch。接口不存在、查询超时、类型不同都会保留证据；脚本结束只表示采集完成，不代表机器人健康。</p>
+<p>本次知识库更新验证 Bash 语法与离线模拟场景，未连接真实机器人。报告送审时同时写明“工程 commit、模式、地图、命名空间、静止/Goal 执行中、具体异常时间”。脚本详解见<a href="../command-guide/">新人版第 20 节</a>。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../command-guide/" class="btn btn-neutral float-left" title="Debug命令详解（零基础先读）"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../case-topic-mismatch/" class="btn btn-neutral float-right" title="Debug案例：Topic名字不匹配">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../command-guide/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../case-topic-mismatch/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

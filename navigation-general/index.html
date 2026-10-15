@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation-general/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>通识入门与当前进度 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u901a\u8bc6\u5165\u95e8\u4e0e\u5f53\u524d\u8fdb\u5ea6";
+        var mkdocs_page_input_path = "navigation-general/index.md";
+        var mkdocs_page_url = "/knowledge-base/navigation-general/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航通识知识</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">通识入门与当前进度</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">当前进度视频</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">操作流程与下载</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 导航解决什么问题</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2">2. 建图与导航有什么区别</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-rviz">3. RViz 画面应该怎么看</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4">4. 为什么机械安装会影响导航</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 电控与导航怎样配合</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6">6. 为什么有地图还会撞障碍</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7">7. 联调时各组提供什么</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#8">8. 实验前记住四件事</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/">建图和导航验证</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="%E5%AF%BC%E8%88%AA%E8%BF%87%E7%A8%8B/">导航过程</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/training/validation/">验证状态与复验</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/training/patrol-workshop/">轻量巡逻：把节点串成任务</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/training/astar-workshop/">A*两步练习：补全到独立实现</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/training/controlled-experiments/">TF、地图与滤波对照实验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/debug-real/command-guide/">Debug命令详解（零基础先读）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/debug-real/runbook/">Debug排查手册（按现象查）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../navigation/self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../navigation/maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航通识知识</li>
+      <li class="breadcrumb-item active">通识入门与当前进度</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">导航通识知识</h1>
+<p><strong>读者：电控、机械及其他非导航方向队员。</strong> 不要求会 ROS、写代码或调算法。看完能理解导航在做什么、联调时需要提供什么信息即可。</p>
+<p>栏目定位：“导航通识知识”面向跨组协作；“导航新人培训”面向导航算法与工程学习，两者深度不同。</p>
+<h2 id="_2">当前进度视频</h2>
+<p><strong>当前导航进度：一镜到底，可导全图，双端认证，后退避障，重新规划。</strong></p>
+<video controls playsinline preload="metadata" width="720" height="1280" style="display: block; width: auto; height: auto; max-width: 100%; max-height: 560px;" aria-label="当前进度视频">
+  <source src="assets/navigation-progress.mp4" type="video/mp4">
+  当前阅读器不支持内嵌视频，请使用下方视频链接。
+</video>
+
+<p><a href="assets/navigation-progress.mp4">打开或下载当前进度视频</a></p>
+<p>以上为团队提供的阶段进度说明，视频记录当前导航进展，不代替完整的场地与安全验收。</p>
+<h2 id="_3">操作流程与下载</h2>
+<table>
+<thead>
+<tr>
+<th>需要做什么</th>
+<th>在线阅读</th>
+<th>TXT 指令版</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>重新建图、保存地图并验证导航</td>
+<td><a href="%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/">建图和导航验证</a></td>
+<td><a href="%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81.txt">下载 TXT</a></td>
+</tr>
+<tr>
+<td>使用现有地图启动导航</td>
+<td><a href="%E5%AF%BC%E8%88%AA%E8%BF%87%E7%A8%8B/">导航过程</a></td>
+<td><a href="%E5%AF%BC%E8%88%AA%E8%BF%87%E7%A8%8B.txt">下载 TXT</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="1">1. 导航解决什么问题</h2>
+<p>可以把导航理解为五件事：</p>
+<table>
+<thead>
+<tr>
+<th>环节</th>
+<th>通俗理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>建图</td>
+<td>记录这个场地长什么样</td>
+</tr>
+<tr>
+<td>定位</td>
+<td>判断机器人现在在哪里、朝向哪里</td>
+</tr>
+<tr>
+<td>感知</td>
+<td>发现周围现在有哪些障碍</td>
+</tr>
+<tr>
+<td>规划</td>
+<td>找一条能够到达目标的路线</td>
+</tr>
+<tr>
+<td>控制</td>
+<td>持续计算该往哪走、走多快，并交给底盘执行</td>
+</tr>
+</tbody>
+</table>
+<p>导航软件不是直接给轮子通电。它输出运动要求，电控负责执行并反馈实际状态；导航再根据传感器和反馈继续调整。路径规划和运动控制是不同环节。<a href="https://docs.nav2.org/jazzy/getting_started/navigation_concepts/">Nav2 概念说明</a></p>
+<p><strong>以“从架空层一端走到另一端”为例：</strong> 在 RViz 设置 Goal 后，导航先结合当前位置与地图规划路线，再持续计算速度，通过串口交给电控执行。行走过程中，传感器和反馈不断更新，导航据此调整。不是发出一个目标后，就让底盘不看环境地一直走。</p>
+<p>因此，<strong>目标已接收、路径已生成、车辆已执行、任务已完成，是四个不同阶段</strong>。联调时说清楚卡在哪一步，比只说“导航不动了”更有帮助。</p>
+<h2 id="2">2. 建图与导航有什么区别</h2>
+<p><strong>建图是在记录环境，导航是在完成去往目标的任务。</strong> 本项目支持边建图边导航，但日常验证通常先保存地图，再用已有地图导航。<a href="https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav/wiki/建图指南">项目建图指南</a></p>
+<p>本队当前常用地图名是 <code>louxia</code>，对应我们 <strong>T8 楼下架空层的实地场地</strong>。这是文件的名称，不代表它永远与现场一致。桌椅挪动后，实时感知需要处理变化；大范围布局改变或传感器安装改变后，应由导航人员判断是否重新标定、建图。</p>
+<p>本部署的一套地图包含三个配套文件：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>louxia.pgm</code></td>
+<td>二维地图图片，描述哪些区域被占用、空闲或尚不确定</td>
+</tr>
+<tr>
+<td><code>louxia.yaml</code></td>
+<td>图片的说明，包括文件位置、尺寸换算和地图原点等</td>
+</tr>
+<tr>
+<td><code>louxia.pcd</code></td>
+<td>三维场景点云，供当前重定位方案与实时点云匹配</td>
+</tr>
+</tbody>
+</table>
+<p>它们需要来自同一次建图、正确配套；只看到二维地图不代表重定位所需的三维地图也保存好了。操作细节见<a href="%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/">建图和导航验证</a>。</p>
+<p><strong>定位与里程计也不是一回事。</strong> 里程计估计“刚才移动了多少、转了多少”，适合跟踪短时间运动，但误差会逐渐积累；地图定位则把当前观测与已有场地对应起来，判断“现在位于地图哪里”。重启或搬动车辆后，不能仅凭地图加载成功就认为位置正确。<a href="https://raw.githubusercontent.com/ros-infrastructure/rep/master/rep-0105.rst">ROS 坐标系约定</a></p>
+<h2 id="3-rviz">3. RViz 画面应该怎么看</h2>
+<p>RViz 是观察软件，不是真实世界本身。</p>
+<ul>
+<li><strong>地图</strong>：之前记录的场地。</li>
+<li><strong>点云</strong>：由雷达测量形成的空间点，反映传感器看到的环境。</li>
+<li><strong>机器人模型</strong>：软件估计的机器人位置与姿态，不是现场照片。</li>
+<li><strong>路径</strong>：软件准备尝试的路线，不保证车辆已经执行。</li>
+<li><strong>目标点 Goal</strong>：希望机器人到达的位置及朝向。</li>
+</ul>
+<p>判断正常，要同时看现场和画面：机器人位置、朝向合理，墙面点云与地图对应，运动时模型跟得上。仅“地图打开了”“模型不跳了”或日志出现“自动初始化”，都不足以证明定位正确。</p>
+<h2 id="4">4. 为什么机械安装会影响导航</h2>
+<p>软件必须知道雷达相对车体装在哪里、朝向哪里。这个位置和角度关系通常由 <strong>TF，也就是坐标关系</strong>描述。固定部件对应固定关系，会转动的部件需要随真实运动更新关系。<a href="https://docs.nav2.org/rolling/configuration_and_development/first_time_robot_setup_guide/transformation/setup_transforms/">Nav2 坐标关系说明</a></p>
+<p>遇到这些名字，记住它们各自的参考对象即可，不需要背命令：</p>
+<table>
+<thead>
+<tr>
+<th>常见名称</th>
+<th>可以怎样理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>map</code></td>
+<td>以场地地图为参考，描述机器人在场地哪里</td>
+</tr>
+<tr>
+<td><code>odom</code></td>
+<td>用于连续跟踪短时间运动的参考坐标系</td>
+</tr>
+<tr>
+<td><code>base_footprint</code></td>
+<td>本部署中代表车体基准的坐标系</td>
+</tr>
+<tr>
+<td><code>front_mid360</code></td>
+<td>本部署使用的雷达坐标系名称，换成 MID360S 后也可以沿用</td>
+</tr>
+</tbody>
+</table>
+<p>TF 将这些参考系联系起来，才能把“雷达看到的一个点”换算到车体或地图中。关系缺失、方向错误或更新滞后时，就可能出现点云错位、模型异常或导航等待；TF 不是控制电机转动的指令。</p>
+<p>本队雷达装在云台上，安装倾角此前约为 30°。这不是“在软件里把点云摆正”就能处理的问题，模型与参数必须符合真实安装。</p>
+<p>机械修改后，请告诉导航人员：</p>
+<ul>
+<li>雷达、IMU 或云台的位置、倾角是否变化，提供尺寸或安装图。</li>
+<li>支架是否松动，移动和转动时是否明显振动。</li>
+<li>外壳、线束或新部件是否挡住雷达视线。</li>
+<li>车体外轮廓是否变大，包括保险杠、突出件和转动部件的扫过范围。</li>
+</ul>
+<p><strong>底盘转了，不代表雷达一定跟着转。</strong> 云台可能在保持自身朝向；如果它相对底盘运动，导航需要真实角度反馈和正确的坐标关系，不能只靠 RViz 模型“看起来在转”。</p>
+<h2 id="5">5. 电控与导航怎样配合</h2>
+<p>最需要对齐的是：指令含义、参考方向、单位、控制模式与反馈。</p>
+<table>
+<thead>
+<tr>
+<th>需要确认</th>
+<th>为什么重要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>前后、左右、旋转分别是什么方向</td>
+<td>方向理解不一致会造成反向或侧向运动</td>
+</tr>
+<tr>
+<td>指令以底盘、云台还是场地为参考</td>
+<td>同一组数值在不同参考系下可能表示不同运动</td>
+</tr>
+<tr>
+<td>速度、角速度和角度的单位</td>
+<td>角度目标与转动速度不能混用</td>
+</tr>
+<tr>
+<td>自动导航、遥控和跟随模式谁优先</td>
+<td>避免两套指令同时争夺控制权</td>
+</tr>
+<tr>
+<td>是否使能、真实速度和角度反馈</td>
+<td>区分“软件要求动”和“实际已经动”</td>
+</tr>
+<tr>
+<td>断连、指令超时和接管后怎么停止</td>
+<td>不能持续执行过期的运动要求；这项需现场验收</td>
+</tr>
+</tbody>
+</table>
+<p>ROS 常见约定是 x 向前、y 向左、z 向上，距离用米、角度用弧度；线速度通常是米/秒，角速度是弧度/秒。但下位机协议必须逐项确认，不能假定自动一致。<a href="https://raw.githubusercontent.com/ros-infrastructure/rep/master/rep-0103.rst">ROS 单位与坐标约定</a></p>
+<p><strong>命令速度不等于实际速度。</strong> 地面打滑、限速、未使能、通信断开都可能使实际运动与要求不同，反馈能帮助各组定位问题。</p>
+<h2 id="6">6. 为什么有地图还会撞障碍</h2>
+<p>地图不是实时、无盲区的环境保证。薄桌腿、低矮物体、遮挡、测量特性和处理范围，都可能影响障碍检测。</p>
+<p>导航常用“代价地图”综合已知场地和实时障碍：全局地图帮助选路线，局部地图帮助处理车旁情况。<a href="https://docs.nav2.org/rolling/getting_started/navigation_concepts/environmental_representation/">Nav2 环境表示</a></p>
+<p>两个容易混淆的概念：</p>
+<ul>
+<li><strong>车体轮廓</strong>：告诉软件机器人真实占多大地方。本队底盘此前提供的尺寸为长 60 cm、宽 45 cm，实际仍要计入突出件和旋转时的占用范围，不能把机器人当成一个点。<a href="https://docs.nav2.org/rolling/configuration_and_development/first_time_robot_setup_guide/footprint/setup_footprint/">车体轮廓说明</a></li>
+<li><strong>膨胀区域</strong>：提高障碍附近的通行代价，帮助规划尽量留出距离。它不是所有彩色区域都绝对禁止通行，也不是自动检测盲区障碍的能力。<a href="https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/costmap_2d/costmap_plugins/inflation/">膨胀层说明</a></li>
+</ul>
+<p>所以，不应只为了画面好看而减小避障范围，也不能认为“调大膨胀半径就一定不撞”。安装视野、定位、轮廓、速度和制动表现需要一起验证；旋转扫描也不能代替可靠的障碍检测与停止机制。</p>
+<p><strong>重新规划与后退有什么区别？</strong> 重新规划是根据当前情况重新计算路线，目标可以不变；后退、等待等则可能是受阻后的恢复动作，具体取决于当前配置。正常绕开障碍不一定需要后退，更不是“先撞上再退”。若反复前进、后退却没有进展，应检查感知、定位、通道宽度和执行反馈，而不是不断重复发 Goal。<a href="https://docs.nav2.org/jazzy/getting_started/nav2_behavior_trees/detailed_behavior_tree_walkthrough/detailed_behavior_tree_walkthrough/">Nav2 规划与恢复流程</a></p>
+<h2 id="7">7. 联调时各组提供什么</h2>
+<table>
+<thead>
+<tr>
+<th>参与者</th>
+<th>重点提供或确认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>机械</td>
+<td>实际外形尺寸、传感器安装关系、运动范围、固定可靠性和视野遮挡</td>
+</tr>
+<tr>
+<td>电控</td>
+<td>协议与单位、控制参考系、模式切换、实际反馈、通信状态与停止行为</td>
+</tr>
+<tr>
+<td>导航</td>
+<td>地图版本、定位是否正确、计划路线、速度输出、坐标关系和异常日志</td>
+</tr>
+<tr>
+<td>现场测试人员</td>
+<td>环境是否安全、接管方式是否可用、真实车辆表现与测试记录</td>
+</tr>
+</tbody>
+</table>
+<p>遇到问题先描述现象，不急着归因：</p>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>优先一起确认什么，而不是直接下结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>点 Goal 不动</td>
+<td>目标是否被接收、是否输出速度、串口是否连接、底盘是否使能</td>
+</tr>
+<tr>
+<td>车在动，模型不跟随</td>
+<td>传感器、里程计、坐标关系和显示数据是否持续更新</td>
+</tr>
+<tr>
+<td>地图和点云错位</td>
+<td>地图是否选对、定位是否正确、安装与反馈是否发生变化</td>
+</tr>
+<tr>
+<td>只有底盘转，云台不转</td>
+<td>电控模式、云台控制来源，以及实际反馈，不能只改显示模型</td>
+</tr>
+<tr>
+<td>碰撞或绕不开障碍</td>
+<td>障碍是否被看到、车体轮廓是否准确、速度和停止距离是否合理</td>
+</tr>
+</tbody>
+</table>
+<p>反馈问题时最好一起给出：发生时间、地图名、当时操作、现场视频、RViz 截图和终端报错。这样能把现象与程序日志对应起来。</p>
+<h2 id="8">8. 实验前记住四件事</h2>
+<ol>
+<li>先确认定位正确，再发送目标；从低速、短距离、空旷区域开始验证。</li>
+<li>有人负责接管，周围保持安全距离，停止手段要提前验收。</li>
+<li>出现危险用现场接管/急停，不能把关终端当成硬件急停。</li>
+<li>一次到达目标不代表整车已经完成避障和可靠性验收；机械或电控改动后要复验受影响的部分。</li>
+</ol>
+<p>需要动手时，先看<a href="%E5%AF%BC%E8%88%AA%E8%BF%87%E7%A8%8B/">导航过程</a>；需要更换场地地图时，再看<a href="%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/">建图和导航验证</a>。两页顶部均有 TXT 下载链接。详细算法和排错命令留给“导航新人培训”栏目，不要求电控、机械队员在这里掌握。</p>
+<p>本文中的设备尺寸、安装位置和地图名来自本队已有沟通，现场变更后应同步更新。官方文档链接用于解释通用概念，不要求把链接中的新版 Nav2 参数直接套用到本队 Humble 部署。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="首页"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/" class="btn btn-neutral float-right" title="建图和导航验证">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

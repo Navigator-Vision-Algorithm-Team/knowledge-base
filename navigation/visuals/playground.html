@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:,">
+  <title>动手看导航</title>
+  <link rel="stylesheet" href="playground.css">
+</head>
+<body>
+  <main class="shell">
+    <nav class="scenes" aria-label="选择演示" hidden>
+      <a href="?gallery=1&amp;scene=overview" data-scene="overview">导航全景</a>
+      <a href="?gallery=1&amp;scene=messages" data-scene="messages">消息传递</a>
+      <a href="?gallery=1&amp;scene=motion" data-scene="motion">车头与方向</a>
+      <a href="?gallery=1&amp;scene=astar" data-scene="astar">一步步找路</a>
+      <a href="?gallery=1&amp;scene=costmap" data-scene="costmap">离墙多远</a>
+      <a href="?gallery=1&amp;scene=patrol" data-scene="patrol">两点巡逻</a>
+    </nav>
+    <header><span class="eyebrow">动手看导航 <span class="badge">教学示意</span></span><h1 id="question">机器人怎样走到目标点？</h1><p class="byline">整理与维护：24cst朱鑫鹏</p></header>
+    <div id="options" class="options" aria-label="改变条件"></div>
+    <div class="stage"><svg id="diagram" viewBox="0 0 600 280" role="img" aria-label="导航演示图"></svg></div>
+    <div id="legend" class="legend" aria-label="图例"></div>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <div id="controls" class="controls" aria-label="控制演示"></div>
+    <details class="teaching-note"><summary>这个演示说明了什么？</summary><p id="note" class="note"></p></details>
+    <noscript>此演示需要 JavaScript。请启用后刷新；正文中的流程图和实操作业仍可阅读。</noscript>
+  </main>
+  <script type="module" src="playground.mjs"></script>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation/training/astar-workshop/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>A*两步练习：补全到独立实现 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "A*\u4e24\u6b65\u7ec3\u4e60\uff1a\u8865\u5168\u5230\u72ec\u7acb\u5b9e\u73b0";
+        var mkdocs_page_input_path = "navigation/training/astar-workshop.md";
+        var mkdocs_page_url = "/knowledge-base/navigation/training/astar-workshop/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航通识知识</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../navigation-general/">通识入门与当前进度</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../navigation-general/%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/">建图和导航验证</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../navigation-general/%E5%AF%BC%E8%88%AA%E8%BF%87%E7%A8%8B/">导航过程</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >配套教学工作区</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../validation/">验证状态与复验</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../patrol-workshop/">轻量巡逻：把节点串成任务</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">A*两步练习：补全到独立实现</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">这次练习怎么安排</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#1">1. 先把地图和答案说清楚</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2">2. 手算：启发式为什么可以“猜”</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-todo">3. 第一步：下载框架，完成三个 TODO</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#31-heuristic">3.1 heuristic：先保证单位和下界</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#32-search">3.2 search：队列里存什么，什么时候更新</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#33-reconstruct_path">3.3 reconstruct_path：沿父指针回家</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4">4. 边界验收：成功、无路、非法输入分别看</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-bfs">5. 为什么还要拿 BFS 对照</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6">6. 第二步：个人仓库从空文件独立实现</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#7-plannerros">7. 接回本队 Planner，ROS 接入留作拓展</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../controlled-experiments/">TF、地图与滤波对照实验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/command-guide/">Debug命令详解（零基础先读）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/runbook/">Debug排查手册（按现象查）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航新人培训</li>
+          <li class="breadcrumb-item">配套教学工作区</li>
+      <li class="breadcrumb-item active">A*两步练习：补全到独立实现</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="a">A* 两步练习：先补框架，再独立写出规划器</h1>
+<p><small>整理与维护：24cst朱鑫鹏</small></p>
+<p>先不用写代码。看蓝色搜索怎样绕过墙，最后留下从起点到终点的一条路。</p>
+<div data-nav-visuals="查看A*搜索动图"></div>
+
+<p><img alt="A星逐格搜索并绕墙到达目标的教学动图" src="../../visuals/assets/astar.gif" /></p>
+<iframe src="../../visuals/playground.html?scene=astar" title="A星搜索单步与播放演示" width="100%" height="620" loading="lazy" style="border:0;border-radius:12px"></iframe>
+
+<p><a href="../../visuals/playground.html?scene=astar">单独打开演示</a>。先按几次「单步」，再换「无路可走地图」：能解释它什么时候该停止，就可以开始下面的小程序练习了。</p>
+<p><strong>今天先做到这里：</strong> 动画用来认过程；下面会换成更小的 3×3 地图，先手算 6 步，再运行 <code>detour</code> 核对。不同地图的路径步数不一样。框架填空和独立实现分两次完成。</p>
+<p><link rel="stylesheet" href="../../visuals/reader.css"></p>
+<script src="../../visuals/reader.js" defer></script>
+<div data-nav-fold></div>
+
+<h2 id="_1">这次练习怎么安排</h2>
+<p>这节课接在<a href="../../planning/">规划与代价地图</a>后面，目标是把 <code>f=g+h</code> 变成可运行、可验收的代码。先用一张九格地图手算，再补齐三个核心函数；第二步在个人仓库从空文件实现相同接口，仍用同一批输入检查。</p>
+<p>练习借鉴了 <a href="https://github.com/unnc-aim/aim-2526-navigation-final-assessment">AIM 2025–26 导航入队考核</a>中“纯算法与 ROS 接入分开、启发式/主循环/回溯三处 TODO”的安排。本页的二进制小图、代码和检查器由本队课程重新编写；独立实现与同一接口复验是本页增加的第二步。</p>
+<h2 id="1">1. 先把地图和答案说清楚</h2>
+<p>把机器人暂时看成一个点。每次只能走到上、下、左、右的相邻格，每步代价为 1；障碍格不能走，不能斜着穿过去。这个简化模型让我们先判断算法正确性，机器人尺寸和转弯约束留到后面的真实 Planner 阅读。</p>
+<p>这里采用图像式行列方向：左上角是 <code>(x=0,y=0)</code>，<code>x</code> 向右增加，<code>y</code> 随行号向下增加。坐标写 <code>(x,y)</code>，读取却是 <code>grid[y][x]</code>。它不是 ROS 的世界坐标；不能把行号直接当作地图中的米。</p>
+<pre><code class="language-text">       x=0  x=1  x=2
+y=0     S    #    G
+y=1     .    #    .
+y=2     .    .    .
+
+S=(0,0), G=(2,0), #=1 障碍, .=0 通行
+</code></pre>
+<p>输入就是 <code>[[0,1,0],[0,1,0],[0,0,0]]</code>。起终点之间直线只有 2 格，但中间有墙，合法路径必须下到第三行绕过去。数边得到代价 6，数路径上的点得到 7；把这两个数字混淆，是第一次作业最常见的错误之一。</p>
+<p>所有实现都保留同一个入口：</p>
+<pre><code class="language-python">plan(grid, start, goal) -&gt; dict
+</code></pre>
+<p><code>grid</code> 是非空、等宽、只含整数 <code>0/1</code> 的二维列表或元组；<code>start/goal</code> 是两个整数构成的列表或元组。输入不包含 unknown；出现 <code>-1</code> 就明确拒绝，导入真实地图时须先另行规定 unknown 策略。</p>
+<table>
+<thead>
+<tr>
+<th>返回字段</th>
+<th>本课约定</th>
+<th>小图的结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>status</code></td>
+<td><code>ok</code> 找到路径；<code>no_path</code> 合法输入但不可达；<code>invalid</code> 输入非法</td>
+<td><code>ok</code></td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>从起点到终点的有序 <code>[[x,y], ...]</code>；失败时 <code>[]</code></td>
+<td>7 个点</td>
+</tr>
+<tr>
+<td><code>cost</code></td>
+<td>四邻接单位代价之和；失败时 <code>None</code>（JSON 为 <code>null</code>）</td>
+<td><code>6</code></td>
+</tr>
+<tr>
+<td><code>expanded</code></td>
+<td>实际处理过的不同通行格数，包含取出的终点；不计堆中旧条目</td>
+<td><code>7</code></td>
+</tr>
+</tbody>
+</table>
+<p>非法输入在搜索前结束，返回 <code>invalid, [], None, 0</code>。起终点是同一个通行格，返回 <code>ok, [[x,y]], 0, 1</code>；如果同一个格是障碍，仍是非法输入。<code>plan</code> 不得改动输入地图。</p>
+<h2 id="2">2. 手算：启发式为什么可以“猜”</h2>
+<p><code>g(n)</code> 是已经走到格子 <code>n</code> 的最小已知代价；<code>h(n)</code> 是从 <code>n</code> 到目标的估计剩余代价；<code>f(n)=g(n)+h(n)</code> 是本次优先级。A* 从候选队列中取出 <code>f</code> 最小的格子处理，而不是每次只选离目标最近的邻居。</p>
+<p>四邻接单位成本使用曼哈顿距离：</p>
+<pre><code class="language-text">h(n) = |x - goal_x| + |y - goal_y|
+</code></pre>
+<p>目标在 <code>(2,0)</code>，起点的 <code>h=2</code>。它忽略墙，所以会低估真实的 6 步；这样的低估可以用来引导搜索。沿上图唯一的合法路线，先在纸上填出下表，再用计算器核对。</p>
+<table>
+<thead>
+<tr>
+<th>取出的格子</th>
+<th style="text-align: right;"><code>g</code></th>
+<th style="text-align: right;"><code>h</code></th>
+<th style="text-align: right;"><code>f</code></th>
+<th>新发现的后继</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(0,0)</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td><code>(0,1)</code></td>
+</tr>
+<tr>
+<td><code>(0,1)</code></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td><code>(0,2)</code></td>
+</tr>
+<tr>
+<td><code>(0,2)</code></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6</td>
+<td><code>(1,2)</code></td>
+</tr>
+<tr>
+<td><code>(1,2)</code></td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">6</td>
+<td><code>(2,2)</code></td>
+</tr>
+<tr>
+<td><code>(2,2)</code></td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+<td><code>(2,1)</code></td>
+</tr>
+<tr>
+<td><code>(2,1)</code></td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td><code>(2,0)</code></td>
+</tr>
+<tr>
+<td><code>(2,0)</code></td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td>终点，结束</td>
+</tr>
+</tbody>
+</table>
+<p>在 <code>(0,1)</code>，距离目标反而比起点更远，但绕墙必须先这样走。只按 <code>h</code> 做局部贪心，无法解释这一步；A* 保留候选队列和已知 <code>g</code>，允许暂时远离目标。</p>
+<p>曼哈顿距离在本课条件下还满足一致性：每次移动一格，<code>h</code> 最多下降 1，因此 <code>h(n) &lt;= 1+h(neighbor)</code>。配合正确的代价更新，取出终点时可以结束搜索。本课参考实现用这个条件管理已处理集合；更改运动规则或启发式后，不能直接假定仍成立。</p>
+<p>如果以后允许对角移动且代价为 <code>sqrt(2)</code>，曼哈顿距离可能高估：<code>(0,0)</code> 到 <code>(1,1)</code> 的曼哈顿距离为 2，实际可以是约 1.414。先重新规定运动、代价和启发式，再讨论八邻接；本课检查仍只接受四邻接。</p>
+<h2 id="3-todo">3. 第一步：下载框架，完成三个 TODO</h2>
+<p>配套文件都在本知识库的 <code>docs/navigation/training/assets/</code>。下面是实际文件的相对下载链接，克隆仓库后也可直接打开；它们尚未发布到远程 <code>main</code>，所以这里不编造 GitHub 新文件链接。</p>
+<ul>
+<li><a href="../assets/astar_starter.py">下载待补模板 astar_starter.py</a>：先读 <code>plan</code> 和 <code>valid_input</code>，再依次补 <code>heuristic</code>、<code>search</code>、<code>reconstruct_path</code>。</li>
+<li><a href="../assets/astar_cases.json">下载固定输入 astar_cases.json</a>：地图、起终点和手工预期状态/代价都在里面。</li>
+<li><a href="../assets/astar_reference.py">下载参考与检查器 astar_reference.py</a>：先独立尝试，再读 <code>plan</code> 的堆循环和 <code>check_result</code> 的路径检查。</li>
+<li><a href="../assets/test_astar_workshop.py">下载回归测试 test_astar_workshop.py</a>：读 <code>independent_distance</code> 和 128 幅小图测试，理解答案如何独立复算。</li>
+</ul>
+<p>需要 Python 3.10 或更新版本，只用标准库，不需要先安装 ROS 或绘图库。以下命令从<strong>知识库根目录</strong>运行，使用 Ubuntu 常见的 <code>python3</code>；Windows 已安装 Python 时可换成自己的 Python 可执行文件或 <code>py -3</code>。</p>
+<p>先运行参考小图，确认地图与手算一致：</p>
+<pre><code class="language-bash">python3 docs/navigation/training/assets/astar_reference.py --case detour
+</code></pre>
+<p>应看到下面这些字段；<code>case</code> 是命令行附加的案例名，不属于 <code>plan</code> 必须返回的四个字段。</p>
+<pre><code class="language-json">{
+  &quot;case&quot;: &quot;detour&quot;,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;path&quot;: [[0,0],[0,1],[0,2],[1,2],[2,2],[2,1],[2,0]],
+  &quot;cost&quot;: 6,
+  &quot;expanded&quot;: 7
+}
+</code></pre>
+<p>把模板复制进自己的作业目录，保留教学资产原样。下面的相邻目录只是位置示例，可换成个人仓库路径。</p>
+<pre><code class="language-bash">mkdir -p ../my-astar-homework
+cp docs/navigation/training/assets/astar_starter.py ../my-astar-homework/my_astar.py
+python3 ../my-astar-homework/my_astar.py
+</code></pre>
+<p>第一次运行会在标准错误中给出 <code>unfinished: TODO 1...</code>，退出码为 1。这是模板明确提示未完成。不要把异常删掉、直接返回空路径冒充完成；也不要把三个 TODO 的故意缺实现当作参考程序测试失败。</p>
+<h3 id="31-heuristic">3.1 <code>heuristic</code>：先保证单位和下界</h3>
+<p>填完函数后，手动检查 <code>(0,0)</code> 到 <code>(2,0)</code> 是 2，<code>(0,2)</code> 到 <code>(2,0)</code> 是 4，目标到自己是 0。这里的单位是“步”，不是米、欧氏距离平方或带方向的差值。</p>
+<h3 id="32-search">3.2 <code>search</code>：队列里存什么，什么时候更新</h3>
+<p>框架已经准备了四个容器：<code>frontier</code> 放待处理格，<code>g_score</code> 记最小已知代价，<code>parent</code> 记前驱，<code>closed</code> 记已处理的格。堆条目是 <code>(f,g,插入序号,(x,y))</code>；同 <code>f</code> 时参考先比 <code>g</code>，再按入队顺序决定，保证可重复。</p>
+<p>用 <code>heapq.heappop</code> 取出候选格，跳过已经处理或 <code>g</code> 已过期的旧条目。确认这是新处理格后计数，再判断它是不是终点。发现终点邻居就立即结束，会在更一般的加权搜索中留下错误习惯；本课在终点被取出时结束。</p>
+<p>对上下左右邻居，先查边界，再读 <code>grid[ny][nx]</code>，最后计算 <code>candidate_g=g+1</code>。只有 <code>candidate_g</code> 更小时，才同时改 <code>g_score</code>、<code>parent</code> 并压入新条目。Python 堆不需要原地删掉旧条目，下一次取出时识别过期即可。</p>
+<p>候选队列耗尽表示合法地图上没有路，返回 <code>no_path</code>、空路径、<code>None</code> 代价和已处理数。别写无限的 <code>while True</code> 等待不存在的终点。</p>
+<h3 id="33-reconstruct_path">3.3 <code>reconstruct_path</code>：沿父指针回家</h3>
+<p>如果 <code>parent[(2,0)]=(2,1)</code>，说明当前最便宜的已知路线最后一段从 <code>(2,1)</code> 走来。由终点不断找前驱会得到“终点到起点”，最后反转才是需要发布和绘制的顺序。</p>
+<p>起点没有父节点，因此回溯包含它之后就停止。起终点相同会直接得到一个点；不能为了让数组看起来像一条线而重复添加起点。</p>
+<p>三个函数完成后，先运行自己的小图，再检查所有固定输入：</p>
+<pre><code class="language-bash">python3 ../my-astar-homework/my_astar.py
+python3 docs/navigation/training/assets/astar_reference.py --check ../my-astar-homework/my_astar.py
+</code></pre>
+<p>检查器会导入文件并调用 <code>plan</code>，所以把演示运行放在 <code>if __name__ == "__main__":</code> 下；不要在模块导入时启动节点或等待键盘输入。检查器在同一进程中调用算法，不能自动终止学生的死循环；若卡住，用终端中断，再检查无解分支的退出条件。</p>
+<h2 id="4">4. 边界验收：成功、无路、非法输入分别看</h2>
+<table>
+<thead>
+<tr>
+<th>固定案例名</th>
+<th>想抓住的问题</th>
+<th>参考 <code>status / cost</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>detour</code></td>
+<td>绕障，检查父指针顺序与路径步数</td>
+<td><code>ok / 6</code></td>
+</tr>
+<tr>
+<td><code>no_path</code></td>
+<td>墙完全隔开，候选耗尽后结束</td>
+<td><code>no_path / null</code></td>
+</tr>
+<tr>
+<td><code>out_of_bounds</code>、<code>goal_out_of_bounds</code></td>
+<td>起点负索引、终点超出右边界</td>
+<td><code>invalid / null</code></td>
+</tr>
+<tr>
+<td><code>occupied</code>、<code>goal_occupied</code></td>
+<td>起点或终点位于障碍</td>
+<td><code>invalid / null</code></td>
+</tr>
+<tr>
+<td><code>same</code>、<code>same_occupied</code></td>
+<td>同一点时先检查通行性</td>
+<td><code>ok / 0</code>、<code>invalid / null</code></td>
+</tr>
+<tr>
+<td><code>narrow</code></td>
+<td>只能沿单格宽折线前进，不能斜穿</td>
+<td><code>ok / 16</code></td>
+</tr>
+<tr>
+<td><code>empty</code>、<code>ragged</code>、<code>unknown</code></td>
+<td>空图、行宽不齐、未定义的 <code>-1</code> 输入</td>
+<td><code>invalid / null</code></td>
+</tr>
+</tbody>
+</table>
+<p>任选一项复验，案例名必须与上表一致：</p>
+<pre><code class="language-bash">python3 docs/navigation/training/assets/astar_reference.py --case no_path
+python3 docs/navigation/training/assets/astar_reference.py --case narrow
+python3 docs/navigation/training/assets/astar_reference.py --case empty
+</code></pre>
+<p>命令行退出码也有明确含义：<code>--case</code> 找到路或确认无路返回 0，非法地图返回 2；未知案例名、学生文件不存在或导入失败也返回 2。<code>--check</code> 学生结果不合格返回 1，通过返回 0。模板直接运行未完成返回 1。</p>
+<p><code>--all</code> 会检查参考实现，<code>--check FILE.py</code> 会检查指定学生模块；两者都包含 12 个固定案例和 128 幅三乘三小图。固定案例中的预期非法输入是需要正确处理的测试，因此它们通过时整套检查仍返回 0，而不是 2。</p>
+<pre><code class="language-bash">python3 docs/navigation/training/assets/astar_reference.py --all
+python3 -m unittest discover -s docs/navigation/training/assets -p test_astar_workshop.py -v
+</code></pre>
+<p>整套参考检查预期 <code>passed=true, fixed_cases=12, small_maps=128, failures=[]</code>；回归测试预期 14 项通过。路径合法性检查逐段核对边界、障碍、端点和相邻性，再核对 <code>cost=len(path)-1</code> 以及最优代价；跳格路径、错误代价或不可能的扩展数不能通过。</p>
+<h2 id="5-bfs">5. 为什么还要拿 BFS 对照</h2>
+<p>这批小图每条边代价一样，BFS 按距离逐层展开，因此能给出独立的最少步数。检查器的 <code>bfs_cost</code> 使用普通先进先出队列，不调用 A* 的启发式、回溯或优先队列；测试文件也单独写了 <code>independent_distance</code>。</p>
+<p>三乘三网格有九格，固定两个对角端点通行，剩余七格各有通行/占据两种取值，共 <code>2^7=128</code> 幅图。每幅图都比较 A* 的状态和代价，成功时还验路径；这比只在一张看起来顺眼的图上画线更能发现更新条件和结束条件的错误。</p>
+<p>BFS 与 A* 的路径形状可以不同，只要合法且代价相同就能通过。扩展数受同优先级的处理顺序影响，检查器按本课“不同处理格”的定义检查它的范围，不要求学生所有案例都与参考数字完全相同。</p>
+<p>这些有限小图能证明当前案例上的行为，不能替代所有地图的算法推理。解释曼哈顿下界、一致性、严格改善 <code>g</code> 和终点取出条件，仍是口头验收的一部分。</p>
+<h2 id="6">6. 第二步：个人仓库从空文件独立实现</h2>
+<p>第一步通过后，暂时关上模板与参考，在个人仓库新增 <code>my_astar_independent.py</code>。自己决定容器与函数拆分，保留 <code>plan(grid,start,goal)</code> 和本课返回契约；不用沿用参考的函数名或固定扩展顺序。</p>
+<p>先写出地图规则与结束条件，再实现搜索和回溯；给 <code>no_path</code>、<code>same</code>、非法起终点各留一个自己的回归用例。完成后从知识库根目录复验：</p>
+<pre><code class="language-bash">python3 docs/navigation/training/assets/astar_reference.py --check ../my-astar-homework/my_astar_independent.py
+</code></pre>
+<p>交付包含手算表、第一步补全版、第二步独立版、固定输入版本和检查结果。口头讲清“候选队列里可能有旧条目”“为什么回溯要反转”“无路和输入非法有什么区别”；再给导师一张自己新增的地图，由双方独立算出最优代价。</p>
+<p>T5 还要记录耗时。<code>plan</code> 的四个返回字段不包含计时，可在自己的调用处用 <code>perf_counter</code> 测量一次搜索，单位从秒转成毫秒；文件读取、打印和画图放在计时区间之外：</p>
+<pre><code class="language-python">from time import perf_counter
+started = perf_counter()
+result = plan(grid, start, goal)
+elapsed_ms = (perf_counter() - started) * 1000
+</code></pre>
+<p>固定地图与端点，记录重复次数、各次耗时和运行环境。小图耗时很短，系统调度和计时开销会占较大比例；先保证路径与代价正确，再解释耗时，不能凭一次小数排名判断算法优劣。</p>
+<p>如果只把参考文件改名，检查器能验证数值，但无法证明独立实现过程。第二步的代码说明、自己的测试和现场改图解释，需要与输出一起评估。此练习接入 S4；阶段门槛仍以<a href="../../assignments/">作业与验收</a>为准。</p>
+<h2 id="7-plannerros">7. 接回本队 Planner，ROS 接入留作拓展</h2>
+<p>本队现用配置在主导航仓库的 <a href="https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L468-L503"><code>nav2_params.yaml / GridBased</code> L468–503</a>，固定审查提交为 <code>183a4109b0de2030bb8970a54654937c8b039ba9</code>。它选择 <code>nav2_smac_planner/SmacPlannerHybrid</code>、<code>DUBIN</code> 运动模型和 64 个朝向桶，状态还要考虑朝向和运动约束；不能把本课点机器人的二维 A* 直接等同于它。</p>
+<p>完成离线两步后，可以再做独立的 ROS 拓展：读 <code>OccupancyGrid</code>，明确 unknown/阈值策略，将输入转为本课行列方向；把输出格中心按 resolution、origin 和 origin yaw 转成地图坐标，再封装为 <code>nav_msgs/Path</code>。图像行向下与 ROS 栅格方向的转换，须先用三个已知格中心核对，不能只在 RViz 看外观。</p>
+<p>拓展还需提交真实 Topic 类型、frame、时间戳、地图输入、路径输出和 RViz 结果；确认非法输入/无路时不继续发布旧成功路径。需要 ROS2 Humble 和对应运行环境才能另行验收。本页资产只验证纯 Python 搜索与数值契约，<strong>没有运行 ROS Path 接入或实车跟踪</strong>；离线通过不会自动算作这两项通过。</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../patrol-workshop/" class="btn btn-neutral float-left" title="轻量巡逻：把节点串成任务"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../controlled-experiments/" class="btn btn-neutral float-right" title="TF、地图与滤波对照实验">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../patrol-workshop/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../controlled-experiments/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

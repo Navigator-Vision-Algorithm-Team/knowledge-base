@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://navigator-vision-algorithm-team.github.io/knowledge-base/navigation-general/%E5%AF%BC%E8%88%AA%E8%BF%87%E7%A8%8B/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>导航过程 - Navigator Vision Algorithm Knowledge Base</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u5bfc\u822a\u8fc7\u7a0b";
+        var mkdocs_page_input_path = "navigation-general/\u5bfc\u822a\u8fc7\u7a0b.md";
+        var mkdocs_page_url = "/knowledge-base/navigation-general/%E5%AF%BC%E8%88%AA%E8%BF%87%E7%A8%8B/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Navigator Vision Algorithm Knowledge Base
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">首页</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航通识知识</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">通识入门与当前进度</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/">建图和导航验证</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">导航过程</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1">1. 启动前</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-1">2. 终端 1：启动串口</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-2-rviz">3. 终端 2：启动导航和 RViz</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4">4. 先确认定位，再发送目标点</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5">5. 判断是否正常</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6">6. 正常结束</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">简短说明</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">导航新人培训</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/">学习入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/onboarding/learning-route/">最终培训路线</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/onboarding/weekly-plan/">16周具体任务单</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/onboarding/environment/">环境与工程基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >配套教学工作区</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/training/workspace/">从运行到修改代码</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/training/datasets/">标准合成数据包</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/training/validation/">验证状态与复验</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/training/patrol-workshop/">轻量巡逻：把节点串成任务</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/training/astar-workshop/">A*两步练习：补全到独立实现</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/training/controlled-experiments/">TF、地图与滤波对照实验</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/system/">本队系统地图</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/ros2-tf/">ROS2、TF、时间与运动</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/sensor-lio/">传感器、LIO与重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/planning/">环境表达与规划</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/nav2/">Nav2与控制链</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/system/nav2-and-control-evidence/">源码审查证据</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/debug-real/">Debug、实车与比赛</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/debug-real/command-guide/">Debug命令详解（零基础先读）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/debug-real/runbook/">Debug排查手册（按现象查）</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/debug-real/case-topic-mismatch/">Debug案例：Topic名字不匹配</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/debug-real/case-stale-command/">Debug案例：旧速度再次输出</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/assignments/">实践任务与考核</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/assignments/reading-labs/">源码导读与参考解答</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >自学与进阶</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/self-study/">如何选资料与方向</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/self-study/foundations/">Linux、Git与编程基础</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/self-study/localization/">数学、点云与定位</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/self-study/planning-control/">规划、控制与算法对照</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../navigation/self-study/ros2-systems/">ROS2与系统工程</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/simulation/">仿真环境验收</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../navigation/maintenance/">资料、模板与维护</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Linux教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/1.Ubuntu%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Aros%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Ubuntu与ROS环境入口</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.0Linux%E5%9F%BA%E7%A1%80/">Linux基础</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/2.1Linux%E5%9F%BA%E7%A1%80%E9%85%8D%E5%A5%97%E7%BB%83%E4%B9%A0/">配套练习</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Linux%E6%95%99%E5%AD%A6/3.ubuntu-ssh-guide/">SSH使用与排错</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Git教学</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../git%E6%95%99%E5%AD%A6/1.git%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8github/">Git与GitHub</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">开源项目合集</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/">项目索引</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/01.%E5%8D%8E%E4%B8%9C%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%B5%B7%E6%BA%90%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/">起源战队开源工具</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/02.%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6HelloWorld%E6%88%98%E9%98%9F%E8%BD%AE%E8%85%BF%E5%93%A8%E5%85%B5%E5%AF%BC%E8%88%AA/">HelloWorld轮腿导航</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/03.Odin1%E4%B8%8EMid360%E6%A0%87%E5%AE%9A%E5%8F%8A%E7%82%B9%E4%BA%91%E8%9E%8D%E5%90%88/">Odin1与MID360融合</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/04.%E5%9F%BA%E4%BA%8EFAST-LIO%E7%9A%84ROS2%E9%87%8D%E5%AE%9A%E4%BD%8D/">FAST-LIO重定位</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/05.%E6%AD%A6%E6%B1%89%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E5%B4%87%E5%AE%9E%E6%88%98%E9%98%9F%E7%AE%97%E6%B3%95%E7%BB%BC%E5%90%88%E5%BC%80%E6%BA%90/">崇实战队综合开源</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%90%88%E9%9B%86/06.%E5%8C%97%E4%BA%AC%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E8%BF%BD%E6%A2%A6%E6%88%98%E9%98%9F%E5%93%A8%E5%85%B5%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/">追梦战队哨兵导航</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Navigator Vision Algorithm Knowledge Base</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">导航通识知识</li>
+      <li class="breadcrumb-item active">导航过程</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">导航过程</h1>
+<p><a href="../%E5%AF%BC%E8%88%AA%E8%BF%87%E7%A8%8B.txt">下载 TXT 指令版</a> · <a href="../%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/">建图和导航验证</a> · <a href="../">导航通识知识</a></p>
+<p><strong>用途：</strong> 使用已经保存并安装好的 <code>louxia</code> 地图导航，不包含重新建图或保存地图。</p>
+<p>常用地图：<code>louxia</code>；适用：本队 Ubuntu / ROS 2 Humble 实车部署。</p>
+<p><strong>场地说明：<code>louxia</code> 对应我们 T8 楼下架空层的实地场地。</strong></p>
+<p>需要两个终端：终端 1 跑串口，终端 2 跑导航并自动打开 RViz。</p>
+<h2 id="1">1. 启动前</h2>
+<p><strong>目的：</strong> 避免重复程序、错误地图和未准备好的硬件影响测试。</p>
+<ul>
+<li>确认旧建图、旧导航和单独启动的雷达驱动已经退出；电池、雷达和串口连接正常。</li>
+<li>确认现场与 <code>louxia</code> 地图相符，接管/急停可用，人员离开机器人运动范围。</li>
+<li>前提：<code>louxia.yaml</code>、<code>louxia.pgm</code>、<code>louxia.pcd</code> 已配套保存并安装，缺文件先找导航人员处理。</li>
+</ul>
+<h2 id="2-1">2. 终端 1：启动串口</h2>
+<p><strong>目的：</strong> 将导航指令传给电控，并接收机器人状态。已经启动就跳过。</p>
+<pre><code class="language-bash">cd /home/ubuntu/ros_ws
+unset LD_LIBRARY_PATH
+source install/setup.bash
+ros2 launch rm_serial_driver serial_driver.launch.py
+</code></pre>
+<p>没有持续串口报错后继续，保持此终端运行，不要另开第二套串口程序。</p>
+<h2 id="3-2-rviz">3. 终端 2：启动导航和 RViz</h2>
+<p><strong>目的：</strong> 加载已有地图，定位机器人，并准备执行目标点任务。</p>
+<pre><code class="language-bash">cd /home/ubuntu/navigation_2025/ros_ws
+unset LD_LIBRARY_PATH
+source install/setup.bash
+ros2 launch pb2025_nav_bringup rm_navigation_reality_launch.py world:=louxia slam:=False use_robot_state_pub:=True use_rviz:=True
+</code></pre>
+<p>已有地图未变时，不需要每次编译，也不需要再次保存地图。</p>
+<h2 id="4">4. 先确认定位，再发送目标点</h2>
+<p><strong>目的：</strong> 确认机器人知道自己在哪里，避免从错误位置规划运动。</p>
+<p>先看模型位置、朝向是否符合现场，以及实时点云是否与地图墙面正确重合。自动初始化的日志不等于定位成功。若一直错位或跳变，先让导航人员处理，不发 Goal。</p>
+<p>定位正常后，在 RViz 点击 <strong>Nav2 Goal</strong>，在近处空旷可通行区域按下并拖动，设定目标位置与朝向。第一次测试使用现场已确认的低速配置，接管人员保持就位。</p>
+<h2 id="5">5. 判断是否正常</h2>
+<p><strong>目的：</strong> 确认不仅“画面能打开”，而且机器人确实完成了任务。</p>
+<ul>
+<li>机器人实际运动方向正确，模型跟随真实运动，没有明显定位跳变。</li>
+<li>能到达目标附近、停稳，且任务状态显示成功。</li>
+<li>取消 Goal 后车辆确实停止。若出现危险，立即使用现场接管/急停，不等软件响应。</li>
+</ul>
+<p>不动、反向、持续绕圈或错位时，不要连续重复点 Goal；保留日志并反馈给导航人员。</p>
+<h2 id="6">6. 正常结束</h2>
+<p><strong>目的：</strong> 让机器人停稳，并清理本次运行的程序。</p>
+<p>先取消 Goal、确认车停稳；在终端 2 按一次 Ctrl+C 等导航退出，再关闭终端 1 的串口。</p>
+<p>关终端不能代替硬件急停。重新测试前，确认旧程序已经退出。</p>
+<h2 id="_2">简短说明</h2>
+<ul>
+<li><code>cd</code>：进入工作空间；<code>source</code>：加载该空间的运行环境。</li>
+<li><code>unset LD_LIBRARY_PATH</code>：处理本机此前的库路径冲突，再由 <code>source</code> 恢复所需路径。</li>
+<li><code>world:=louxia</code>：选择现有 <code>louxia</code> 地图；<code>slam:=False</code>：导航模式，不是建图。</li>
+<li><code>use_rviz:=True</code>：随导航打开可视化，不用第三个常驻终端。</li>
+<li>如需换地图，只改 <code>world:=</code> 后面的名字，但必须先有对应的已安装地图文件。</li>
+<li>本文基于此前部署与用户提供的常用地图名整理；本轮没有连接实车验证 <code>louxia</code> 文件或运行结果。</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/" class="btn btn-neutral float-left" title="建图和导航验证"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../navigation/" class="btn btn-neutral float-right" title="学习入口">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../%E5%BB%BA%E5%9B%BE%E5%92%8C%E5%AF%BC%E8%88%AA%E9%AA%8C%E8%AF%81/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../navigation/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

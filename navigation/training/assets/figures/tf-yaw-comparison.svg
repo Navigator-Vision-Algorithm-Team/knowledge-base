@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="650" viewBox="0 0 960 650" role="img">
+<title>Synthetic TF yaw comparison</title>
+<desc>Synthetic teaching data. Geometry axes use metres; velocity axes use seconds and metres per second.</desc>
+<rect width="100%" height="100%" fill="white"/>
+<g font-family="Arial, sans-serif" font-size="15" fill="#253346">
+<text x="42" y="38" font-size="23" text-anchor="start" font-weight="bold">TF yaw: same point set, one changed angle</text>
+<text x="42" y="68" font-size="15" text-anchor="start" font-weight="normal">Synthetic geometry | base coordinates | equal scale on x and y</text>
+<polyline points="139.231,110 139.231,580" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="139.231" y="604" font-size="13" text-anchor="middle" font-weight="normal">0</text>
+<polyline points="299.054,110 299.054,580" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="299.054" y="604" font-size="13" text-anchor="middle" font-weight="normal">1</text>
+<polyline points="458.877,110 458.877,580" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="458.877" y="604" font-size="13" text-anchor="middle" font-weight="normal">2</text>
+<polyline points="85,518.51 555,518.51" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="73" y="522.51" font-size="13" text-anchor="end" font-weight="normal">-1</text>
+<polyline points="85,358.686 555,358.686" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="73" y="362.686" font-size="13" text-anchor="end" font-weight="normal">0</text>
+<polyline points="85,198.863 555,198.863" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="73" y="202.863" font-size="13" text-anchor="end" font-weight="normal">1</text>
+<polyline points="85,110 85,580 555,580" fill="none" stroke="#64748B" stroke-width="1.5"/>
+<text x="320" y="630" font-size="15" text-anchor="middle" font-weight="normal">x in base (m)</text>
+<text x="37" y="345" font-size="15" text-anchor="middle" font-weight="normal" transform="rotate(-90 37 345)">y in base (m)</text>
+<polyline points="490.842,486.545 490.842,454.58 490.842,422.616 490.842,390.651 490.842,358.686 490.842,326.722 490.842,294.757 490.842,262.792 490.842,230.828" fill="none" stroke="#0072B2" stroke-width="2.5"/>
+<polyline points="500.769,458.199 497.983,426.356 495.197,394.513 492.412,362.67 489.626,330.827 486.84,298.984 484.054,267.141 481.268,235.298 478.482,203.455" fill="none" stroke="#D55E00" stroke-width="2.5" stroke-dasharray="7 5"/>
+<polyline points="331.019,358.686 330.411,344.757" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="331.019" cy="358.686" r="4" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="326.411,340.757 334.411,348.757" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="326.411,348.757 334.411,340.757" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="490.842,486.545 500.769,458.199" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="490.842" cy="486.545" r="4" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="496.769,454.199 504.769,462.199" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="496.769,462.199 504.769,454.199" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="490.842,454.58 497.983,426.356" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="490.842" cy="454.58" r="4" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="493.983,422.356 501.983,430.356" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="493.983,430.356 501.983,422.356" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="490.842,422.616 495.197,394.513" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="490.842" cy="422.616" r="4" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="491.197,390.513 499.197,398.513" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="491.197,398.513 499.197,390.513" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="490.842,390.651 492.412,362.67" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="490.842" cy="390.651" r="4" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="488.412,358.67 496.412,366.67" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="488.412,366.67 496.412,358.67" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="490.842,358.686 489.626,330.827" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="490.842" cy="358.686" r="4" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="485.626,326.827 493.626,334.827" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="485.626,334.827 493.626,326.827" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="490.842,326.722 486.84,298.984" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="490.842" cy="326.722" r="4" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="482.84,294.984 490.84,302.984" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="482.84,302.984 490.84,294.984" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="490.842,294.757 484.054,267.141" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="490.842" cy="294.757" r="4" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="480.054,263.141 488.054,271.141" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="480.054,271.141 488.054,263.141" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="490.842,262.792 481.268,235.298" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="490.842" cy="262.792" r="4" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="477.268,231.298 485.268,239.298" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="477.268,239.298 485.268,231.298" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="490.842,230.828 478.482,203.455" fill="none" stroke="#64748B" stroke-width="1" stroke-dasharray="2 3"/>
+<circle cx="490.842" cy="230.828" r="4" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="474.482,199.455 482.482,207.455" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="474.482,207.455 482.482,199.455" fill="none" stroke="#D55E00" stroke-width="2"/>
+<circle cx="139.231" cy="358.686" r="5" fill="white" stroke="#253346" stroke-width="2"/>
+<text x="149.231" y="380.686" font-size="13" text-anchor="start" font-weight="normal">base origin</text>
+<polyline points="166.195,353.686 176.195,363.686" fill="none" stroke="#64748B" stroke-width="2"/>
+<polyline points="166.195,363.686 176.195,353.686" fill="none" stroke="#64748B" stroke-width="2"/>
+<polyline points="605,137 639,137" fill="none" stroke="#0072B2" stroke-width="2.3"/>
+<circle cx="622" cy="137" r="3" fill="white" stroke="#0072B2" stroke-width="2"/>
+<text x="650" y="142" font-size="14" text-anchor="start" font-weight="normal">Correct yaw 0 deg</text>
+<polyline points="605,176 639,176" fill="none" stroke="#D55E00" stroke-width="2.3" stroke-dasharray="7 5"/>
+<polyline points="619,173 625,179" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="619,179 625,173" fill="none" stroke="#D55E00" stroke-width="2"/>
+<text x="650" y="181" font-size="14" text-anchor="start" font-weight="normal">Yaw error +5 deg</text>
+<text x="605" y="229" font-size="14" text-anchor="start" font-weight="normal">n = 10 identical lidar points</text>
+<text x="605" y="267" font-size="15" text-anchor="start" font-weight="bold">First point: lidar range = 1 m</text>
+<text x="605" y="299" font-size="15" text-anchor="start" font-weight="normal">Position error = 0.08724 m</text>
+<text x="605" y="331" font-size="14" text-anchor="start" font-weight="normal">5 deg = 0.087266 rad</text>
+<text x="605" y="363" font-size="15" text-anchor="start" font-weight="normal">2 r sin(|yaw error| / 2)</text>
+<text x="605" y="409" font-size="14" text-anchor="start" font-weight="normal">Installation translation is held fixed.</text>
+<text x="605" y="437" font-size="14" text-anchor="start" font-weight="normal">Wall points tilt around the lidar origin.</text>
+<text x="42" y="637" font-size="14" text-anchor="start" font-weight="normal">Synthetic input; this geometric comparison does not demonstrate real localization accuracy.</text>
+</g></svg>

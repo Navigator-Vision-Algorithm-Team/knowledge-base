@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="320" viewBox="0 0 800 320" role="img" aria-labelledby="title desc">
+  <title id="title">系统导读：每一棒交出什么</title>
+  <desc id="desc">四块教学简图依次表示点云、位姿与障碍、路线、速度。这是数据职责的简化，不是实时运行图，实际Topic接线以正文为据。</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#246bd6"/></marker></defs>
+  <rect width="800" height="320" rx="20" fill="#f5f8fc"/>
+  <g font-family="'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',sans-serif" text-anchor="middle">
+    <text x="400" y="46" font-size="30" font-weight="700" fill="#233348">系统导读：每一棒交出什么？</text>
+    <rect x="20" y="78" width="164" height="170" rx="16" fill="#fff" stroke="#246bd6" stroke-width="2"/>
+    <rect x="218" y="78" width="164" height="170" rx="16" fill="#fff" stroke="#258b86" stroke-width="2"/>
+    <rect x="416" y="78" width="164" height="170" rx="16" fill="#fff" stroke="#ed8c24" stroke-width="2"/>
+    <rect x="614" y="78" width="166" height="170" rx="16" fill="#fff" stroke="#246bd6" stroke-width="2"/>
+    <path d="M191 164 H209 M389 164 H407 M587 164 H605" fill="none" stroke="#246bd6" stroke-width="3" marker-end="url(#arrow)"/>
+    <g fill="#246bd6">
+      <circle cx="68" cy="127" r="5"/><circle cx="92" cy="106" r="5"/><circle cx="123" cy="118" r="5"/>
+      <circle cx="142" cy="145" r="5"/><circle cx="106" cy="144" r="5"/><circle cx="78" cy="159" r="5"/>
+      <circle cx="123" cy="169" r="5"/><circle cx="62" cy="145" r="5"/>
+    </g>
+    <text x="102" y="216" font-size="32" font-weight="700" fill="#233348">点云</text>
+    <path d="M260 165 V113 M260 165 H311" fill="none" stroke="#258b86" stroke-width="3"/>
+    <path d="M255 123 L260 113 L265 123 M301 160 L311 165 L301 170" fill="none" stroke="#258b86" stroke-width="3"/>
+    <circle cx="280" cy="145" r="8" fill="#258b86"/>
+    <rect x="315" y="111" width="26" height="45" rx="4" fill="#cce9e6" stroke="#258b86" stroke-width="2"/>
+    <text x="300" y="216" font-size="27" font-weight="700" fill="#233348">位姿 · 障碍</text>
+    <path d="M447 161 H469 Q481 161 481 149 V127 Q481 115 493 115 H547" fill="none" stroke="#ed8c24" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="447" cy="161" r="6" fill="#ed8c24"/><circle cx="547" cy="115" r="6" fill="#ed8c24"/>
+    <text x="498" y="216" font-size="32" font-weight="700" fill="#233348">路线</text>
+    <path d="M651 155 H736" stroke="#246bd6" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow)"/>
+    <path d="M667 126 Q696 105 721 127" fill="none" stroke="#246bd6" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="697" y="216" font-size="32" font-weight="700" fill="#233348">速度</text>
+    <text x="400" y="292" font-size="25" fill="#63758b">教学简化 · 实际接线见本页 Topic 表</text>
+  </g>
+</svg>
