@@ -1,0 +1,9 @@
+# Teaching template: copy into nav_patrol_interfaces/srv/LogWaypoint.srv.
+# Deduplicate retries by (patrol_id, index); timestamp is ROS time.
+string patrol_id
+uint32 index
+geometry_msgs/Point waypoint
+builtin_interfaces/Time timestamp
+---
+bool success
+string message

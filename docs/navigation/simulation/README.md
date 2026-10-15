@@ -1,10 +1,37 @@
 # 仿真资源与统一训练环境验收
 
+<small>整理与维护：24cst朱鑫鹏</small>
+
+**看到小车模型，是搭好练习场的开始。** 接下来要确认它能产生数据、定位能跟上，最后才让导航接管。先沿下面四步找出自己现在卡在哪一步，不用一次启动所有程序。
+
+![仿真练习按构建、输入、定位、导航四步推进，每一步都有对应观察证据](../visuals/assets/simulation-stages.svg)
+
+## 这次只完成下一步
+
+| 你现在看到什么 | 本次先做什么 | 要留下的证据 |
+|---|---|---|
+| 只有源码，还没有成功构建 | [阶段 A：检查环境与构建](#5-a) | 第一条错误或完整构建日志、实际包来源 |
+| 世界和模型打开了 | [阶段 B：观察传感器与时钟](#6-b) | `/clock` 递增，雷达与 IMU 有数据 |
+| 输入正常，机器人位置还没跟上 | [阶段 C：检查定位与建图](#7-c) | 连续位姿、TF 与地图观测 |
+| 定位与地图已核对 | [阶段 D：检查一趟导航](#8-d) | 目标结果、轨迹和失败原因 |
+
+第一次接触本队仿真，可以先做一个不启动程序的练习：打开[仿真器启动入口][sim-bringup]与[导航启动入口][nav-sim]，分别找“创建世界”和“读取输入”的代码。能说出两个入口各管哪一半，再按阶段 A 准备环境。
+
+**当前状态**：本页给出源码核对与验收步骤，尚未在本机完成 Linux 构建或 Gazebo 闭环。表里的证据需要自己采集，图中的 A–D 是步骤编号。
+
+<link rel="stylesheet" href="../visuals/reader.css">
+<script src="../visuals/reader.js" defer></script>
+<div data-nav-fold="按当前阶段展开，先检查输入，再检查定位和导航。"></div>
+
+## 本课的代码版本与前置
+
 本课针对 **Navigation-2027** 提交 `183a4109b0de2030bb8970a54654937c8b039ba9`。仓库已经包含 RM 仿真世界、机器人模型、桥接和导航源码，可用于搭建训练环境；**本次仅完成静态核对，尚未在 Linux 上完成编译或 Gazebo 闭环运行**。因此当前交付状态是“训练方案与源码证据齐备，运行验收待完成”。
 
 先学 [系统链路](../system/README.md)，定位原理和地图保存见 [传感器与 LIO](../sensor-lio/README.md)。本课集中回答：要装哪些部件、代码有哪些可证实的缺口、怎样让所有新人使用同一套可复现环境。
 
 ## 1. 仿真入口和导航入口是两件事
+
+仿真器负责“造出一个会产生数据、会响应控制的世界”，导航程序负责“读取数据并决定怎么走”。可以把 Gazebo 当作传感器与底盘的替身：没有替身在工作，导航只能等输入；替身工作了，也不会自动替你完成定位与规划。这两个入口分开启动，正好让你先验证输入，再评价算法。
 
 ```text
 rmu_gazebo_simulator / bringup_sim.launch.py
@@ -23,7 +50,20 @@ pb2025_nav_bringup / rm_navigation_simulation_launch.py
 
 `world` 名称用于选择场景资源和地图文件。Gazebo 世界内部名称是 `default`，桥接中的 `/world/default/...` 因而不能仅看场景文件名就改成 `/world/rmul_2025/...`。[世界内部名称][world-file]、[传感器桥接][bridge]
 
+第一次读启动源码时，按这个顺序打开蓝色路径：
+
+| 想知道什么 | 代码看哪里 | 读完要能指出 |
+|---|---|---|
+| 谁创建世界、机器人、裁判 | [ros_ws/src/rmu_gazebo_simulator/launch/bringup_sim.launch.py][sim-bringup] | 三个 IncludeLaunchDescription 分别加载谁 |
+| 模型怎样变成传感器与 TF | [ros_ws/src/rmu_gazebo_simulator/launch/spawn_robots.launch.py][spawn] | 模型选择、robot_state_publisher、桥接配置与 namespace |
+| Gazebo 数据怎样进入 ROS | [ros_ws/src/rmu_gazebo_simulator/config/ros_gz_bridge.yaml][bridge] | 雷达、IMU、真实值里程计的两端名称和类型 |
+| 导航怎样接上输入 | [ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_simulation_launch.py][nav-sim] | 转换器、bringup 和 RViz 的启动关系 |
+
+例如 GUI 有机器人、ROS 中却没有 `livox/lidar`，先沿“模型传感器→Gazebo topic→桥接→ROS topic”查断点；不要跳到 Nav2 的规划参数。表中的路径来自固定 SHA，实际运行还要确认 `ros2 pkg prefix` 指向同一工作区。
+
 ## 2. 统一训练环境的固定项
+
+固定环境是为了让两个人的结果可比较。甲用 PB 模型、乙用 UIC 模型，即使都叫 MID360，安装位置与角度也可能不同；甲用 A 场地地图、乙用 B 场地地图，定位差异也不能归因于算法水平。先固定这些输入，再比较改动前后的轨迹，才知道变化来自哪里。
 
 仓库 README 声明的组合为 **Ubuntu 22.04、ROS 2 Humble、Gazebo Fortress**；gazebo.launch.py 使用 `ros_gz_sim` 并指定 `gz_version: 6`，同时保留 `ign` 命令和 Ignition 插件名。新人训练先沿用这套组合，不把 Gazebo Classic、其他 Gazebo 发行版或其他 ROS 版本的启动命令混入同一份验收记录。[环境声明][sim-readme]、[Gazebo 启动][gazebo-launch]
 
@@ -42,6 +82,8 @@ pb2025_nav_bringup / rm_navigation_simulation_launch.py
 这是统一验收约定，不是宣称任何满足版本字符串的机器都会跑通。模型使用 `gpu_lidar`，虚拟机图形能力必须通过真实点云输出验证；仅看到 GUI 不够。[雷达模型][lidar-model]
 
 ## 3. 已有资源与依赖边界
+
+“仓库里有文件”“编译器能找到它”“运行时能加载它”是三层不同的条件。比如根目录有 small_gicp 源码，但 colcon 在 `ros_ws/src` 搜包，不会因为旁边存在这个目录就自动安装其头文件；同样，`.so` 在磁盘上并不保证架构和加载路径正确。下表就是把这些层级分开列出，便于决定下一个验证动作。
 
 | 部件 | 当前仓库内容 | 静态结论 |
 |---|---|---|
@@ -64,9 +106,13 @@ pb2025_nav_bringup / rm_navigation_simulation_launch.py
 
 ### 4.1 两个默认 world 不一致
 
+这是“地图与环境要成对”的最小例子。假设仿真中面前是 A 场地的一堵墙，导航加载 B 场地地图认为这里是一条通道，点云再准确也难与先验地图对齐。这里需要同时记录“实际世界”和“地图来源”，不能只记录一个 `world` 参数。
+
 仿真器 `config/gz_world.yaml:1` 为 `rmul_2025`，导航仿真入口 `world` 默认 `rmuc_2025`。导航的 world 参数只选择导航地图路径，不会修改仿真器配置。第一次训练明确传 `world:=rmul_2025`，避免在 A 场地加载 B 地图。[仿真场地配置][gz-world]、[导航默认地图路径][nav-sim-defaults]
 
 ### 4.2 仿真点云时间单位不一致
+
+同一帧点云不是在同一瞬间拍下的：机器人运动时，前后采到的点需要用各自时间补偿。时间字段可以看作每个点的“拍摄时刻偏移”。数值 `0.05` 若表示秒，就是 50 毫秒；若被当成微秒，则只剩 0.00005 毫秒。程序仍能读到数值，但它理解的运动时间已完全不同，所以“点云有频率”不足以验收时间正确。
 
 转换器 `point_cloud_converter.cpp:75` 计算 `time = (point_id % horizon_scan) * 0.1 / horizon_scan`，数值按秒构造，覆盖约 0～0.1。simulation YAML 却配置 `timestamp_unit: 2`，含义为微秒；Point-LIO 将其乘 `1e-3` 转成毫秒。以 0.1 秒为例，正确毫秒为 100，而当前参数路径得到 0.0001，比例相差 **10⁶**。[点时间生成][converter]、[仿真时间单位][sim-config]、[单位换算][preprocess-units]、[Velodyne 时间消费][preprocess-time]
 
@@ -74,15 +120,21 @@ pb2025_nav_bringup / rm_navigation_simulation_launch.py
 
 ### 4.3 模型安装角和仿真重力配置需统一核对
 
+重力是 IMU 静止时判断方向的重要参照，安装角决定重力投影到哪些传感器轴。示意计算：15° 倾角的横向重力分量大小约为 `9.81×sin(15°)=2.54 m/s²`，30° 则约为 `4.91 m/s²`；符号仍取决于坐标轴与旋转方向。两种安装条件不应只因为文件名相似就共用同一向量。
+
 spawn 加载 PB 模型，雷达固定到 chassis，roll 为 `-π/12`（-15°）；仿真 YAML 重力向量 `[0,-4.9,-8.487047...]` 对应 30° 倾角。另一实车默认 UIC 模型则把雷达装在 gimbal_yaw、roll 为 `-π/6`。这些文件不是同一安装条件；需据选定模型推导预期重力方向，再静止检查 IMU 与水平地面。不能把实车 YAML 原样复制过来。[spawn 模型][spawn]、[PB 模型][pb-model]、[仿真重力配置][sim-config]、[UIC 模型][uic-model]
 
 这是配置一致性待验收项；本次没有运行仿真，不能据此直接报告“必然漂移多少度”。
 
 ### 4.4 缺 PCD 不等于缺整个仿真器
 
+二维 YAML/PGM 告诉规划器哪里能走，三维 PCD 给重定位算法提供几何参照；两者服务不同任务。没有 PCD 时，已经存在的世界、传感器和二维图不会随之消失。正确做法是选择能采集地图的建图阶段，而不是给重定位随便塞一个同名文件。
+
 `slam:=False` 会启动 small_gicp，默认 PCD 路径指向 `pcd/simulation/<world>.pcd`，当前文件不存在。`slam:=True` 则禁用 small_gicp、开启 Point-LIO PCD 保存并以静态 map→odom 建图，可作为**补齐依赖并处理时间/外参一致性后**的第一轮传感器训练路径。将以后验收通过的 PCD 和 YAML/PGM 作为统一地图数据包，记录来源、SHA256 和地图坐标。[导航默认路径][nav-sim-defaults]、[建图分支][slam]
 
 ## 5. 阶段 A：环境和构建验收
+
+这一阶段只验证“零件齐不齐、安装后能不能被发现”。例如 `colcon list` 能看到包，但 `ros2 pkg prefix point_lio` 找不到，说明源码发现与安装环境之间还没接通；若 prefix 指向旧目录，则本次终端正在使用另一份构建产物。先处理这里的错误，之后传感器没有输出时才不会同时怀疑依赖、模型、时间和算法。
 
 以下均在 **Ubuntu 22.04 / Humble 的 Bash** 执行，不是在本次文档编辑所用的 Windows PowerShell 执行。前置：训练负责人已经提供完整源码、系统软件安装权限和统一依赖清单；`/path/to/Navigation-2027` 必须替换为真实目录。源码目录已经准备好，不需要在其中再次克隆一层仓库。
 
@@ -128,7 +180,11 @@ python3 -c 'from sdformat_tools.urdf_generator import UrdfGenerator; print("SDF 
 
 阶段 A 通过条件：完整构建日志中所需包成功，四个 pkg prefix 解析到本工作区，模型生成模块可导入，无未说明的系统/团队依赖；仅有 build 目录或二进制文件不算通过。
 
+若模型显示 `model://...` 找不到资源，回看 [ros_ws/src/pb2025_robot_description/env-hooks/gazebo.dsv.in][description-hooks] 和 [ros_ws/src/rmoss_gz_resources/env-hooks/gazebo.dsv.in][resource-hooks]：它们解释 source 后为什么能增加资源搜索路径。验证顺序是“包安装位置→环境路径→目标资源存在→重新启动后的加载日志”，不要只复制模型文件直到报错消失。
+
 ## 6. 阶段 B：世界、传感器与时钟验收
+
+仿真时间是世界的进度条。暂停时墙上钟表还在走，仿真的 `/clock` 却可以停住，传感器也可能停止更新。因此“等了 10 秒”要说明是现实中的 10 秒还是仿真的 10 秒。先看 `/clock` 是否前进，再用 topic 类型、端点与接收频率确认桥接，避免把暂停误诊成雷达驱动故障。
 
 前置：阶段 A 通过。以下各终端均 source 系统与同一工作区环境；未同时运行其他同 namespace 的机器人/仿真。当前 world 使用仓库的 `rmul_2025` 配置。
 
@@ -161,7 +217,11 @@ ros2 run tf2_ros tf2_echo base_footprint front_mid360 --ros-args \
 
 阶段 B 通过条件：时钟持续前进；点云、IMU、joint_states 有数据；消息类型/QoS 与桥接匹配；模型 TF 可查询；不存在持续模型、插件、桥接加载报错。Gazebo 画面静止时优先看是否暂停及 `/clock`，而不是先调 LIO。
 
+一个可复述的观察结果应像这样：“继续仿真后 `/clock` 前进，雷达 10 秒窗口内持续收到 PointCloud2，IMU 有数据，但 base_footprint 到 front_mid360 查询失败；下一步检查状态发布器和模型链。”这是示意描述；把频率、报错和时间填成自己的输出。桥接名称的依据是上表中的 YAML，TF 发布器的依据是 spawn 入口，两类问题可以分别定位。
+
 ## 7. 阶段 C：定位链路与建图验收
+
+这一阶段回答“同一组传感器数据能否被逐级理解”。转换器补 ring/time，LIO 估计运动，接口换坐标，地形与地图模块再使用结果。每一层不仅要有消息，还要检查 frame 和 stamp。例如 `velodyne_points` 有数据、`cloud_registered` 没有，断点在转换后到 LIO；若两者都有而 `odometry` 没有，则继续检查接口同步和安装 TF。
 
 前置：阶段 A、B 通过；第 4 节的点时间和模型配置问题已由维护者处理并记录验证版本；使用该版本的 simulation YAML。首次进入建图分支，以避免不存在的先验 PCD。
 
@@ -189,11 +249,15 @@ ros2 topic echo /red_standard_robot1/map --once --field info
 
 PointCloud2 转换器保留原消息 header，补出 ring、time 并把 intensity 设为 0。它是为了兼容 Point-LIO 的机械雷达输入而存在，**不是真实 MID360 扫描模式和设备时间的完整模拟**。[转换器实现][converter]、[上游项目说明][nav-readme]
 
+读实现时，打开 [ros_ws/src/pb2025_sentry_nav/ign_sim_pointcloud_tool/src/point_cloud_converter.cpp][converter] 的 `lidarHandle`，从输入 xyz 跟到新点的 ring/time，再到 header 拷贝；随后打开 [ros_ws/src/pb2025_sentry_nav/point_lio/src/preprocess.cpp][preprocess-time] 看 time 如何被消费。这样能解释为什么仅把 Topic 改名不能代替转换，也能按第 4.2 节手算单位。
+
 阶段 C 通过条件：每级有正确类型、frame 与时间的数据；地图更新；静止地面没有持续翻转或发散；TF 日志无持续错误；完成直线、转弯采集后能正常保存 PCD 和 YAML/PGM。仅复用 [传感器/LIO 课](../sensor-lio/README.md) 的 map_saver 与 PCD 归档步骤，**不执行其中的 reality launch 命令**；仿真保存时给 map_saver_cli 的 ROS 参数增加 `-p use_sim_time:=true` 并确认 `/clock` 前进。控制动作仅在仿真场景执行，控制接口见课程系统/控制章节。
 
 不要跳过阶段 C 直接评价 Nav2。上游时间、坐标或地图问题会表现为障碍物乱跳、定位漂移、规划失败，换规划器不能解决这些输入缺陷。
 
 ## 8. 阶段 D：先验地图与完整导航验收
+
+建图相当于制作参照，重定位相当于拿当前看到的墙与参照对齐，Nav2 才在对齐后的地图上找路。把阶段 C 的成果重新加载，检验的是“保存→加载→定位→规划→执行”是否接得上。比如地图文件加载成功、墙体却重影，先查地图坐标和初始位姿；路径已有但跟踪失败，再查控制链，不能把所有失败都记成规划失败。
 
 前置：已取得与当前场地、机器人模型、坐标约定一致的 PCD 和 YAML/PGM；阶段 C 已通过；此前的建图导航进程已正常退出并保存。示例 map 与 PCD 路径需换成验收数据包的真实文件。
 
@@ -210,6 +274,8 @@ ros2 launch pb2025_nav_bringup rm_navigation_simulation_launch.py \
 
 ## 9. 常见故障从哪里开始排查
 
+同一现象可能有不同入口。“完全没有点云”要先看世界是否运行；“有点云但姿态异常”说明输入已到达，应把注意力转到单位、安装关系和处理链。排查表不是直接给根因，而是告诉你第一份证据应该从哪里取得。恢复后用同一条观测链重新查一遍，才算闭合了判断。
+
 | 现象 | 第一个检查点 | 本课不接受的结论 |
 |---|---|---|
 | 启动导航后完全没有点云 | 仿真器是否另行启动、物理是否暂停、桥接及 namespace | “Point-LIO 算法坏了” |
@@ -221,6 +287,8 @@ ros2 launch pb2025_nav_bringup rm_navigation_simulation_launch.py \
 | 用世界默认值定位失败 | 仿真 world 与导航地图是否同时为 rmul_2025 | 认为导航 world 参数会重启世界 |
 
 ## 10. 新人提交与环境发布门槛
+
+“我这台能跑”还不是可交给下一位新人的环境。复现需要知道用了什么输入、什么版本、哪几步通过，以及遇到错误后怎么恢复。提交记录可以用一句结论开头，例如“阶段 A/B 通过；C 在时间单位检查未通过；D 未执行”，再附对应证据。这样的记录即使尚未跑通，也能让维护者接着完成建设。
 
 提交一个训练记录目录：环境清单、依赖来源、源码 SHA/补丁、构建日志、分阶段日志、topic/QoS/TF 表、地图清单与校验值、三段轨迹结果、未解决问题。记录每阶段“通过 / 未通过 / 未执行”，不把后两者合并。
 

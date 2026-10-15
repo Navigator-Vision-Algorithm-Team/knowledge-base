@@ -1,5 +1,7 @@
 # 源码导读与带解答练习
 
+<small>整理与维护：24cst朱鑫鹏</small>
+
 本页用于从“看得懂教程”过渡到“看得懂本队工程”。R1–R5 是 T1/T2/T4/T6/T7 的练习材料，**不增加新的实车准入等级**。先独立写答案，再看参考分析；参考分析是基于固定源码的推导，题目中的数值和时间线是教学输入，不是实测记录。
 
 所有本队链接固定为 [Navigation-2027@183a410](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/tree/183a4109b0de2030bb8970a54654937c8b039ba9)。只读源码无需 ROS；运行检查需已经配置好的 Ubuntu 22.04/Humble 教学环境。实验使用独立节点、Topic 和确认空闲的 domain，输出不接真实串口；不得把本页变成实车故障注入脚本。
@@ -20,6 +22,8 @@ rg -n 'RewrittenYaml|param_rewrites|use_sim_time|SetRemap' \
 ```
 
 每题交一页：问题→代码位置→自己的推理→需运行确认的证据。无法确定的地方写未知，不用注释或函数名代替执行逻辑。
+
+例如读 `create_subscription(..., std::bind(...))`，不要一次理解全部 C++ 模板。先圈出 Topic 参数、消息类型、被绑定的函数；“收到这种消息时调用这个函数”已经是第一层正确理解。随后进入函数，看它改了哪个成员、在哪条条件分支返回、什么时候发布。读代码是追数据和状态的变化；函数写在前面，不表示它运行时一定先被调用。
 
 ## R1：读通 loam_interface（S1，60–90 分钟）
 
@@ -48,6 +52,10 @@ rg -n 'RewrittenYaml|param_rewrites|use_sim_time|SetRemap' \
 
 **拓展**：解释将动态挂载关系只在初始化时缓存的假设；指出它与机器人模型、初始姿态和 LIO 局部原点的联系。未经建模核验，不直接把缓存改成每帧查询。
 
+**把矩阵链算一次**：用纯平移教学例帮助检查方向。若缓存变换 `T_odom_lidar_odom` 平移为 `(0.2,0,0)`，输入位姿 `T_lidar_odom_lidar` 平移为 `(1,0,0)`，旋转均为单位，则 [odometryCallback 的乘法][loam]得到雷达在 odom 中 x=1.2 m。输出 child 仍是雷达，不是底盘中心；下一步到 [laserCloudAndOdometryHandler][sensor]看它如何乘雷达到底盘的变换。若只把 child 名改成底盘而不计算外参，数值含义就错了。
+
+**第一次回调为什么特别**：初始化标志是状态，不是参数。第一条里程计因 TF 不可用而返回，第二条可能重试成功；但点云回调会独立到来。练习记录中画“点云到达→里程计到达→TF 成功”的事件顺序，明确哪些输出依赖已初始化变换。不要把代码中两个回调的书写顺序当作运行先后。
+
 ## R2：零速度为什么不一定输出零（S2 算式，S5 完整题，90–120 分钟）
 
 **读文件**：[fake_vel_transform.cpp][fake] 的 `transformVelocity`、`cmdVelCallback`、`localPlanCallback`、`syncCallback`，以及 [reality YAML][params] 的 `init_spin_speed`。详细风险背景见[证据页](../system/nav2-and-control-evidence.md)。
@@ -74,6 +82,8 @@ rg -n 'RewrittenYaml|param_rewrites|use_sim_time|SetRemap' \
 
 **交付**：三组算式、五步状态表、一份隔离实验的输入事件与采集项设计。要做 T9 修复，先与维护者定义“取消、零命令、断流、自旋保留”的协议，再覆盖这些行为的回归；不能只把 spin 设零就声称修复缓存。
 
+**把“最近”说清楚**：这里至少有三种时间：Twist 到达时刻、local_plan 到达时刻、同步消息 stamp。给定教学事件 t=1.00 s 收到非零 Twist、t=1.10 s 收到零 Twist、t=1.15 s 再同步，必须逐事件检查成员，不能仅按消息序号说“最后一个是零，所以缓存也为零”。可先走读教学 [CacheModel.step](https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/cases/run_case.py#L90-L129)，它将回调顺序展开成状态表；该模型不模拟 message_filters 配对，源码预测还需要隔离 ROS 复现来确认具体事件能否出现。
+
 ## R3：world:=dona 为什么还可能找不到地图（S3，45–60 分钟）
 
 **读文件**：[reality launch][reality] 的 map/prior_pcd_file 默认值、[dona.yaml][dona]、[地图审查表](../sensor-lio/README.md)。
@@ -85,6 +95,8 @@ rg -n 'RewrittenYaml|param_rewrites|use_sim_time|SetRemap' \
 **做什么**：列出 YAML、图像、PCD 的真实绝对路径、大小与 SHA256；写出显式 `map:=...` 和 `prior_pcd_file:=...` 参数，但先只检查文件和内容。环境齐备后运行步骤见定位页，不为验证路径就启动完整 reality 导航。
 
 **验收**：文件可解析只是第一关；还必须解释 PCD 与二维地图的坐标、场地和外参一致性如何验证。`prior_pcd.enable=False` 是 Point-LIO 的开关，不免除定位分支 small_gicp 的 PCD 需求。缺训练地图标记待资源，不反复改规划参数。
+
+**为何要检查安装目录**：包的 share 目录像给已安装程序配套的资料架；launch 去那里取文件，不去所有硬盘目录搜索同名资料。沿 [reality launch 的默认值][reality]中的 `get_package_share_directory`、`world`、扩展名一段段拼接，再看 [bringup 的参数传递](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/bringup_launch.py#L169-L180)。若 YAML 指向相对 `dona.pgm`，移动 YAML 而未一起移动图像就会改变解析结果。定位 PCD 与规划图像还能分别加载成功却坐标错开，所以“文件存在”和“地图一致”必须写成两项证据。
 
 ## R4：改 YAML 后为何没有效果（S4–S5，60–90 分钟）
 
@@ -114,6 +126,8 @@ ros2 lifecycle get /red_standard_robot1/controller_server
 
 **验收**：至少一组“编辑文件→启动传递→有效参数→功能输出”的闭合证据；值已生效但行为不变时也允许结论为假设错误。恢复基线后再改下一项。进阶阅读组合/非组合的 behavior remap 差异，不能因为默认组合模式正常就宣称另一条启动路径等价。
 
+**推一个覆盖例子**：源码 YAML 写 `use_sim_time: false`，启动命令传入 `use_sim_time:=true`；在 [bringup 的 param_substitutions][bringup]中，这一 launch 值进入 `RewrittenYaml`。预期有效参数是 true，而不是源文件的 false。反过来，如果有效参数已是你要的值，画面仍不变，就应继续查节点是否读取该值、是否需要重配置、观察指标是否相关。这一题训练的是逐层证据，不是记一句“改完重新编译”。
+
 ## R5：bag 倍速下的速度为何不同（S2–S3，45–60 分钟）
 
 **读文件**：[sensor_scan_generation][sensor] 的 `laserCloudAndOdometryHandler` 和 `publishOdometry` 中速度差分代码，配合[ROS 时间设计](https://design.ros2.org/articles/clock_and_time.html)。
@@ -125,6 +139,8 @@ ros2 lifecycle get /red_standard_robot1/controller_server
 **做什么**：用 [F5 CSV 练习](../self-study/foundations.md)比较两种 dt，并记录 dt≤0 时的拒绝、重置或等待策略；将首次样本、重复时间、回跳、长暂停分别列出。若有已登记 bag，再采相同片段不同倍速的输出，明确重播起止与预热，不将数据处理性能当成定位精度。
 
 **验收**：公式、单位和时间来源正确；不把绝对值 dt 或默默跳过坏样本当成通用修复。准备改生产代码时，还要核对 Twist 的 child frame 语义、坐标旋转和第一帧状态，不能只换一个时钟就结束。
+
+**再加一个首帧反例**：教学假设第一条有效位姿是 x=5 m，程序却用 x=0 作“上一帧”，且启动后首个间隔仅 0.001 s，直接差分会得到 5000 m/s。这个数暴露的是初值和差分定义，不是机器人真的高速运动。回到 [publishOdometry][sensor]检查 `previous_transform` 与 `previous_time` 的建立方式；对照教学 [TimedModel.step](https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/nav_training/core.py#L93-L109)的首帧只建立时基策略，提出适合该接口的处理设计，而不是照抄模型实现。
 
 ## 同伴复核用这张表
 
@@ -138,13 +154,13 @@ ros2 lifecycle get /red_standard_robot1/controller_server
 
 参考答案不是要背的口试标准句。导师可换 namespace、角度、时间间隔或目录，让新人现场重新推导；达到同样正确结论即可。
 
-[loam-cmake]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/CMakeLists.txt
-[loam-header]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/include/loam_interface/loam_interface.hpp
-[loam]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp
-[params]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml
-[fake]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp
-[sensor]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp
-[reality]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py
-[bringup]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/bringup_launch.py
-[navigation]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py
-[dona]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/dona.yaml
+[loam-cmake]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/CMakeLists.txt#L26-L33
+[loam-header]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/include/loam_interface/loam_interface.hpp#L28-L57
+[loam]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp#L23-L98
+[params]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L101-L162
+[fake]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L80-L154
+[sensor]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L62-L156
+[reality]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py#L30-L145
+[bringup]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/bringup_launch.py#L43-L80
+[navigation]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L139-L340
+[dona]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/dona.yaml#L1-L7

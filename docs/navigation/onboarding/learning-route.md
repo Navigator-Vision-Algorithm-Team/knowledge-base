@@ -1,8 +1,24 @@
 # 导航组大一新人培训路线：按本队工程学习
 
+<small>整理与维护：24cst朱鑫鹏</small>
+
+**今天先走第一步就够了。** 先在浏览器里看懂一个变化，再装环境、写小程序，最后才接完整导航系统。
+
+![从浏览器看演示到Python练习再到ROS节点的上手顺序](../visuals/assets/first-run.svg)
+
+还没开始的同学，先去[图形演示](../visuals/playground.html?scene=overview)让小车走到旗子；玩过以后再到[环境课](environment.md)。下面是整学期的地图，用到哪一关就展开哪一关，不用今天全部读完。
+
+<link rel="stylesheet" href="../../visuals/reader.css">
+<script src="../../visuals/reader.js" defer></script>
+<div data-nav-fold></div>
+
+## 这条路线学什么
+
 适用对象：零导航经验的大一新人。主仓库为 [Navigation-2027，审查基线 183a410](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/tree/183a4109b0de2030bb8970a54654937c8b039ba9)。这是对原稿的工程化修订：保留“尽早动手、Debug 优先、稳定性优先”，把通用算法清单改为本队代码和能力门槛。源码证据见[系统地图](../system/README.md)，每关任务见[考核手册](../assignments/README.md)。
 
 ## 原稿哪些保留、哪些调整
+
+先用一个场景理解这次调整：RViz 中能看到机器人，点一个目标却没有运动。原因可能是目标没被接受、服务器没激活、地图把起点判为障碍，也可能是速度发布到了无人订阅的 Topic。它们都不是“导航算法不够高级”。新人需要先把一条消息从入口追到出口，才能决定该学哪段理论。例如 [loam_interface 的构造与订阅][route-loam]只有几十行，已能练习参数、Topic、回调和坐标四件事；这是第一块能读懂的真实工程。
 
 | 原稿内容 | 审查结论与调整 | 对本队的原因 |
 |---|---|---|
@@ -36,11 +52,15 @@
 
 “了解”不表示永远不学：当代码切换到相应模块时，把它的接口、配置和调试升为必学，并更新基线。
 
+判断深度时，可以拿“为什么横向目标会产生 `vy`”作例子。必学是算清目标在左前方 `(0.3,0.4)` 时距离为 `0.5 m`，若控制速度模长为 `0.2 m/s`，沿目标方向分解得到 `(vx,vy)=(0.12,0.16)`；再在 [computeVelocityCommands][route-controller]找到 `atan2` 和两次三角分解。了解是知道车式 Pure Pursuit 用转向角走曲线；进阶才是比较不同控制器的误差与计算量。这样每一层都有明确的停止点。
+
 ## 推荐节奏：16 周，按门槛推进
 
 每周建议 6–8 小时，包括自学、实践和一次短复盘。周次用于排期，验收未通过则补实验；有基础的新人可用交付证据跳过重复练习。S3/S5/S6 的排期由数据包和实车资源决定。
 
 具体执行见[16 周任务单](weekly-plan.md)：逐周列出阅读范围、代码入口、实验、交付与选做内容。零基础补课见[基础自学](../self-study/foundations.md)，学有余力进入[专项材料](../self-study/README.md)；专项深度不成为全员新增门槛。
+
+本轮吸收外队课程的**任务衔接方式**：ROS2 单项练习之后做[轻量巡逻](../training/patrol-workshop.md)，A* 按[补全框架→独立实现](../training/astar-workshop.md)推进，坐标与地图用[固定输入的前后对照](../training/controlled-experiments.md)检验理解。这三项分别替换原来零散的巩固、搜索入门和故障示例；不额外加周次，也不把多机协作、CAN 或其他队伍的定位栈变成本队必修。导师按进度安排离线版本或 ROS 版本，记录各自完成范围。
 
 | 阶段/建议周次 | 目标与前置 | 对应本队代码/接口 | 本关交付与通过门槛 |
 |---|---|---|---|
@@ -55,6 +75,30 @@
 
 Nav2 概览在 S0 就可以讲 15 分钟；不等待全部理论学完再看系统图。建图/定位和规划两条学习线在 S2 后可部分并行，S5 再合流。
 
+### S0–S1：先让一条数据走通
+
+把节点想成一个正在运行的程序，把 Topic 想成有名字和消息类型的通信口。发布者发出序号 `0、1、2`，订阅者收到同样的序号，才能说这一段走通；节点列表里有两个人名并不能证明它们在交谈。先读教学 [SequencePublisher.publish_next 与 SequenceSubscriber.receive][route-sequence]，再读本队 [LoamInterfaceNode 构造函数][route-loam]：前者让过程可见，后者把同一套概念换成点云与里程计。遇到空输出，先核对两端的完整 Topic 名，再查类型和 QoS。
+
+### S2：同一运动，换坐标就换数值
+
+机器人朝世界 `+y`，即 yaw 为 `π/2` 时，车体前进 `0.2 m/s` 对应世界速度 `(0,0.2)`。五秒后约走一米；若仍沿世界 `+x`，应先怀疑旋转方向或使用了错误 frame。教学 [integrate_body][route-core]把车体速度积分为世界位置，[IdealModel.tick][route-model]再把同一个位姿填入 Odometry 与 TF。读代码时分别标出“计算位姿”和“发布消息”，不要把消息里填了一个 frame 名理解成已经完成转换。
+
+### S3：先检查尺子，再解释定位
+
+定位是在用传感器数据估计自己在哪。若连续两帧相隔 `0.1 s`，位置差 `0.1 m`，速度才有 `1 m/s` 的含义；时间单位错十倍，漂亮轨迹也会带错速度。先追 [sensor_scan_generation 的差分][route-scan]，再追 [small_gicp 的配准与发布][route-gicp]。后者初始化为单位变换，并有独立 TF 定时器，因此“map→odom 存在”只是通信证据；是否对齐地图，要看配准结果、点云重叠与已定义的误差证据。
+
+### S4：点、格子和路径是三种不同的表示
+
+一个离地 `0.15 m` 的点可以被地形模块写成 intensity，再被障碍层投到某个格子，最后影响规划器选择道路。沿 [terrain_analysis 的离地高度输出][route-terrain]与 [IntensityObstacleLayer 的过滤和标记][route-layer]读，先问“哪个点留下了、哪个格子变了”，再问“路径为什么绕行”。在 0.05 m 分辨率下，一米横向位移跨 20 格；距离单位与格子索引必须分开。本关 A* 用小图理解搜索，本队 [GridBased 配置][route-planner]还包含 yaw 和运动模型约束。
+
+### S5：路径只是建议，速度还会经过几次加工
+
+控制器依据路径计算速度，速度平滑器限制变化，fake 节点再变换方向并叠加自旋。假设平移速度从 `0` 变为 `0.4 m/s`，每周期允许增加 `0.1 m/s`，需四个周期才能到达；这是速度平滑的教学直觉，不是对当前参数的实测结论。对照 [navigation_launch 的速度 remap][route-navigation]追每一段完整 Topic，再到 [transformVelocity 与缓存回调][route-fake]算最终输出。取消 Goal、收到零值、输入断流分别是事件，不能用同一句“停止了”概括。
+
+### S6–S7：把“我理解了”变成别人能复现的结果
+
+陌生故障题的价值在于检验你会不会提出可排除的原因。例如“消息没到”先查发布与订阅端点，再检查命名；不要同时改地图、QoS 和 PID。教学 [run_topic][route-case]把错名过程变成明确的发送/接收计数，可作为报告练习；真实系统还需实际端点证据。模块交接则多走一步：另一名同学按冻结输入与命令复现同一故障和修复，维护者才能判断改动是否可承担责任。实车准入仍按 T8，离线结论要保留适用范围。
+
 ## 能力等级与参加比赛的边界
 
 | 等级 | 判定依据 | 可以承担 |
@@ -67,6 +111,24 @@ Nav2 概览在 S0 就可以讲 15 分钟；不等待全部理论学完再看系�
 
 “独立 Debug”指不依赖学长一步步提示就能形成和验证诊断；不等于一个人在场地无值守操作。遇到机械危险、接口责任不明或不可恢复故障，应及时升级处理。
 
+比如你能找到“零命令后又出现旧非零输出”的五步缓存序列，这证明你能读状态和设计复现，通常属于 L2 的成果。读到 [cmdVelCallback 与 syncCallback][route-fake]不等于已证明底盘停车：L3 还要把最终 Topic、串口接收与物理运动放到同一时间线，完成负责人规定的测试。等级以你能证明的能力判定，不按学了几周或看过多少算法名判定。
+
 ## 导师每周做什么
 
 提前发输入数据与本周验收项；每次只引入一类主要变量；复盘时要求新人展示实际日志和原始数据，而非只展示截图。对缺少完整地图、串口包或训练 bag 的阶段，导师先修复训练材料，再组织考核。正式准入统一按[考核手册](../assignments/README.md)执行。
+
+一次好的复盘可以从“订阅者收了 98 条，发布者记了 100 条”开始。导师让新人指出计数区间、订阅者启动时刻和序号缺口，再决定是启动晚、处理慢还是通信问题；不能直接把两条差值叫作丢包。使用 [sequence.py][route-sequence]时还要注意，它转发序号而没有累计总数，统计脚本或自己的节点才负责计数。每周留下一条能复查的解释，下周遇到更大的系统时就有可用的方法。
+
+[route-sequence]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/nav_training/sequence.py#L10-L39
+[route-core]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/nav_training/core.py#L29-L47
+[route-model]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/nav_training/ideal_model.py#L57-L80
+[route-case]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/cases/run_case.py#L42-L64
+[route-loam]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp#L23-L51
+[route-controller]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp#L219-L281
+[route-scan]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L115-L156
+[route-gicp]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/small_gicp_relocalization/src/small_gicp_relocalization.cpp#L134-L192
+[route-terrain]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/terrain_analysis/src/terrain_analysis.cpp#L485-L515
+[route-layer]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/layers/intensity_obstacle_layer.cpp#L403-L444
+[route-planner]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L469-L504
+[route-navigation]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L253-L340
+[route-fake]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L93-L154

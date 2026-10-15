@@ -1,8 +1,12 @@
 # Navigation-2027：Nav2 与控制接口证据
 
+<small>整理与维护：24cst朱鑫鹏</small>
+
 审查对象：[Navigation-2027 固定提交](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/tree/183a4109b0de2030bb8970a54654937c8b039ba9)，SHA `183a4109b0de2030bb8970a54654937c8b039ba9`。审查日期：2026-09-14。本页依据完整浅克隆中的源码、launch、参数和 XML，只读审查；没有编译 ROS 工作区、启动 ROS 节点、连接串口或做实车测试。未发现仓库内及本地工作区祖先目录中的 `AGENTS.md`。
 
 本文使用三种结论：**代码事实**表示文件中可直接定位；**启动配置**表示给定 launch 的默认分支会尝试加载，不能等同于已经成功运行；**待验证**表示源码推断或缺少部署、硬件证据。配套学习页：[真实 Nav2 与控制链](../nav2/README.md)。
+
+新人第一次读本页，不必一次背完表格。选一个症状，沿“哪个节点负责→数据从哪里来→配置选谁→源码怎样处理→运行还缺什么证据”查下去。表格是查证索引；下面的小场景帮助你把表格里的事实串成原因。2026-10-14补充的教学推演仍依据同一固定提交，未增加ROS运行或实车验收结论。
 
 ## 1. 真实入口与启动边界
 
@@ -15,6 +19,31 @@
 | [SLAM launch L111–180][slam] | SLAM 分支把 terrain_map 转成 obstacle_scan，启动 slam_toolbox 与 Point-LIO，发布静态 map→odom | `slam=True` 并不会关闭 navigation；不能直接把建图模式理解成“不会输出底盘指令” |
 | [navigation L42–50][lifecycle]、[L253–342][composition] | 默认组件分支加载 loam_interface、sensor_scan_generation、terrain_analysis、fake_vel_transform，以及 controller/smoother/planner/behavior/bt_navigator/waypoint_follower/velocity_smoother 和生命周期管理器 | 生命周期列表只含七个 Nav2 server；节点存在不等于这些 server 已 active |
 
+### 1.1 场景：YAML写true，实车却可能使用系统时钟
+
+参数文件像出厂设置，启动命令和launch可以改写它。假设实车入口没有覆盖 `use_sim_time`，入口默认False；bringup再把这个值写入参数文件，原文的costmap true便不是最终运行结论。主仓库路径 `ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/bringup_launch.py` 的[真实重写 L54–80][bringup-rewrite]中，关键顺序是：
+
+```python
+# 以下三行从真实源码节选，中间省略其他语句；不是独立可运行launch。
+param_substitutions = {"use_sim_time": use_sim_time, "yaml_filename": map_yaml_file}
+# RewrittenYaml(...) 的关键参数：
+param_rewrites=param_substitutions,
+convert_types=True,
+```
+
+第一行指定重写哪些键；`param_rewrites`让重写真正进入配置；`convert_types=True`允许替换后的字符串转换为相应类型。相邻的 `ReplaceString`则处理 `<robot_namespace>`。读文件能证明重写规则，部署机 `ros2 param get`才能证明当前运行值。若仿真/回放一端在100秒、另一端在系统时间，TF查找失败可能首先是时间轴问题，而不是少一个静态TF。
+
+### 1.2 场景：开了建图，为什么还有导航组件
+
+模式选择只是launch包含关系。把路径 `ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/bringup_launch.py` 的[分支 L140–197][bringup-branches]按条件写成纸面伪代码：
+
+```text
+若slam为真：包含slam_launch；否则：包含localization_launch
+随后仍包含navigation_launch
+```
+
+这是从源码提炼的说明，不是Python原文。新人应在调用处分别圈“有条件的两个include”和“navigation的include”，再去navigation里找速度节点。这样能解释模式名称与运动输出之间的边界，并把实车入口未启动串口这一事实保留在接口表里。
+
 ## 2. Nav2 插件和行为树
 
 | 位置 | 实际选择与含义 |
@@ -26,9 +55,23 @@
 | [IntensityObstacleLayer L377–430][intensity-code]、[插件注册 XML L1–10][costmap-plugins] | 标记障碍时读取 PointCloud2 的 `intensity` 字段并过滤；仓库也注册了 IntensityVoxelLayer，但 reality 的 plugins 列表没有选它。不能用“源码存在”判断实际启用 |
 | [BT 参数 L255–313][bt-config]、[单点树 L5–38][bt-pose]、[多点树 L5–43][bt-through] | 参数指向仓库这两份 XML。单点树以3 Hz限频重规划，ComputePathToPose 用 GridBased，FollowPath 用 FollowPath；失败清 costmap，外层恢复含清图与 BackUp。多点树增加 RemovePassedGoals（0.7 m）和 ComputePathThroughPoses |
 | [行为参数 L515–545][behavior-config]、[BackUpFreeSpace L54–155][backup-code] | backup 实现是自定义 BackUpFreeSpace：查询 `global_costmap/get_costmap`，搜索自由方向，输出x/y。XML的 BackUp 请求距离1.0 m、速度1.0 m/s；它不保证朝车后方退，也不受 FollowPath 的0.5 m/s参数约束 |
-| [smoother/waypoint/velocity 参数 L505–571][other-config] | 配置并启动 SimpleSmoother、WaitAtWaypoint、OPEN_LOOP VelocitySmoother（20 Hz，平移上限2.5 m/s，timeout=1.0 s） |
+| [smoother/waypoint/velocity 参数 L505–571][other-config] | 配置并启动 SimpleSmoother、WaitAtWaypoint、OPEN_LOOP VelocitySmoother（20 Hz，x/y各轴上限2.5 m/s，timeout=1.0 s）；各轴上限不能直接读成合速度上限 |
 
 行为树实际没有 `SmoothPath`、`Spin`、`Wait`、`AssistedTeleop` 节点。库可加载、server 可启动、参数有配置、BT 实际调用是四件不同的事。规划器内部 `smooth_path` 与独立 `smoother_server` 也要区分。
+
+### 2.1 场景：听说Nav2默认用某算法，怎样核对本队
+
+先从BT中的ID找参数，再从参数找类。主仓库路径 `ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml` 的[单点树][bt-pose]调用 `planner_id="GridBased"`与 `controller_id="FollowPath"`；路径 `ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml` 的[Planner段][planner-config]与[Controller段][controller-config]才给出对应插件。ID是调用时使用的岗位名，plugin是实际实现，不能把二者混写。
+
+再看主仓库路径 `ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp` 的[`computeVelocityCommands` L219–277][controller-code]：第229行变换路径，第232–235行选前视点，第237–249行计算距离/方向与PID，第251–253行限速缩放，第270–272行分解x/y并填角速度。前视点 `(0.3,0.4)`距机器人0.5 m，假设最终标量速度0.5 m/s，则x/y为0.3/0.4 m/s；这是解释输出分解的假设，不是日志中已经测出的数值。
+
+对Costmap也用同样方法：YAML的plugins列表决定启用哪个类，再读实现。真实路径 `ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/layers/intensity_obstacle_layer.cpp` 的[过滤 L400–430][intensity-code]会跳过intensity小于0.1或大于2.0的点。因此“原始雷达有一个很亮的点”不能直接作为这个图层理应标障碍的证据；还要证明terrain_map里对应点字段、坐标和范围正确。
+
+### 2.2 场景：恢复为什么可能比普通跟踪快
+
+普通FollowPath在本配置下有0.5 m/s标量速度上限；BT恢复请求的是1.0 m/s。路径 `ros_ws/src/pb2025_sentry_nav/pb_nav2_plugins/src/behaviors/back_up_free_space.cpp` 的[`onRun` L87–94][backup-code]用 `cos(best_angle)×speed`与 `sin(best_angle)×speed`给x/y。若搜索方向为90°，合成速度仍是1.0 m/s，却主要沿y移动。名字BackUp不构成“固定后退且继承FollowPath限速”的证据。
+
+此处再回到路径 `ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py` 的[组件remap][composition-speed]：behavior直接到 `cmd_vel_nav2_result`，绕过velocity_smoother。要判断系统是否存在统一限速，必须查所有来源与最终输出，而不是只查Controller一个参数。
 
 ## 3. 速度、TF、手柄与串口边界
 
@@ -59,6 +102,8 @@
 
 这些发布器表明可提供的策略输入；当前审查没有找到默认导航launch中消费这些裁判消息并生成比赛策略的节点，且本克隆缺少对应 `pb_rm_interfaces` 消息包，字段与部署侧契约需要补齐。
 
+**一个接口对照例子：**名叫 `serial/gimbal_joint_state`，不表示两份实现发的是同一种消息。根路径 `serial_node.py` 的[第48行发布器][serial-python]使用Float32MultiArray和绝对 `/serial/gimbal_joint_state`；路径 `standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp` 的[第78–79行][serial-cpp-interfaces]使用JointState和相对名字。JointState能携带关节名称、位置等结构，Float32MultiArray只是数组。改变话题名字不会把数组转成JointState，也不会补上关节名、单位和时间戳契约。先确认部署用哪份，再核对模型实际接收的端点。
+
 ### 停机不能只看上游 Twist
 
 设里程计 yaw 为 θ，fake_vel_transform 计算：
@@ -70,6 +115,16 @@ wz_out =  wz_in + spin_speed
 ```
 
 [reality 参数 L146][fake-config] 的 `init_spin_speed=0.5`，而[转换函数 L147–154][fake-transform]总是叠加 spin。因此在未收到改变 spin 的消息时，**输入全零 Twist 会输出 angular.z=0.5**；这只是源码可确定的 ROS 输出规则，不是本轮观测到的车体运动。`cmd_spin=0` 只更新变量，回调本身也不立即发布停车消息（[L80–83][fake-callbacks]）。
+
+这些公式对应主仓库路径 `ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp` 的 `transformVelocity`。可以先手算下面三行，再做隔离实验；所有值都是假设输入，假设yaw已经通过里程计初始化：
+
+| yaw / spin | 输入(vx,vy,wz) | 源码预测输出(vx,vy,wz) |
+|---|---|---|
+| 0 / 0.5 | (0.2,0,0) | (0.2,0,0.5) |
+| π/2 / 0.5 | (0.2,0,0) | (约0,−0.2,0.5) |
+| 任意合法yaw / 0.5 | (0,0,0) | (0,0,0.5) |
+
+Twist本身没有header，输入参考系要从约定与转换代码确认。控制器C++返回TwistStamped与最后ROS话题的Twist，是函数API和通信接口的不同层；要以实际publisher/订阅类型和运行查询为准。
 
 ## 4. 待核实风险与文档差异
 
@@ -89,9 +144,40 @@ wz_out =  wz_in + spin_speed
 
 根 README 的“先自瞄、串口、再导航”是[部署要求][root-serial]；嵌套 README 则以[standard_robot_pp_ros2提供关节位姿][embedded-readme]作为完整系统示例。两者描述的是不同集成前提，当前克隆不能独自说明队伍部署机采用哪条。不要自行补写成已经存在的决策链或串口验证结果。
 
+### 4.1 把R3画成一段具体回调时间线
+
+下面是**满足分支条件的一种源码推演，未在ROS里复现**。假设当前yaw=0、自旋已设0，并且一对Odometry/Path能进入同步回调；t表示相对回调发生时刻，不是Twist中的时间戳：
+
+| t | 输入/回调 | `latest_cmd_vel_` | 该步可能发布什么 |
+|---|---|---|---|
+| 0.00 s | local_plan更新最近活跃时间；已有合法里程计角度 | 暂无 | 同步时无缓存则返回 |
+| 0.02 s | 收到vx=0.2的非零Twist，且距离活跃时间小于0.5 s | 存vx=0.2 | 进入缓存分支，本次不直接发 |
+| 0.03 s | 收到零Twist | 仍为vx=0.2 | 直接转换并发零Twist |
+| 0.04 s | 后续Odometry/Path配对进入syncCallback | 仍为vx=0.2 | 读旧缓存，再发vx=0.2 |
+
+对应真实路径 `ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp` 的[回调 L93–132][fake-callbacks]：第96–103行零输入直接发布，第105行只有非零缓存分支更新成员；第122–125行同步回调拿已有成员，第132行发布，没有在这里清除缓存或检查命令年龄。这里的“可能”保留了消息配对与回调顺序条件。真正复现要记录到达顺序和输出，不能把这一表格当作实测日志。
+
+### 4.2 把R6/R7拆成三个不同的“停”
+
+第一层是导航任务取消，第二层是最终cmd_vel持续满足停车约定，第三层是底盘/车体真正停止。路径 `ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp` 的[`sendZeroCommand` L251–264][joy-stop]请求取消并发布一条零命令，它证明的是这一段代码会发请求/消息；fake之后是否继续输出、串口是否复发旧缓存、下位机是否超时，属于后续层。
+
+真实路径 `standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp` 的[发送循环与cmdVelCallback L633–662][serial-cache]中，第660–662行只把新速度写入包缓存，第647–654行循环发送整个缓存并等待5 ms。若最后一条vx=0.2后上游断流，单从这段代码不能推断它会自动改成0。固件可能另有看门狗，但仓库审查未证明其存在/行为。数据验收分别保存action取消响应、最终消息时间线、串口/底盘回传和车体停止证据，避免用一层替另一层。
+
+### 4.3 从症状选证据，而不是从风险编号猜事故
+
+| 小场景 | 首先复核的代码与配置 | 仍需要的运行证据 |
+|---|---|---|
+| 默认组件跟踪正常，切成普通节点后恢复方向异常 | navigation_launch的两分支behavior remap（R5） | 恢复时cmd_vel publisher、实际输入/输出方向、有效参数 |
+| 松开手柄后一度看到零，随后又有平移 | fake缓存与手柄零输出（R3/R7） | 对齐零消息、后续同步输入、取消状态与所有publisher的时间轴 |
+| 雷达/云台话题都有，却模型不更新 | Python与C++串口消息类型、namespace（R1/R2） | 部署包来源、端点类型、关节名称/单位/stamp |
+
+风险表列出的是代码路径和缺口，不是事故统计；没有运行证据时如实停在“有待复现条件”。具体源码路径在上述小节，操作步骤见[真实Nav2训练页](../nav2/README.md)。
+
 ## 5. 更新本页时留下的记录
 
 下次实测应附：部署仓库SHA、ROS发行版及overlay、完整launch参数、生命周期状态、三个速度话题的publisher/类型/频率、实际TF发布者、串口驱动与固件版本、零命令/取消/消息中断/串口中断的时间序列。每个风险分别记“未验证、复现、未复现的条件、已修复及回归证据”，不要用“导航能跑”替代这些记录。
+
+记录示例应写成“在提交X、组件模式、独立训练域中，先有Path，后有非零Twist，再发零Twist；是否出现旧平移见时间线文件”，同时给出输入和输出接收时间。不要写成“R3已解决”却没有修改提交和同条件回归。若只是学会按源码推演，也可以交纸面计算，标题明确“静态阅读结果”；它有教学价值，但不能升级为实车结论。
 
 [reality-defaults]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py#L50-L134
 [reality-includes]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py#L146-L199

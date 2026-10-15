@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="378" viewBox="0 0 720 378" role="img" aria-labelledby="title desc">
+  <title id="title">仿真四步，每步都看得到证据</title>
+  <desc id="desc">A构建确认程序可找到，B输入确认时钟雷达IMU有数据，C定位确认连续位姿与地图，D导航确认目标结果与轨迹。字母为步骤编号，不代表已通过。</desc>
+  <rect width="720" height="378" rx="18" fill="#f5f9fc"/>
+  <g font-family="Microsoft YaHei,PingFang SC,system-ui,sans-serif" fill="#19314b">
+    <text x="28" y="43" font-size="27" font-weight="700">每次只走到下一步，留下对应证据</text>
+    <path d="M62 101 V306" stroke="#b9cfdf" stroke-width="3"/>
+    <g fill="#fff" stroke="#b9cfdf" stroke-width="2"><circle cx="62" cy="98" r="23"/><circle cx="62" cy="165" r="23"/><circle cx="62" cy="232" r="23"/><circle cx="62" cy="299" r="23"/></g>
+    <g font-size="25" font-weight="700" text-anchor="middle" fill="#2463b4"><text x="62" y="107">A</text><text x="62" y="174">B</text><text x="62" y="241">C</text><text x="62" y="308">D</text></g>
+    <g font-size="27" font-weight="700"><text x="108" y="108">能构建</text><text x="108" y="175">有输入</text><text x="108" y="242">能定位</text><text x="108" y="309">能导航</text></g>
+    <g font-size="23" fill="#52677c"><text x="270" y="108">包来源与构建日志</text><text x="270" y="175">时钟、雷达、IMU 数据</text><text x="270" y="242">连续位姿、TF 与地图</text><text x="270" y="309">目标结果、轨迹、失败原因</text></g>
+    <text x="28" y="358" font-size="20" fill="#63758c">步骤图用于安排检查；实际完成情况由本次运行证据确认</text>
+  </g>
+</svg>

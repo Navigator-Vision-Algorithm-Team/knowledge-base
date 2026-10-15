@@ -18,6 +18,9 @@ nav:
           - 从运行到修改代码: navigation/training/workspace.md
           - 标准合成数据包: navigation/training/datasets.md
           - 验证状态与复验: navigation/training/validation.md
+          - 轻量巡逻：把节点串成任务: navigation/training/patrol-workshop.md
+          - A*两步练习：补全到独立实现: navigation/training/astar-workshop.md
+          - TF、地图与滤波对照实验: navigation/training/controlled-experiments.md
       - 本队系统地图: navigation/system/README.md
       - ROS2、TF、时间与运动: navigation/ros2-tf/README.md
       - 传感器、LIO与重定位: navigation/sensor-lio/README.md

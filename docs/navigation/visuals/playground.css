@@ -1,0 +1,75 @@
+:root {font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif; color: #19314b; background: #fff; font-synthesis: none; --blue: #2463b4; --teal: #087f80; --orange: #bf6b12; --red: #b63443;}
+* {box-sizing: border-box;}
+[hidden] {display: none !important;}
+body {margin: 0;}
+button, a, input {touch-action: manipulation;}
+button, input {font: inherit;}
+button, a {outline-offset: 3px;}
+button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible {outline: 3px solid #202c46; outline-offset: 3px;}
+.shell {max-width: 860px; margin: auto; padding: 28px 24px;}
+.embedded .shell {padding: 24px; background: #f8fafc; border: 1px solid #e3eaf0; border-radius: 16px;}
+.scenes {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 28px;}
+.scenes a {text-align: center; text-decoration: none; color: #476078; background: #fff; border: 1px solid #d8e2ed; border-radius: 8px; padding: 10px 6px; font-size: 14px;}
+.scenes a[aria-current=page] {color: #fff; background: #193e69; border-color: #193e69;}
+header {margin: 0 0 22px;}
+.eyebrow {font-size: 12px; letter-spacing: .08em; color: #63758c;}
+.badge {letter-spacing: 0; border: 1px solid #b8c8db; border-radius: 4px; padding: 1px 5px; margin-left: 5px;}
+.byline {margin: 6px 0 0; color: #63758c; font-size: 12px; line-height: 1.6;}
+h1 {font-size: 24px; line-height: 1.5; margin: 8px 0 0; color: #19314b;}
+.stage {margin-top: 18px; background: #fff; border: 1px solid #dbe5ee; border-radius: 12px; overflow: hidden;}
+svg {display: block; width: 100%; height: 280px;}
+svg text {font-family: inherit; font-size: 24px; fill: #29435c;}
+svg .small {font-size: 20px;}
+svg .strong {font-weight: 700;}
+svg .light {fill: #fff;}
+svg .grid {stroke: #e5edf3; stroke-width: 1;}
+svg .wall {fill: #5e6f82;}
+svg .route {fill: none; stroke: #087f80; stroke-width: 8; stroke-linejoin: round; stroke-linecap: round;}
+svg .dash {stroke-dasharray: 8 8;}
+svg .axis {stroke: #8999ab; stroke-width: 2;}
+svg .candidate {fill: #f8cf78;}
+svg .expanded {fill: #b9daef;}
+svg .path {fill: #138b80;}
+svg .empty {fill: #f4f7fb; stroke: #dce5ee;}
+svg .current {stroke: #c05516; stroke-width: 4;}
+.legend {display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 12px; margin-top: 14px; line-height: 1.6; color: #52677c;}
+.legend span {display: inline-flex; align-items: center; gap: 6px;}
+.swatch {display: inline-block; width: 11px; height: 11px; border-radius: 3px; background: var(--swatch); border: 1px solid #60758d33;}
+.status {font-size: 15px; line-height: 1.75; margin: 20px 0; padding: 12px 16px; border-left: 3px solid #168c88; background: #eaf6f3; border-radius: 0 8px 8px 0;}
+.controls, .options, .scenario-controls {display: flex; align-items: center; flex-wrap: wrap; gap: 10px;}
+.options:empty {display: none;}
+.scenario-controls {flex-basis: 100%; margin-top: 6px; padding-top: 16px; border-top: 1px solid #dfe7ee;}
+button {background: #fff; border: 1px solid #b7c7d8; border-radius: 8px; padding: 9px 14px; color: #284562; font-size: 14px; min-height: 40px; cursor: pointer;}
+button:hover {background: #edf3fa;}
+button[aria-pressed=true] {background: #e5effb; border-color: #2463b4; color: #164f90; font-weight: bold;}
+button.primary {background: #193e69; border-color: #193e69; color: #fff;}
+button.danger {color: #a82c3a; border-color: #cb7a83;}
+button:disabled {opacity: .48; cursor: default;}
+.teaching-note {margin-top: 22px; font-size: 12px; line-height: 1.8; color: #63758c;}
+.teaching-note summary {cursor: pointer; width: fit-content;}
+.note {margin: 10px 0 0; max-width: 65ch;}
+.options label {font-size: 14px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;}
+.options input[type=range] {width: 155px; accent-color: #2463b4;}
+.meter {font-variant-numeric: tabular-nums; font-weight: 700;}
+.group-label {font-size: 13px; color: #63758c; margin-left: 4px;}
+.metric {font-variant-numeric: tabular-nums;}
+.reduced-note {color: #795515;}
+@media (max-width: 520px) {
+  .shell, .embedded .shell {padding: 20px 16px;}
+  .scenes {grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;}
+  header {margin-bottom: 18px;}
+  h1 {font-size: 21px;}
+  svg {height: 210px;}
+  .legend {gap: 6px 12px;}
+  .status {font-size: 14px; margin: 18px 0; padding: 10px 12px;}
+  button {padding: 8px 12px;}
+  .controls, .options, .scenario-controls {gap: 8px;}
+  .options input[type=range] {width: 124px;}
+}
+@media (max-width: 380px) {
+  .shell, .embedded .shell {padding: 18px 12px;}
+  svg {height: 176px;}
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {scroll-behavior: auto !important; animation: none !important; transition: none !important;}
+}

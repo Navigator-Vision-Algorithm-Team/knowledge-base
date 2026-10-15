@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="440" viewBox="0 0 560 440" role="img" aria-labelledby="title desc">
+  <title id="title">从选题到可复现提交</title>
+  <desc id="desc">先选当前的一项 T 任务，明确输入和预期；做正常、故障、修复对照并保留证据；提交版本、命令与原始记录，交给同伴按同一输入复现。这是提交方法，不是考核结果。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M1 1L7 5L1 9" fill="none" stroke="#59758a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+  <rect width="560" height="440" rx="22" fill="#f4f8fc"/>
+  <g font-family="'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', sans-serif">
+    <rect x="24" y="22" width="512" height="112" rx="16" fill="#e9f2fc" stroke="#bfd2ec" stroke-width="2"/>
+    <circle cx="66" cy="62" r="22" fill="#2463b4"/>
+    <text x="66" y="72" text-anchor="middle" font-size="29" fill="#fff" font-weight="700">1</text>
+    <text x="105" y="66" font-size="31" fill="#183b56" font-weight="700">选当前一项</text>
+    <text x="105" y="106" font-size="26" fill="#325a79">T 编号 · 输入 · 预期</text>
+    <path d="M280 141V157" stroke="#59758a" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="24" y="164" width="512" height="112" rx="16" fill="#fff5e6" stroke="#e9d2ad" stroke-width="2"/>
+    <circle cx="66" cy="204" r="22" fill="#a76216"/>
+    <text x="66" y="214" text-anchor="middle" font-size="29" fill="#fff" font-weight="700">2</text>
+    <text x="105" y="208" font-size="31" fill="#704411" font-weight="700">做对照，留证据</text>
+    <text x="105" y="248" font-size="26" fill="#805b2c">正常 / 故障 / 修复</text>
+    <path d="M280 283V299" stroke="#59758a" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="24" y="306" width="512" height="112" rx="16" fill="#eaf6f1" stroke="#bddcd0" stroke-width="2"/>
+    <circle cx="66" cy="346" r="22" fill="#23765c"/>
+    <text x="66" y="356" text-anchor="middle" font-size="29" fill="#fff" font-weight="700">3</text>
+    <text x="105" y="350" font-size="31" fill="#1c5947" font-weight="700">交给同伴复现</text>
+    <text x="105" y="390" font-size="26" fill="#365f53">commit · 命令 · 原始记录</text>
+  </g>
+</svg>

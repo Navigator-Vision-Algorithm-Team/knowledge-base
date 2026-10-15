@@ -1,8 +1,12 @@
 # Debug 案例 1：能看到 Topic，订阅者却没有收到
 
+<small>整理与维护：24cst朱鑫鹏</small>
+
 这是一道可复现的教学故障题，适合 S1/S2，建议 45–60 分钟。Python 事件路由模型和配套 Humble 节点链路都已执行，结果见[验证记录](../training/validation.md)。下文的固定 5 条消息与 JSON 日志来自 Python 模型，ROS 测试另以真实端点和实际接收判断；没有队内事故记录或 DDS 抓包。准备方式见[教学工作区](../training/workspace.md)。
 
 ## 学生任务：先记录证据，再改配置
+
+先把 Topic 想成收件地址，消息想成寄出的信。地址牌出现在列表里，只说明有人登记过这个地址；不说明收件人正在这个地址收信。`sequence` 是相对名，要结合节点 namespace 才得到完整地址；`/sequence` 从根开始，已经是完整地址。在 `/nav_training` 下，两者分别成为 `/nav_training/sequence` 与 `/sequence`，差的不是显示格式，而是两个通信端点。
 
 发布者每次发送整数 1–5。故障与修复模式中，发布者全名都为 `/nav_training/sequence`，但故障模式接收数为零。请先运行 broken，查看完整输入与两端解析后的名称，提出至少三个可能解释，随后只改变一个输入配置。
 
@@ -18,7 +22,9 @@ broken 的验收退出码应为 **1**；`events.jsonl` 与 `report.json` 仍会�
 
 ## 导师解答：固定输入与已生成的证据
 
-完整输入 `training/cases/inputs/topic-mismatch.json`：
+固定输入让 broken 与 fixed 的对比公平：两次都发 1–5，只改变接收地址。如果 fixed 换成另一组数据，或者减少发送次数，结果就不再只反映名称修复。读表时先比较两端全名，再看计数，最后检查退出码是否与契约一致。
+
+完整输入 [training/cases/inputs/topic-mismatch.json](https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/cases/inputs/topic-mismatch.json)：
 
 ```json
 {
@@ -48,9 +54,11 @@ broken 的第一条 `events.jsonl` 原文为：
 {"delivered": false, "index": 0, "publisher": "/nav_training/sequence", "sequence": 1, "subscriber": "/sequence"}
 ```
 
-`run_case.py::resolve_topic` 保留普通绝对名，将普通相对名拼接到 namespace；`run_topic` 只有在两个全名相等时投递事件。因此这里的 `delivered` 是程序执行出来的模型结果，不是操作系统或 DDS 返回的投递状态。模型不支持完整 ROS 名称展开、remap 或私有名 `~`。
+[training/cases/run_case.py 的 resolve_topic 与 run_topic](https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/cases/run_case.py#L42-L64) 保留普通绝对名，将普通相对名拼接到 namespace；只有在两个全名相等时投递事件。可以手算第一条：发送地址不等于接收地址，所以 `delivered=false`，第 2–5 条仍走同一条件。因此这里的 `delivered` 是程序执行出来的模型结果，不是操作系统或 DDS 返回的投递状态。模型不支持完整 ROS 名称展开、remap 或私有名 `~`。
 
 ## 假设、排除与源码联系
+
+“没收到”可能来自没有发送、收错地址、类型或 QoS 不兼容，也可能来自发现/网络问题。诊断要让每条证据只排除它能排除的原因。例如发送计数 5 可以证明模型执行了发送事件，却不能证明真实 DDS 发出了 5 个网络包；完整名称不同则已经足以解释本模型的 0 次接收。
 
 | 假设 | 此次实际证据 | 能得出的结论 |
 |---|---|---|
@@ -61,13 +69,17 @@ broken 的第一条 `events.jsonl` 原文为：
 
 固定源版本为 [Navigation-2027@183a410](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/tree/183a4109b0de2030bb8970a54654937c8b039ba9)，完整 SHA `183a4109b0de2030bb8970a54654937c8b039ba9`。本题的 `sequence` 是新建教学接口，联系的是源码中真实存在的名称差异：
 
-- [导航 reality launch](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py#L50-L54) 默认 namespace 为 `red_standard_robot1`。
-- [C++ 串口订阅](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp#L105-L108)使用相对 `cmd_vel`，[其 launch](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/launch/standard_robot_pp_ros2.launch.py#L74-L78) 的 namespace 默认空。
-- [根目录 Python 串口脚本](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/serial_node.py#L50-L56)则订阅绝对 `/red_standard_robot1/cmd_vel`。不能因为代码中都含 `cmd_vel` 就当作连接同一端点。
+- [ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rm_navigation_reality_launch.py#L50-L54) 默认 namespace 为 `red_standard_robot1`。
+- [standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp 的 createSubscription](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp#L103-L111) 使用相对 `cmd_vel`，[standard_robot_pp_ros2-main/launch/standard_robot_pp_ros2.launch.py](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/launch/standard_robot_pp_ros2.launch.py#L74-L78) 的 namespace 默认空。
+- [serial_node.py 的订阅创建](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/serial_node.py#L50-L56) 则订阅绝对 `/red_standard_robot1/cmd_vel`。不能因为代码中都含 `cmd_vel` 就当作连接同一端点。
+
+把本题迁移到机器人时，假设导航发布 `/red_standard_robot1/cmd_vel`，C++ 串口仍以空 namespace 启动且没有 remap，它的相对 `cmd_vel` 会成为 `/cmd_vel`。这是一条需要用现场 `node info` 验证的部署假设；源码中有两种写法，并不能证明现场已经发生此故障。
 
 这些是只读源码事实，不能推断两份串口实现已在同一部署中同时运行。完整背景见[接口证据页](../system/nav2-and-control-evidence.md)。本实验没有启动其中任一串口实现。
 
 ## 最小修复、回归与回滚
+
+修复不只要“这次能收”，还要说明名称规则是否跟着机器人变化。把 namespace 换成 `/second_team`，相对 `sequence` 会跟着变成 `/second_team/sequence`；绝对 `/sequence` 仍留在根下。这就是第二组回归的意义：检查解决的是规则，而不是把某个机器人名字硬编码进去。
 
 修复是改变接收端配置，让其跟随教学 namespace：
 
@@ -88,6 +100,8 @@ fixed 退出 0、接收 5/5；共享案例套件共 10 个测试，其中本题�
 恢复故障时不用修改源码，重新以 `--mode broken` 和新目录 `training/cases/runs/topic-rollback-1` 运行原命令，应再次得到 0/5、退出 1。恢复正常再使用 fixed。输出目录已存在时返回 2，保留旧证据；不要把目录重用错误当作故障复现成功。
 
 ## ROS2 Humble 复验：端点检查与真实通信
+
+真实 ROS 的复验多了一层：先比较解析后的端点名称、类型与 QoS，再观察 sink 的转发。source 的 echo 有输出只证明检查终端能收到；`/nav_training/received` 有递增输出才说明 sink 的接收回调实际执行了。读代码可对照 [training/ros2_ws/src/nav_training/nav_training/sequence.py](https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/nav_training/sequence.py#L10-L39)：source 定时发布，sink 仅在 `receive` 中转发。故障默认值来自 [training/ros2_ws/src/nav_training/launch/bad_topic.launch.py](https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/launch/bad_topic.launch.py#L1-L7)。
 
 在已按[工作区说明](../training/workspace.md)构建并 source 的 Ubuntu 22.04/Humble 教学环境，使用 `nav_training` 包。远程 CI 已用 rclpy 检查真实发布/订阅端点，确认故障模式无接收、参数修复后恢复递增消息；以下 CLI 步骤供学生手动观察并记录自己的输出，不是 CI 终端日志的逐字抄录。两终端应采用相同、已确认空闲的教学 domain，仅启动教学节点。
 

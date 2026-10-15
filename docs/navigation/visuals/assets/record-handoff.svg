@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="338" viewBox="0 0 720 338" role="img" aria-labelledby="title desc">
+  <title id="title">把一次实验交给下一位同学</title>
+  <desc id="desc">交接要保留同一份输入、完整命令、实际输出，让同伴在新终端重新执行并比较结果。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#2463b4" stroke-width="2"/></marker></defs>
+  <rect width="720" height="338" rx="18" fill="#f5f9fc"/>
+  <g font-family="Microsoft YaHei,PingFang SC,system-ui,sans-serif" fill="#19314b">
+    <text x="30" y="45" font-size="27" font-weight="700">下一位同学需要这三样</text>
+    <g fill="#fff" stroke="#cddce7" stroke-width="2"><rect x="28" y="78" width="200" height="132" rx="14"/><rect x="260" y="78" width="200" height="132" rx="14"/><rect x="492" y="78" width="200" height="132" rx="14"/></g>
+    <g text-anchor="middle"><g font-size="27" font-weight="700" fill="#2463b4"><text x="128" y="120">输入</text><text x="360" y="120">命令</text><text x="592" y="120">结果</text></g><g font-size="22"><text x="128" y="158">哪份数据？</text><text x="128" y="190">哪个版本？</text><text x="360" y="158">在哪里执行？</text><text x="360" y="190">先启动什么？</text><text x="592" y="158">实际输出呢？</text><text x="592" y="190">哪里没验证？</text></g></g>
+    <path d="M234 144 H251 M466 144 H483" fill="none" stroke="#2463b4" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="28" y="240" width="664" height="66" rx="12" fill="#e6f3ef"/>
+    <text x="360" y="281" text-anchor="middle" font-size="25" fill="#087f80">同伴新开终端 → 重做一次 → 比较结果</text>
+  </g>
+</svg>

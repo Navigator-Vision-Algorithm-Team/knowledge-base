@@ -1,5 +1,7 @@
 # 导航与建图 Debug 排查手册
 
+<small>整理与维护：24cst朱鑫鹏</small>
+
 知识库适配日期：2026-10-10。工具语法面向 Ubuntu 22.04 / ROS 2 Humble；实机结果来自 2026-09 的本地化 PB2025 历史案例。
 
 **本队学习主线是 Navigation-2027，审查基线 `183a4109b0de2030bb8970a54654937c8b039ba9`。** 本文保留通用排障方法和历史修复证据，不把本地 PB2025 改动当成本队当前功能。先登记实际 commit、overlay、命名空间、串口接口与地图，参见[系统地图](../system/README.md)和[源码审查证据](../system/nav2-and-control-evidence.md)。所有 `/home/ubuntu/navigation_2025/...`、独立 `/home/ubuntu/ros_ws`、PID/IP/地图名均为历史示例，执行时以本次登记替换。
@@ -13,6 +15,8 @@
 ## 1. 怎么使用这份手册
 
 按“检查命令 → 输出判断 → 处理 → 复查”使用。先找到数据链断在哪一段，再改对应模块。
+
+把故障先写成一句带条件的事实，例如“导航模式、本次 Goal 执行中、上游有速度而最终 Topic 没消息”，不要只写“车不动”。这句话决定你应看控制转换还是传感器。每做一次检查就缩小候选原因，改动后再用原检查复验；重新启动后能跑属于恢复证据，还需要找出原触发条件。
 
 所有 `bash` 命令都在机器人 Ubuntu 终端执行，不在 Windows PowerShell 执行。只复制代码块，不复制 `ubuntu@ubuntu:...$` 提示符。一次粘贴一个代码块，等待提示符回来再粘贴下一块，避免出现 `*.xmlcd`、`pb2025_nav_bringupcd`。
 
@@ -71,6 +75,8 @@ source /home/ubuntu/navigation_2025/ros_ws/install/setup.bash
 
 ### 2.1 定位与点云链
 
+定位链像加工流水线：驱动给原始测量，LIO 估计传感器运动，接口换到导航需要的坐标，重定位再把局部运动对到先验地图。每一层都需要前一层的正确输入。因此“雷达有数据”只证明第一站，不能替最后一站作证。
+
 ```text
 Livox 驱动
   ├─ livox/lidar、livox/lidar/pointcloud
@@ -93,7 +99,11 @@ sensor_scan_generation
 
 这里的模块输出对应此前这套本地化工程；若工程后来修改过，用 `ros2 node info` 查实际输入输出。`sensor_scan_generation` 在本项目实机链路中也参与工作，不能只把它当作仿真节点。
 
+本队可对照 [ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp][run-loam] 的输入参数与发布端点，以及 [ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp][run-scan-sync] 的双输入同步。例如 `lidar_odometry` 持续更新、`registered_scan` 不更新，后者的同步回调就缺一侧输入，最终 `odometry` 也可能停住。查两侧类型、stamp、QoS，再看日志；不能只数里程计频率。
+
 ### 2.2 Goal 到底盘链
+
+Goal 是任务，路径是路线，速度是当前动作，串口是硬件接口。看路径成功，不代表控制器已输出；看速度非零，也不代表底盘已认可。按这个顺序查，就能把“导航失败”拆成请求、规划、跟踪、转换和执行几个有证据的边界。
 
 ```text
 RViz 的 Nav2 Goal
@@ -112,7 +122,13 @@ RViz 的 Nav2 Goal
 
 恢复行为也可能直接向 `cmd_vel_nav2_result` 发布，所以该话题出现控制器之外的发布者不一定是重复启动。必须结合节点名称判断。
 
+上图的 `rm_serial_driver` 属于历史部署末端；本队末端必须换成登记的实际消费者。控制器/smoother remap 及组合模式行为服务器输出可查 [ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py][run-velocity-launch]。把源码中的相对名、launch 的 namespace/remap 与现场端点全名对应起来，再判断连接。
+
 ## 3. 两套导航同时存在、同一容器重复加载
+
+重复来源会让下游收到相互矛盾的状态。示意：两份 Point-LIO 对同一时刻分别报告 x=1 与 x=3 米，下游交替接收时表现为跳变，而两个程序都可能没有崩溃。这里要验证的是“同一用途是否存在多个独立来源”，不是把所有多发布者话题都删成一个。
+
+组件应装到哪里，见 [ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py][run-components] 的 `target_container` 和列表。对照现场列表，若同容器同名组件出现两份，才把“重复加载”作为直接证据；若本机只有一份，继续检查同 ROS 域其他主机。
 
 ### 检查
 
@@ -196,6 +212,10 @@ crontab -l
 
 ## 4. `odom → base_footprint` 不存在、TF 树断开
 
+TF 是将传感器位置换算到机器人、再换算到地图的坐标关系。一个 frame 存在，不代表它和另一个 frame 连通；链路连通，也不代表查询时刻在缓存范围内。先分别检查安装、局部运动、全局校正三段，就能知道缺的是哪种关系。
+
+本队 [ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp][run-scan-handler] 在同步回调里发布 odom 到 base_frame 的关系，并使用点云 stamp。若点云与里程计有数据、这条边却缺失，查看是否真正进入回调和参数 frame 名；若边存在但查旧消息时失败，则转第 6 节查时间。
+
 ### 检查
 
 ```bash
@@ -236,6 +256,10 @@ ros2 run tf2_tools view_frames --ros-args -r /tf:=/red_standard_robot1/tf -r /tf
 ROS 官方也使用 `tf2_echo`、`view_frames` 和 `tf2_monitor` 区分 frame 与时间问题：[Humble TF2 调试说明](https://github.com/ros2/ros2_documentation/blob/humble/source/Tutorials/Intermediate/Tf2/Debugging-Tf2-Problems.rst)。
 
 ## 5. 雷达正常，但 `odometry` 没数据
+
+找“第一处断点”比找“最后一个没数据的话题”有用。假设原始点云、IMU、LIO 输出都在更新，而 `lidar_odometry` 没有，先查 loam_interface；若两路转接输入都有，最终没有，再查同步与外参。这里的逐段命令就是让你画出一个带实测值的流水线。
+
+尤其注意 [ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp][run-loam-tf] 的首次 TF 查询失败会直接返回，不发布该次里程计。源码中的这个分支能解释“节点活着、publisher 存在、却没消息”；现场仍需用 `TF lookup failed` 日志及对应变换查询支持判断。
 
 ### 逐段检查频率
 
@@ -304,6 +328,10 @@ timeout --signal=INT --kill-after=2s 8s ros2 topic echo /red_standard_robot1/reg
 
 ## 6. 点云队列满、旧时间戳、向未来外推
 
+点云可能已经到达，但处理器在等“这条消息采集时刻”的 TF。一直等不到，排队的消息就越来越多，最终显示队列满。示意：当前 TF 只到 10.00 秒，点云请求 10.03 秒，就需要后续数据或合理等待；把队列从 10 改成 100 并不会生成缺失的变换。
+
+本队 [ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp][run-scan-tf] 按点云 stamp 查询安装关系，失败时返回单位变换；这又可能表现为“输出还在，但位置不对”。因此同时记录 stamp、请求/最新 TF 时间和日志，不以话题存在判定该级处理正确。
+
 常见日志：`queue is full`、`earlier than all the data in the transform cache`、`extrapolation into the future`。
 
 ### 检查
@@ -347,6 +375,8 @@ timedatectl status
 `queue is full` 是消息等不到处理条件的结果，不一定是 queue 数值太小。直接扩大队列可能让旧数据积压更久。用于点云融合时，应保留消息时间对应的变换语义，不随意改成“最新 TF”。
 
 ## 7. 点击 Goal 没反应、Action 不可用、车不走
+
+“没反应”要拆开：点击有没有成为本次 Action，请求有没有被接受，规划有没有给路径，控制有没有给速度，最终有没有消费者。比如新目标 UUID 已是 EXECUTING，说明任务进入系统，重点应转到路径和控制日志；只有旧目标 SUCCEEDED 则还无法判断这次点击。
 
 ### 7.1 先确认接收目标的服务
 
@@ -419,6 +449,10 @@ ros2 topic info /red_standard_robot1/cmd_vel -v
 
 ## 8. 重定位跳动、地图与点云不重合
 
+重定位把当前局部点云与先验 PCD 对齐，结果决定 map 到 odom 的校正。错地图、错初值、错坐标或重复发布，都可能让它找到错误关系；连续稳定的 TF 也可能稳定地错在另一处墙角。判断要同时看“是否收敛”和“是否对到当前场地的正确位置”。
+
+打开 [ros_ws/src/pb2025_sentry_nav/small_gicp_relocalization/src/small_gicp_relocalization.cpp][run-gicp]：从 PCD 加载，到累积点云，再到 `align` 与 `result.converged` 分支。若日志是 `Couldn't read PCD`，先处理路径/资产；若是 `GICP did not converge`，再核对输入和初值。这两种错误不应通过反复发送 initialpose 混为一类。
+
 先在静止状态比较两段 TF：
 
 ```bash
@@ -469,6 +503,10 @@ ls -lh /home/ubuntu/navigation_2025/ros_ws/src/pb2025_sentry_nav/pb2025_nav_brin
 必要时用一次 `2D Pose Estimate` 提供正确位置与方向，等待匹配稳定。只有确认真实场地与旧图已经不符，或旧图本身存在明显失真，才把重新建图作为下一步；单纯 TF 断开或重复实例不靠重建地图解决。
 
 ## 9. 串口冲突、掉线、底盘收不到速度
+
+把这节当作边界核对：ROS 一侧是否有正确消息和消费者，系统一侧是否打开正确设备，协议一侧是否被接收认可，硬件一侧是否允许执行。设备名存在只支持其中一项。示意：最终速度有 `0.2 m/s` 而订阅数为 0，先找消费者；消费者已连上而 CRC 连续失败，则需要串口/电控负责人查数据包。
+
+本队 C++ 实现的字段映射可读 [standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp][run-serial-callback]：`cmdVelCallback` 将 x、y、angular.z 写入发送状态。它说明这份实现如何取字段，不能证明当前部署用它，也不能证明固件已经执行这些数值。下方独立 rm_serial_driver 的反馈命令仍属于历史条件。
 
 本节 `/rm_serial_driver` 及 `/serial/chassis_*` 来自历史独立驱动。Navigation-2027 克隆中另有不同 Python/C++ 串口实现，节点名、状态类型与设备配置不等价；先按[接口证据 R1–R2](../system/nav2-and-control-evidence.md)登记本次使用哪一套。
 
@@ -529,6 +567,10 @@ sudo journalctl -k -b --no-pager | grep -Ei 'ttyACM|ttyUSB|usb|disconnect|reset'
 
 ## 10. 撞桌腿、绕障失败、膨胀半径该不该改
 
+障碍要先被感知和保留，再进入 costmap，最后才影响路径与运动。若桌腿在点云中消失，增加膨胀半径只会膨胀其他已识别障碍；若桌腿已标记而车角扫过去，则要看足迹、坐标与最终旋转。按这些层级观察，才能知道参数该改在哪一层。
+
+本队输入与门限在 [ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml][run-costmap]，控制器速度/采样调用在 [ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp][run-controller] 的 `computeVelocityCommands`。先把现场障碍与 costmap 标记对上，再读代码使用了什么检查；不能由源码存在 `isCollisionDetected` 就宣称实车完整扫掠已验收。
+
 先在 RViz 打开原始点云、`terrain_map`、局部/全局代价地图和足迹，确认桌腿依次出现在这些层里。
 
 ```bash
@@ -567,6 +609,10 @@ ros2 param get /red_standard_robot1/controller_server FollowPath.enable_collisio
 历史本地控制器曾增加可选 `enable_collision_guard` 并设置为 `false`。该参数不属于所有版本；Navigation-2027 审查基线有不同的采样碰撞逻辑与边界，见[风险 R8](../system/nav2-and-control-evidence.md)。若当前仍为 false，不能假设“有代价地图就一定有完整轨迹碰撞检查”。后置 `fake_vel_transform` 添加的自旋也可能改变控制器原本检查的运动，需要核对最终输出轨迹。把膨胀变大、把速度变慢都不能替代这项核对。
 
 ## 11. 底盘一顿一顿、前进后退、恢复频繁
+
+顿挫可能来自上游主动停止/恢复，也可能来自转换同步间断或执行端反馈。把同一时间区间的三段速度、Action 和底盘反馈放在一起，才能区分。示意：控制器先报进展失败，随后上游速度改成恢复动作，这是任务决策；上游始终稳定、最终输出忽零忽非零，则先查转换节点。
+
+恢复顺序可读 [ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml][run-bt]：规划与跟踪各有清图恢复，外层还会轮换恢复动作。XML 说明“可能走哪些分支”，日志、反馈与时间顺序才说明“这次走了哪条”。
 
 ### 读频率与速度值
 
@@ -622,6 +668,10 @@ grep -RniE 'Failed to make progress|BackUp|Collision|collision|Failed to control
 
 ## 12. 底盘在自旋，云台/雷达没有跟随
 
+底盘和云台是两个控制对象。给 Twist 的 angular.z 加值只提出底盘旋转请求，没有自动产生云台关节位置请求。示意：底盘转了 90°，云台保持世界朝向时，相对底盘关节就可能反向转 90°；如果只是模型 TF 被固定，看起来一起转也不能证明硬件跟随。
+
+接口位置可对照 [standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp][run-gimbal-callback] 的 `cmdGimbalJointCallback`：它按 JointState 的 joint name 读取 position，和底盘 Twist 是不同订阅。实际控制模式与反馈仍需部署登记；先查消费者、类型与关节反馈，再由负责人安排硬件验证。
+
 历史案例的云台跟随尚未完成接口/反馈验证。Navigation-2027 的 C++ 串口接口另有 JointState 云台通路，不能把历史 rm_serial_driver 没有订阅等结论直接套到本队部署；先查实际订阅者，不猜格式发送新命令。
 
 ```bash
@@ -650,6 +700,10 @@ ros2 param get /red_standard_robot1/fake_vel_transform init_spin_speed
 
 ## 13. 机器人斜着、点云斜着，雷达安装倾斜 30°
 
+先分清“传感器相对车斜”与“车相对地面斜”。真实安装角应该进入外参，使雷达坐标中的斜地面换算到车体时成为正确地面；把外参归零反而可能把安装倾角留在点云里。下面同时看安装 TF 与车体 TF，正是为了分离这两种角度。
+
+模型差异也要查来源：[ros_ws/src/pb2025_robot_description/resource/xmacro/uic2025_sentry_robot.sdf.xmacro][run-uic] 的雷达在 gimbal_yaw 上、roll 为 -π/6；[ros_ws/src/pb2025_robot_description/resource/xmacro/pb2025_sentry_robot.sdf.xmacro][run-pb] 则在 chassis 上、roll 为 -π/12。下方历史 -30° 记录不能自动套到选用 PB 模型的仿真，先确认本次模型与实物。
+
 ```bash
 timeout --signal=INT --kill-after=2s 8s ros2 run tf2_ros tf2_echo base_footprint front_mid360 --ros-args -r /tf:=/red_standard_robot1/tf -r /tf_static:=/red_standard_robot1/tf_static
 ```
@@ -673,6 +727,10 @@ timeout --signal=INT --kill-after=2s 8s ros2 run tf2_ros tf2_echo odom base_foot
 
 ## 14. RViz 白色模型、OpenGL 报错、显示冻结
 
+RViz 是数据的观察窗口。窗口的渲染失败、订阅配置错误与导航内部失败可以有相同的“画面不动”，所以先用 CLI 独立确认数据和 TF，再判断窗口。比如 odometry 连续更新、TF 可查、只有 Map 的 GLSL 报错，先查显示链；若 odometry 本身没消息，转回第 5 节。
+
+独立显示入口在 [ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rviz_launch.py][run-rviz]，只创建 RViz 并 remap TF。它解释了为什么单独重开显示不必再启动整个导航，也提醒你核对 RViz namespace 与 TF Topic。
+
 此前出现过：`active samplers with a different type refer to the same texture image unit`，属于渲染器/显卡/材质相关错误，不直接证明串口或 Goal 坏了。
 
 先展开 RViz 左侧 `RobotModel`、点云、Map 的 `Status`，记录具体红色错误。再用第 4、5、7 节独立确认 TF、odometry、Action 和速度。
@@ -693,6 +751,10 @@ LIBGL_ALWAYS_SOFTWARE=1 ros2 launch pb2025_nav_bringup rviz_launch.py namespace:
 软件渲染可能增加 CPU 负载，若显示恢复也要复查点云处理没有明显积压。此前的 `start_rviz_safe.sh` 还固定了显示会话路径；换用户或桌面会话后不要假设它仍通用。
 
 ## 15. 参数改了没效果、构建 0 个包、环境错误
+
+同一名字的包可能有多份：src 是编辑来源，install 是启动通常使用的产物，旧进程还保存着启动时读入的值。示意：你改了工作区 A 的 YAML，prefix 却在 B，运行参数不变是合理结果。按“prefix→安装文件→启动选择→有效参数”查，才能确定改变真正到达了节点。
+
+本队 [ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py][run-yaml] 会用 `RewrittenYaml` 改写 namespace、use_sim_time 与 autostart。这解释了为什么原文件与最终参数可能有差异；读原文件之后还要读 launch 的覆盖来源与本次 param dump。
 
 ### 检查实际运行的包
 
@@ -759,6 +821,8 @@ ros2 daemon start
 
 ## 16. 驱动退出、`-11`、`-9`、库冲突
 
+退出码告诉你“怎么结束”，根因要靠此前发生的事件定位。-11 是段错误，但可能涉及错误数据、对象生命周期或库兼容；-9 可能来自 OOM，也可能来自 launch 停止超时。先记下首条异常和按停止键的时刻，再看内核日志，就不会把退出清理失败误记成导航运行崩溃。
+
 ### 查首次错误与退出时序
 
 ```bash
@@ -799,6 +863,8 @@ ldd /home/ubuntu/navigation_2025/ros_ws/install/point_lio/lib/point_lio/pointlio
 
 ## 17. SSH 连不上时怎么分段判断
 
+SSH 连线分为找地址、走路由、建立 TCP、认证四步。示意：`TcpTestSucceeded=True` 后仍 Permission denied，网络已走到认证边界，应查用户和密钥；一直 timeout 时，还没有证据支持修改用户口令。抓包是用来确认请求走到了哪一端，必须用本次客户端/服务器地址。
+
 在 Linux 检查当前地址和监听：
 
 ```bash
@@ -834,6 +900,8 @@ sudo tcpdump -ni any 'tcp port 22 and host 192.168.1.64'
 然后 Windows 再连接一次。无任何匹配包：请求可能没到 Linux，先查客户端地址/路由和中间网络；重复 SYN 没有回复：查 Linux 网络/过滤；能看到 SYN、SYN-ACK 但没有完成握手：查回程或客户端过滤。空抓包前提是选对本次客户端 IP。
 
 ## 18. 每次重启后的复测流程
+
+重启会清空部分状态，但不一定消除触发条件。复测要重复原来的模式、地图和输入，让“这次又通过”能与“原来在哪失败”比较。比如清掉重复启动后，除了节点数正常，还要看原先跳动的里程计、TF 与任务是否恢复；若改了停止路径，则零、取消、断流也应回归。
 
 以下两终端启动代码仅对应已登记的历史双工作空间案例。当前 Navigation-2027 先按[环境页](../onboarding/environment.md)补齐实际串口包/地图/模型，并按[实车流程](README.md)确认停止链；不要直接把历史路径与参数作为本队默认启动。
 
@@ -893,6 +961,10 @@ ros2 launch pb2025_nav_bringup rm_navigation_reality_launch.py world:=lab_202608
 
 ## 19. 一键收集报告
 
+报告是一张按顺序拍出的快照，不是同时录下所有量的电影。前半段 Action 在执行，后半段速度已归零，可能只是任务在采样期间结束；不能凭两段输出说“执行中却没速度”。需要因果时序时，还要结合本次连续日志或短 bag。
+
+源码蓝色入口是 [docs/navigation/debug-real/assets/collect_navigation_debug.sh][run-collector]。读 `run_probe` 时看它如何记录命令与退出码，再看后面的循环如何依次查询；它返回 0 是为了继续收集，真实探测退出码写在报告中。
+
 下载[只读采集脚本](assets/collect_navigation_debug.sh)。从知识库根目录，先在当前终端加载已登记的 ROS/工作空间，再执行：
 
 ```bash
@@ -910,3 +982,22 @@ bash docs/navigation/debug-real/assets/collect_navigation_debug.sh --namespace /
 采样顺序执行；空闲时零速度正常。源参数文件与运行参数不是同一层，latest 日志也可能来自另一条 launch。接口不存在、查询超时、类型不同都会保留证据；脚本结束只表示采集完成，不代表机器人健康。
 
 本次知识库更新验证 Bash 语法与离线模拟场景，未连接真实机器人。报告送审时同时写明“工程 commit、模式、地图、命名空间、静止/Goal 执行中、具体异常时间”。脚本详解见[新人版第 20 节](command-guide.md)。
+
+[run-loam]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp#L23-L51
+[run-scan-sync]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L38-L59
+[run-velocity-launch]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L160-L306
+[run-components]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L253-L286
+[run-scan-handler]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L62-L85
+[run-loam-tf]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp#L63-L97
+[run-scan-tf]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L88-L100
+[run-gicp]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/small_gicp_relocalization/src/small_gicp_relocalization.cpp#L95-L167
+[run-serial-callback]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp#L658-L663
+[run-costmap]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/config/reality/nav2_params.yaml#L368-L450
+[run-controller]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_omni_pid_pursuit_controller/src/omni_pid_pursuit_controller.cpp#L219-L277
+[run-bt]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml#L5-L38
+[run-gimbal-callback]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/standard_robot_pp_ros2-main/src/standard_robot_pp_ros2.cpp#L665-L680
+[run-uic]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_robot_description/resource/xmacro/uic2025_sentry_robot.sdf.xmacro#L15-L22
+[run-pb]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_robot_description/resource/xmacro/pb2025_sentry_robot.sdf.xmacro#L14-L27
+[run-rviz]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/rviz_launch.py#L27-L62
+[run-yaml]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L52-L63
+[run-collector]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/docs/navigation/debug-real/assets/collect_navigation_debug.sh#L106-L225
