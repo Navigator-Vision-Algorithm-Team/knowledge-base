@@ -1,0 +1,77 @@
+{
+  "description": "Synthetic row-down binary grids: grid[y][x], 0 free, 1 blocked; four-neighbor unit cost.",
+  "cases": [
+    {
+      "name": "detour",
+      "grid": [[0, 1, 0], [0, 1, 0], [0, 0, 0]],
+      "start": [0, 0], "goal": [2, 0],
+      "expected_status": "ok", "expected_cost": 6
+    },
+    {
+      "name": "no_path",
+      "grid": [[0, 1, 0], [0, 1, 0]],
+      "start": [0, 0], "goal": [2, 0],
+      "expected_status": "no_path", "expected_cost": null
+    },
+    {
+      "name": "out_of_bounds",
+      "grid": [[0, 0], [0, 0]],
+      "start": [-1, 0], "goal": [1, 1],
+      "expected_status": "invalid", "expected_cost": null
+    },
+    {
+      "name": "goal_out_of_bounds",
+      "grid": [[0, 0], [0, 0]],
+      "start": [0, 0], "goal": [2, 1],
+      "expected_status": "invalid", "expected_cost": null
+    },
+    {
+      "name": "occupied",
+      "grid": [[1, 0], [0, 0]],
+      "start": [0, 0], "goal": [1, 1],
+      "expected_status": "invalid", "expected_cost": null
+    },
+    {
+      "name": "goal_occupied",
+      "grid": [[0, 0], [0, 1]],
+      "start": [0, 0], "goal": [1, 1],
+      "expected_status": "invalid", "expected_cost": null
+    },
+    {
+      "name": "same",
+      "grid": [[0]],
+      "start": [0, 0], "goal": [0, 0],
+      "expected_status": "ok", "expected_cost": 0
+    },
+    {
+      "name": "narrow",
+      "grid": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 0], [0, 0, 0, 0, 0], [0, 1, 1, 1, 1], [0, 0, 0, 0, 0]],
+      "start": [0, 0], "goal": [4, 4],
+      "expected_status": "ok", "expected_cost": 16
+    },
+    {
+      "name": "empty",
+      "grid": [],
+      "start": [0, 0], "goal": [0, 0],
+      "expected_status": "invalid", "expected_cost": null
+    },
+    {
+      "name": "ragged",
+      "grid": [[0, 0], [0]],
+      "start": [0, 0], "goal": [0, 1],
+      "expected_status": "invalid", "expected_cost": null
+    },
+    {
+      "name": "unknown",
+      "grid": [[0, -1, 0]],
+      "start": [0, 0], "goal": [2, 0],
+      "expected_status": "invalid", "expected_cost": null
+    },
+    {
+      "name": "same_occupied",
+      "grid": [[1]],
+      "start": [0, 0], "goal": [0, 0],
+      "expected_status": "invalid", "expected_cost": null
+    }
+  ]
+}

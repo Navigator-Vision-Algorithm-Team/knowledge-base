@@ -1,5 +1,7 @@
 # ROS 2 系统能力：从会运行到能解释故障
 
+<small>整理与维护：24cst朱鑫鹏</small>
+
 本页给对照 [ROS2/TF 基础训练](../ros2-tf/README.md)的新人成套自学材料，补足通信、并发、时间、状态管理和性能诊断。S1–S2 可先读相应单元的官方入门章节；单元完整实验和文末挑战用于巩固或专项选学，不要求把全部网站从头读完。
 
 学习基线为 Ubuntu / ROS 2 Humble；本队代码固定在 `Navigation-2027@183a4109b0de2030bb8970a54654937c8b039ba9`。以下命令在独立 Linux 训练环境执行，练习节点使用 `/nav_training` 或 `/training`，不加载串口、电机或实车导航入口。
@@ -28,6 +30,8 @@
 
 **代码抓手：**打开同章 [client.cpp][action-client] 与 [server.cpp][action-server]，找 goal response、feedback、result、`handle_cancel`、`is_canceling()`、`canceled(result)`。先跳过 Windows 可见性机制的原理，但保留示例编译所需文件。
 
+**先理解过程**：Action 适合“要等一会儿、要看进度、可能中途撤回”的任务。Fibonacci 的反馈 `[0,1,1]` 只是已算出的部分序列；Goal 被接受，也只是允许开始。看教学 [accept_cancel 与 execute][system-training-action]：允许取消的回调返回后，执行过程还要检查请求、设置 canceled，再返回结果。因此报告至少记录“发起→接受→最终结果”三个时刻；不能用关闭窗口代表撤回目标。
+
 **输入与输出：**用 Fibonacci order=20 发长任务；客户端保存 goal handle，在第二次反馈后只发一次异步取消；输出包含目标 UUID、取消请求/响应、最后反馈及最终 result 的日志。
 
 **验收：**成功完成与主动取消各跑一次；取消请求被发送、服务端接受取消、最终 `ResultCode::CANCELED` 分别有证据。使用 steady clock 统计取消耗时，回调中不阻塞等待 future；关闭客户端不算取消。
@@ -42,6 +46,8 @@
 
 **读懂的边界：**发布端 offered 必须满足订阅端 requested；Best Effort 发布与 Reliable 订阅不兼容。先跳过 deadline/liveliness 的细节调参，但知道所有影响兼容性的策略均须满足。
 
+**为什么能看到却收不到**：发现端点只是知道“谁提供哪种数据”，订阅是否建立还取决于契约。只看 reliability，Best Effort 发布者不能满足 Reliable 订阅者；Reliable 发布者可以满足 Best Effort 订阅者。两边名字和类型相同，仍可能处在不兼容格。对照本队 [sensor_scan_generation 的 Best Effort 订阅][system-scan-qos]与 [loam_interface 的发布][team-loam]，先查端点的实际策略，再解释兼容性。兼容之后收到 98/100 条，还需统一统计窗口和查序号，不能直接认定网络丢了两条。
+
 **输入与输出：**用同一消息类型、同一 Topic 的两个小节点，做 reliability 四种组合；启动后确认图中两端存在，再计数 10 秒。每轮输出端点 QoS、发送/接收总数及序号缺口。
 
 **验收：**四格表有预测和实测，不兼容格接收为零时仍能找到端点；兼容格收到消息。Reliable 不是任意负载下零丢失的保证，接收少于发送要继续查启动区间、历史深度和处理能力。
@@ -55,6 +61,8 @@
 **主材料：**[Humble Debugging tf2 problems][tf-debug]，依次做「Finding the tf2 request」「Checking the frames」「Checking the timestamp」；补读 [Clock and Time][clock] 的 ROS Time、System Time、Steady Time 和时间跳变说明。
 
 **具体读法：**比较 `TimePointZero` 与指定查询时间；用 `tf2_echo`、`tf2_monitor`、`view_frames` 区分帧不存在与时间外推。先跳过分布式时钟同步算法；ROS 时间设计页帮助理解概念，C++ 签名仍以 Humble 为准。
+
+**用时间轴分开两种失败**：教学例中帧都存在，动态 TF 最新 stamp=10.0 s，查询=10.2 s，则当前缓存没有那一时刻的数据，可能报未来外推；若 source frame 根本不存在，换查询时间也补不出缺失边。仿真时间停在 10 s 时，wall timer 仍可能继续被调度，但节点 ROS clock 的 now 不再前进。到 [fake 的 wall timer 与 publishTransform][team-fake]核对“什么时候执行”和“发布什么 stamp”，这两问分开后，才不会把加 tolerance 当万能修复。
 
 **输入与输出：**在教学 TF 链中各注入一次错误 frame 和错误时间源；输出异常原文、请求时刻、最新 TF stamp、`use_sim_time`、`/clock` 与 TF 图。
 
@@ -76,6 +84,8 @@
 
 **本队映射：**按 [ROS2/TF 回放分类](../ros2-tf/README.md)区分系统观察与重跑算法；重跑 [loam_interface][team-loam] 等链路时避免回放旧输出和重复 TF。**bag 不响应新的速度命令，不能证明闭环跟踪或避障。**
 
+**为何要白名单**：重跑算法相当于给它重新喂录下来的原材料。若既回放旧的 `lidar_odometry`，又让 [loam_interface][team-loam]计算新 `lidar_odometry`，下游就可能收到两个来源；TF 也可能出现重复发布者。列白名单时从算法订阅倒推需要什么，不是把全部 Topic 都播出来。可用教学 [replay_motion.compare][system-replay]先理解“固定输入重新计算输出”的区别：它重新积分 CSV 命令，不是在复现真实机器人受新命令后的运动。
+
 ## 5. Executor 与 Callback Group：为什么多线程仍卡住
 
 **层级/前置/额外学时：**系统方向核心，全员了解调度与阻塞概念；会读 C++ lambda、future，完成单元 1；完整实验 3–5 小时。
@@ -83,6 +93,8 @@
 **主材料：**先读 [Humble Executors][executors] 的 Overview/Types/Callback groups，再做 [Using Callback Groups][callback] 中 Basics、Avoiding deadlocks、Examples 的 C++ 分支。
 
 **只抓核心：**默认互斥组、分组、future 完成回调与 executor 线程之间的关系；示例 C++ 用等待 future 模拟同步调用。先跳过自定义 executor、WaitSet 和实时调度改造。
+
+**卡住的最小因果**：回调 A 持有互斥组的执行资格并等待 future；让 future 完成的回调 B 也在同一组，要等 A 退出才能执行；于是 A 等 B，B 等 A。增加 executor 线程数仍不能绕过这个互斥资格。教学 [FibonacciServer 的 callback group 与 executor][system-training-server]使用可并行执行的设置，让长执行过程不占住全部取消处理能力；走读时仍要检查共享状态保护。不要由“多线程”三个字直接推断不会阻塞或没有竞争。
 
 **输入与输出：**运行教材的服务/定时器案例，比较「同一互斥组」「两个互斥组」和「异步返回」；每轮保留 15 秒日志，标注请求、服务端响应、客户端完成回调的时刻。
 
@@ -97,6 +109,8 @@
 **主材料：**[Humble lifecycle demo][lifecycle] 的 Basic Concept、Run the demo、CLI；[Composition][composition] 的 Discover available components、运行时 pub/sub、Composition using launch actions、namespace/remap。
 
 **先跳过：**直接调用底层生命周期服务、dlopen 手工加载和自定义容器。旧示例的服务类型缩写不应照抄；优先用 `ros2 lifecycle get/list/set` 查询教学节点。
+
+**四个名词别混用**：节点是 ROS 图中的参与者，组件是可加载的节点实现，进程是操作系统执行它们的容器，生命周期状态是节点当前允许做什么。一个进程可以装多个组件，组件节点也可以尚未 active。沿 [navigation_launch 的 lifecycle_nodes 与加载分支][team-launch]找到同一个服务器在哪两种启动方式出现，再把节点名、进程 PID、状态分别记列。单凭进程活着，不能证明 Planner 已能接受目标。
 
 **输入与输出：**仅用 lifecycle talker/listener，在 configure→activate→deactivate 前后各观察 5 秒；另加载官方 Talker/Listener 组件，输出节点列表、容器列表与进程 PID 的对应表。
 
@@ -114,6 +128,10 @@
 
 **必读补充：**Nav2 的 [RecoveryNode::tick/halt][recovery]、[PipelineSequence::tick/halt][pipeline]，这两个控制节点不能用普通 Sequence 语义代替。`RUNNING` 与 `halt()` 要能逐步解释。
 
+`RateController`也要看实现，不能只做“3 Hz就是每秒tick三次”的字面推断。Nav2依赖路径 `nav2_behavior_tree/plugins/decorator/rate_controller.cpp` 的 [Humble tick 条件](https://github.com/ros-navigation/navigation2/blob/humble/nav2_behavior_tree/plugins/decorator/rate_controller.cpp#L47-L75)允许首次立即执行、RUNNING子树随父树继续执行；周期主要限制成功后的再次发起。用不同子树状态走读同一个装饰节点，比只数根tick更能解释行为。
+
+**从一步失败走读**：在教学状态序列中，ComputePathToPose 返回 FAILURE，内层 RecoveryNode 转到清全局图；清图成功后再尝试规划，清图本身失败则这层恢复也失败。到 [单点 XML][team-tree]辨认每层的重试次数，不能把内层一次与外层十次混为一个计数。FollowPath 的 RUNNING 表示仍在执行；取消时还要停止相应运行节点的工作。`halt()` 的实现要与 Action 取消对照，树节点消失在图上并不能替代终态证据。
+
 **输入与输出：**对[单点树][team-tree]与[多点树][team-tree-multi]各画一张控制流图；整理 XML ID→插件/服务器→输入输出表；用给定 SUCCESS/FAILURE/RUNNING 序列逐 tick 记录路径。
 
 **验收：**至少解释一次正常跟踪、一次规划失败清图重试、一次恢复失败；把 RateController 的 3 Hz 与根 tick 分开。`BackUp` 对应本队自由方向恢复，离线走读不能证明恢复时车体运动正确。
@@ -128,6 +146,8 @@
 
 **验收：**崩溃报告含可执行文件、构建选项、输入、异常与第一处自己的源码位置；Memcheck 报告区分 invalid write、definitely lost 与 still reachable，不能把内存占用高直接叫泄漏。
 
+**先解释数据，再解释崩溃**：三元素 vector 的合法索引是 0、1、2，访问 `.at(3)` 会抛异常；若未捕获，调用栈可告诉你从哪里走到这次访问。调用栈最上层可能在标准库，报告要继续找到第一处自己的代码。读本队 [cmdVelCallback 的指针与缓存][team-fake]时，先列空指针检查、初始化和对象生命周期，再决定怎样在隔离节点观察；不能仅凭一个指针字段断言它会崩溃。
+
 **本队映射：**参照 [fake 节点成员与输入](../system/nav2-and-control-evidence.md)列出初始化检查点，但不在生产代码制造故障。系统工具手册的 current 不是 ROS API 版本；以本机 `gdb --version`、`valgrind --version` 核对选项。
 
 ## 9. perf：从 CPU 高到具体函数
@@ -139,6 +159,8 @@
 **输入与输出：**固定同一教学节点、输入、编译优化级别和运行时长，用 `perf stat` 记录计数，用 `perf record`/`perf report` 找 CPU 样本最多的函数；保存原始数据、文本报告和版本。
 
 **验收：**能从样本回到源码，并报告前三个热点与各自占比；不同工具下的运行时间分开统计。CPU 采样热点不等于端到端时延，更不能从函数宽度直接推断回调的 p99。
+
+**用两个量拆开“慢”**：一个回调自己计算 2 ms，却排队等 100 ms，CPU 热点可能不突出，但从输入到处理完成已超过 100 ms；另一个回调持续计算，则更容易进入 perf 的 CPU 样本。顺着 [loam_interface 的点云回调][team-loam]定义“进入回调→发布”的计算区间，再定义包含等待的端到端区间。只有采样证据时先说“CPU 时间集中在哪”，延迟原因还要用 trace 或带时间的事件记录验证。
 
 **本队映射：**候选对象是 [fake_vel_transform][team-fake] 的合成输入实验，或 [loam_interface][team-loam] 的固定回放；尚未测量时不得写“某函数是本队瓶颈”。perf、内核和权限需匹配，虚拟机/WSL 缺少某事件时记录限制，换可用事件。
 
@@ -154,6 +176,8 @@
 
 **验收：**按同一线程/回调正确配对，报告丢失或未配对事件；给出 p50/p95/p99 与样本数，展示一段慢回调阻塞其他工作或被并行调度的时间轴。未采集到初始化映射时不能随意给地址命名。
 
+**把统计口径算一遍**：若 100 个教学耗时排序后为 1～100 ms，采用 nearest-rank 定义，p95 取第 `ceil(0.95×100)=95` 个，即 95 ms，p99 是 99 ms。软件默认插值可能给不同数值，所以报告要写算法、样本数和单位；100 个样本只是练习起点，不能支撑很稳定的罕见尾部结论。对照 [fake 同步与订阅回调][team-fake]时，先确认 start/end 属于同一次回调，再谈分位数，避免把两个线程的事件错误配成一段。
+
 **本队映射：**将相同方法用于 [navigation_launch.py][team-launch] 的组件容器时，先区分进程与组件，再关联 [fake_vel_transform][team-fake] 的回调；只有合成输入验证时，报告名称必须写明“训练节点实验”。
 
 ## 不依赖运动真车的进阶挑战
@@ -161,6 +185,8 @@
 所有挑战均在无底盘连接的独立训练机与组内分配的独立 ROS domain 完成；文中时间/样本要求是练习验收条件，不是整车安全指标。输入、脚本、环境和结果一起交付，失败日志也属于结果。
 
 ### A. Action 取消监测器（额外 3–4 小时）
+
+它首先回答“同一个目标走到了哪个状态”。例如目标 A 取消后立刻发送目标 B，不带 UUID 的“result received”可能被误归到 B。沿 [教学客户端的 goal handle 与 result future][system-training-client]找对象对应关系，再加事件记录；时间统计也要按同一个 goal 配对。
 
 基于单元 1 保存目标 UUID，为接受、反馈、发起取消、取消响应、最终结果输出一条条 CSV 事件；取消响应核对对应 goal，不能只有一个“cancel sent”字符串。
 
@@ -170,6 +196,8 @@
 
 ### B. QoS 最小复现包（额外 2–3 小时）
 
+迟加入实验关注历史，不是持续数据速率：发布者在 t=0 发一次，订阅者在 t=2 s 才加入。若 t=3 s 又发新消息，收到新消息并不能证明收到旧的那条。对照 [教学 IdealModel 的静态 TF QoS][system-training-static]看 transient local 设置，再到各订阅端核对请求；不只看 Topic 名判断历史是否可用。
+
 把单元 2 的四格实验做成参数化 launch，启动后先确认端点发现，再发送 100 个带序号消息；每次运行保存 YAML、端点信息、计数、RMW 与日志。
 
 再做迟加入订阅者实验：Transient Local 发布者保活，先发布一条数据后停止继续发布，稍后启动两种 durability 的订阅者。提交“历史消息/后续消息”分开的结果表，不能靠持续发消息掩盖历史数据是否收到。
@@ -177,6 +205,8 @@
 验收由另一名队员只改一行可靠性配置重现“有 Topic 无数据”，再恢复；同时说明这不是数据格式错误，也不是网络性能测试。
 
 ### C. 时钟/TF 诊断档案（额外 3–4 小时）
+
+这份档案的价值是别人能分清“没有边”和“有边但没有所查时刻”。用 [sensor_scan_generation::getTransform][system-scan-transform]提醒自己记录原始异常：该函数失败后返回单位变换，后续仍有输出并不表示查询成功。把日志和数值一起解释，才不会被一条看似正常的消息误导。
 
 同一教学 bag 分别做全节点正确仿真时间、一个查询节点误用系统时间、停止动态 TF 后继续查询三组实验；每组使用全新节点，保留完全相同的 Topic 白名单。
 
@@ -186,6 +216,8 @@
 
 ### D. BT 离线走读册（额外 3–5 小时）
 
+走读时把“条件分支”和“执行时间”分开。给规划失败、清图成功、规划成功三个预置状态，只能验证控制流是否按 [单点树][team-tree]及 RecoveryNode 语义转移；不能从这个表推出真实清图耗时、障碍已消失或底盘恢复方向。未知动作用明确桩状态代替，结论保留到这一层。
+
 输入为本队两份原始 XML，输出 `bt-ports.csv`、控制流图、四个逐 tick 场景：正常、规划失败后清图成功、控制失败后恢复、恢复本身失败。表中记录节点状态、重试计数、下一节点和 halt 对象。
 
 说明根 tick 与 3 Hz 限频的时间假设，用 Nav2 humble 的 RecoveryNode/PipelineSequence 源码交叉校验。可写无 ROS 的桩节点程序验证子树；未经注册的 Nav2 节点不能直接交给通用 BT.CPP parser 当作可运行树。
@@ -193,6 +225,8 @@
 验收需指出单点/多点树的差别与 BackUp 的本队实现，不能将纸面路径称为 Nav2 运行测试，更不能把恢复节点名理解成固定朝后运动。
 
 ### E. 一页性能报告（额外 4–6 小时）
+
+先定义可重复负载：比如每条教学序号执行固定次数计算，参数只改线程/分组，不同时降低发布频率。沿 [SequencePublisher.publish_next][system-sequence]确认输入节奏，再给自己的订阅回调定义耗时起止点。吞吐量、CPU、等待和回调计算时间分别列出，才能解释为什么某次“CPU 更低”却并没有更快处理消息。
 
 选择单元 5 的固定负载：输入频率、一次回调的工作量与持续时长不变；单线程与合理分组的多线程各跑 3 次，每次 60 秒。开启/关闭采集分组记录，报告 CPU、处理消息数、回调耗时分位数和采集开销。
 
@@ -224,9 +258,17 @@
 [valgrind]: https://valgrind.org/docs/manual/quick-start.html
 [perf]: https://www.brendangregg.com/perf.html
 [tracing]: https://raw.githubusercontent.com/ros2/ros2_tracing/humble/README.md
-[team-joy]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp
-[team-loam]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp
-[team-fake]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp
-[team-launch]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py
-[team-tree]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml
-[team-tree-multi]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml
+[team-joy]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb_teleop_twist_joy/src/pb_teleop_twist_joy.cpp#L147-L265
+[team-loam]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/loam_interface/src/loam_interface.cpp#L23-L98
+[team-fake]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L54-L154
+[team-launch]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/launch/navigation_launch.py#L42-L340
+[team-tree]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml#L5-L38
+[team-tree-multi]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/pb2025_nav_bringup/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml#L5-L46
+[system-training-action]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/nav_training/fibonacci_server.py#L29-L61
+[system-training-server]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/nav_training/fibonacci_server.py#L16-L78
+[system-training-client]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/nav_training/fibonacci_client.py#L38-L65
+[system-training-static]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/nav_training/ideal_model.py#L28-L42
+[system-sequence]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/ros2_ws/src/nav_training/nav_training/sequence.py#L10-L25
+[system-replay]: https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/tools/replay_motion.py#L14-L45
+[system-scan-qos]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L41-L59
+[system-scan-transform]: https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/sensor_scan_generation/src/sensor_scan_generation.cpp#L88-L100

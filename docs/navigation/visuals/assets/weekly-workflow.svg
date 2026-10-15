@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300" role="img" aria-labelledby="title desc">
+  <title id="title">本周只做一轮：读、做、交</title>
+  <desc id="desc">本周先带着一个问题阅读，再动手观察一次变化，最后留下命令和结果，交给同伴复现。</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#246bd6"/></marker></defs>
+  <rect width="800" height="300" rx="20" fill="#f5f8fc"/>
+  <g font-family="'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',sans-serif" text-anchor="middle">
+    <text x="400" y="46" font-size="30" font-weight="700" fill="#233348">本周只做一轮：读 → 做 → 交</text>
+    <rect x="24" y="76" width="226" height="155" rx="16" fill="#e5eefb"/>
+    <rect x="287" y="76" width="226" height="155" rx="16" fill="#e2f3f1"/>
+    <rect x="550" y="76" width="226" height="155" rx="16" fill="#fff2e1"/>
+    <path d="M260 152 H277 M523 152 H540" fill="none" stroke="#246bd6" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="137" y="135" font-size="43" font-weight="700" fill="#246bd6">读</text>
+    <text x="137" y="190" font-size="29" fill="#233348">带一个问题</text>
+    <text x="400" y="135" font-size="43" font-weight="700" fill="#258b86">做</text>
+    <text x="400" y="190" font-size="29" fill="#233348">看一次变化</text>
+    <text x="663" y="135" font-size="43" font-weight="700" fill="#ad5c0c">交</text>
+    <text x="663" y="190" font-size="29" fill="#233348">留一份结果</text>
+    <text x="400" y="274" font-size="25" fill="#63758b">写下命令和输出，让同伴也能重做</text>
+  </g>
+</svg>

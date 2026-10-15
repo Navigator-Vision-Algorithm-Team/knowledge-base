@@ -1,8 +1,12 @@
 # Debug 案例 2：发过零命令，旧速度为什么再次输出
 
+<small>整理与维护：24cst朱鑫鹏</small>
+
 本题适合 S2 算式与 S5 状态分析，建议 60–90 分钟，是[源码练习 R2](../assignments/reading-labs.md)的可执行版本。**故障和修复都在 Python 教学状态机中实际运行；不是队内事故复盘，也没有验证生产 ROS 节点或车体停车。** 本题只修复“零命令使旧缓存失效”这个契约，自旋与命令断流另行分析。
 
 ## 学生任务：零输出和缓存状态要分开观察
+
+缓存是程序留给未来使用的一份“上一条命令”。收到零命令时立刻发布一次零，只改变了这次输出；如果旧缓存仍在，下一次同步回调就可能把旧速度重新拿出来。可以把两件事写成两个问题：“现在发布了什么？”与“以后还能读取什么？”本题训练的就是沿事件顺序回答这两个问题。
 
 已知初始 yaw=0、spin=0。先非零、再零、再同步回调，零之后禁止再次输出取消前的缓存；收到新的非零命令后应能正常恢复。
 
@@ -18,7 +22,9 @@ python training/cases/run_case.py stale-command --mode broken --input training/c
 
 ## 导师解答：完整输入与初始假设
 
-`training/cases/inputs/stale-command.json` 的完整内容：
+事件序列特意保留了停止后的两次同步与后续正常命令。只测 0.3 秒会看到零，误以为修好了；测到 0.45 秒才能发现重复读缓存；测到 0.48 秒才能确认修复后仍能侧移。这里的时间用于排序，不需要等待真实的 0.48 秒。
+
+[training/cases/inputs/stale-command.json](https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/cases/inputs/stale-command.json) 的完整内容：
 
 ```json
 {
@@ -43,6 +49,8 @@ python training/cases/run_case.py stale-command --mode broken --input training/c
 初始化使用已知 yaw、空缓存、`last_plan=None`，明确表示尚未收到 local_plan。`sync` 表示已经选择执行一次同步回调，**不模拟消息过滤器配对，也不自动调用 localPlanCallback**；需要更新时间时单独输入 `local_plan`。源节点启动时的未初始化角度、真实时钟、线程竞争、TF、上游 Nav2 和输出消费者都不在模型内。这个事件顺序用于检验一条可能的缓存路径，不声称实际 ROS 一定采用相同顺序。
 
 ## 实际生成的证据
+
+读状态表时从左向右看“输入→事件后缓存→本次输出”，再向下看缓存如何被下一事件使用。0.1 秒非零命令没有立即输出是这个模型的预期路径；它先缓存，0.2 秒 sync 才输出。0.3 秒 broken 虽然输出零，缓存却仍为 `0.2`，这就是 0.4 与 0.45 秒重发的直接来源。
 
 2026-09-14 在 Windows/Python 3.12.10 运行脚本，保存于 `training/cases/evidence/stale-command/{broken,fixed}/`。每行实际执行日志包含 `input`、`branch`、`cache_before`、`cache_after`、`output` 和 `stale_reissue`。**`output=null` 表示此回调没有发布，区别于发布 `[0,0,0]`。**
 
@@ -74,6 +82,8 @@ fixed 同一事件原文：
 
 ## 假设与根因定位
 
+根因需要同时解释“零确实到了”与“旧速度又出来了”。自旋只能解释角速度偏置，无法解释本题的 `linear.x=0.2`；新命令可以解释正常恢复，却发生在 0.47 秒，解释不了更早的重发。把假设放在同一条时间线上，就能逐个排除。
+
 | 假设 | 实际证据 | 判断 |
 |---|---|---|
 | 零命令未到达 | 0.3 秒日志进入 `zero_immediate` 并输出全零 | 本模型中排除 |
@@ -87,13 +97,15 @@ fixed 同一事件原文：
 | 教学规则 | 源文件位置 |
 |---|---|
 | `EPSILON=1e-5`，local_plan 活动超时 0.5 秒 | [fake_vel_transform.cpp L23–24](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L23-L24) |
-| 零/活动超时立即发布，否则缓存；零分支没有清缓存 | [cmdVelCallback L93–110](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L93-L110) |
-| local_plan 更新活动时间；同步回调读缓存再发布 | [localPlanCallback / syncCallback L112–137](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L112-L137) |
+| 零/活动超时立即发布，否则缓存；零分支没有清缓存 | [cmdVelCallback L93–107](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L93-L107) |
+| local_plan 更新活动时间；同步回调读缓存再发布 | [localPlanCallback / syncCallback L109–133](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L109-L133) |
 | 自旋回调只改成员；旋转公式叠加 spin | [L80–83](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L80-L83)、[transformVelocity L147–156](https://github.com/Navigator-Vision-Algorithm-Team/Navigation-2027/blob/183a4109b0de2030bb8970a54654937c8b039ba9/ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp#L147-L156) |
 
-相关源码风险见[控制接口证据 R3/R4/R6/R7](../system/nav2-and-control-evidence.md)。`training/cases/run_case.py::CacheModel.step` 是这些规则的有意缩小版本，`run_stale` 执行输入并记录真实模型状态。源导航仓库保持只读。
+上表均指向同一个完整相对路径：**ros_ws/src/pb2025_sentry_nav/fake_vel_transform/src/fake_vel_transform.cpp**。相关源码风险见[控制接口证据 R3/R4/R6/R7](../system/nav2-and-control-evidence.md)。[training/cases/run_case.py 的 CacheModel.step](https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/cases/run_case.py#L90-L129) 是这些规则的有意缩小版本，[training/cases/run_case.py 的 run_stale](https://github.com/Navigator-Vision-Algorithm-Team/knowledge-base/blob/main/training/cases/run_case.py#L132-L160) 执行输入并记录真实模型状态。源导航仓库保持只读。
 
 ## 最小修复与边界
+
+要消除下一次重发，修改点必须落在“未来读取的状态”上。把当前输出强行改成零，或者延迟下一次 sync，都不能保证旧缓存失效。将缓存设为空之后，sync 的空缓存分支不发布；新非零命令再次写缓存，正常流程就能恢复。对照上表，fixed 在 0.3 秒后缓存为空，0.47 秒又出现新值，正好覆盖这两个要求。
 
 本题契约是“收到按 EPSILON 判定的零命令后，取消之前缓存，直至新非零命令重新赋值”。教学脚本实际修复位于立即发布分支：
 
@@ -123,6 +135,8 @@ if zero or inactive:
 - 没有后续发布不等于消费者停止，串口缓存、固件 watchdog、取消与控制权协议需要各自的实测和验收。
 
 ## 同输入回归、正常功能与回滚
+
+回归同时检查负面与正面行为：停止之后不重发旧值，新命令之后仍能输出。若把所有输出都删掉，旧值当然不会重发，但机器人也永远不能正常运动；本题契约因此要求 `resumed_nonzero_outputs>0`。读报告时将这项与 `stale_reissues=0` 一起检查。
 
 ```bash
 python training/cases/run_case.py stale-command --mode fixed --input training/cases/inputs/stale-command.json --out-dir training/cases/runs/stale-fixed-1 --check-contract

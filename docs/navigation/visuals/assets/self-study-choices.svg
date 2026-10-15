@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="390" viewBox="0 0 560 390" role="img" aria-labelledby="title desc">
+  <title id="title">按缺口选择一节自学</title>
+  <desc id="desc">代码读不懂选基础，点云对不齐选定位，积分还在涨选控制，同名收不到选系统。只选当前的一项缺口，读一节、做小实验，再回到当前任务。</desc>
+  <rect width="560" height="390" rx="22" fill="#f4f8fc"/>
+  <g font-family="'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', sans-serif">
+    <text x="28" y="48" font-size="32" font-weight="700" fill="#183b56">现在卡在哪一步？</text>
+    <rect x="24" y="74" width="246" height="110" rx="15" fill="#e9f2fc" stroke="#bfd2ec" stroke-width="2"/>
+    <text x="147" y="116" text-anchor="middle" font-size="28" font-weight="700" fill="#234f80">代码读不懂</text>
+    <text x="147" y="158" text-anchor="middle" font-size="28" fill="#325a79">↓ 基础</text>
+    <rect x="290" y="74" width="246" height="110" rx="15" fill="#eaf6f1" stroke="#bddcd0" stroke-width="2"/>
+    <text x="413" y="116" text-anchor="middle" font-size="28" font-weight="700" fill="#1c5947">点云对不齐</text>
+    <text x="413" y="158" text-anchor="middle" font-size="28" fill="#365f53">↓ 定位</text>
+    <rect x="24" y="204" width="246" height="110" rx="15" fill="#fff5e6" stroke="#e9d2ad" stroke-width="2"/>
+    <text x="147" y="246" text-anchor="middle" font-size="28" font-weight="700" fill="#704411">积分还在涨</text>
+    <text x="147" y="288" text-anchor="middle" font-size="28" fill="#805b2c">↓ 控制</text>
+    <rect x="290" y="204" width="246" height="110" rx="15" fill="#f2eefb" stroke="#d8c9ec" stroke-width="2"/>
+    <text x="413" y="246" text-anchor="middle" font-size="28" font-weight="700" fill="#624184">同名收不到</text>
+    <text x="413" y="288" text-anchor="middle" font-size="28" fill="#715789">↓ 系统</text>
+    <text x="280" y="359" text-anchor="middle" font-size="27" font-weight="700" fill="#183b56">读一节 → 做实验 → 回到任务</text>
+  </g>
+</svg>

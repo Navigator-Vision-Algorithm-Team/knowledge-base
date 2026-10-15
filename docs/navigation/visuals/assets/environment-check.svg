@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="320" viewBox="0 0 800 320" role="img" aria-labelledby="title desc">
+  <title id="title">环境核对：系统、命令、通信</title>
+  <desc id="desc">从左到右核对Ubuntu 22.04、ROS Humble命令可用、两个终端持续发送和接收消息。每一项确认后再进入下一项。</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#246bd6"/></marker></defs>
+  <rect width="800" height="320" rx="20" fill="#f5f8fc"/>
+  <g font-family="'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',sans-serif" text-anchor="middle">
+    <text x="400" y="47" font-size="30" font-weight="700" fill="#233348">环境核对：每一项都看见结果</text>
+    <rect x="24" y="79" width="226" height="172" rx="16" fill="#fff" stroke="#246bd6" stroke-width="2"/>
+    <rect x="287" y="79" width="226" height="172" rx="16" fill="#fff" stroke="#258b86" stroke-width="2"/>
+    <rect x="550" y="79" width="226" height="172" rx="16" fill="#fff" stroke="#ed8c24" stroke-width="2"/>
+    <path d="M260 166 H277 M523 166 H540" fill="none" stroke="#246bd6" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="111" y="97" width="52" height="34" rx="5" fill="#e5eefb" stroke="#246bd6" stroke-width="2"/>
+    <path d="M137 131 V140 M122 141 H152" stroke="#246bd6" stroke-width="3" stroke-linecap="round"/>
+    <text x="137" y="179" font-size="32" font-weight="700" fill="#246bd6">① 看系统</text>
+    <text x="137" y="221" font-size="27" fill="#233348">Ubuntu 22.04</text>
+    <rect x="374" y="97" width="52" height="40" rx="5" fill="#e2f3f1" stroke="#258b86" stroke-width="2"/>
+    <path d="M384 107 L392 115 L384 123 M400 123 H415" fill="none" stroke="#258b86" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="400" y="179" font-size="32" font-weight="700" fill="#258b86">② 找命令</text>
+    <text x="400" y="221" font-size="27" fill="#233348">Humble · ros2</text>
+    <rect x="590" y="99" width="53" height="36" rx="5" fill="#fff2e1" stroke="#ed8c24" stroke-width="2"/>
+    <rect x="683" y="99" width="53" height="36" rx="5" fill="#fff2e1" stroke="#ed8c24" stroke-width="2"/>
+    <path d="M648 117 H677" stroke="#246bd6" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="663" y="179" font-size="32" font-weight="700" fill="#ad5c0c">③ 收消息</text>
+    <text x="663" y="221" font-size="27" fill="#233348">发送 → 接收</text>
+    <text x="400" y="292" font-size="25" fill="#63758b">新终端，也要重新加载 ROS 环境</text>
+  </g>
+</svg>

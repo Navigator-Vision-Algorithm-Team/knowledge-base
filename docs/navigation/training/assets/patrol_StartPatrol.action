@@ -1,0 +1,13 @@
+# Teaching template: copy into nav_patrol_interfaces/action/StartPatrol.action.
+# Not compiled or integrated in this repository. All goal points require z == 0.
+geometry_msgs/Point[] waypoints
+---
+float64 total_time
+uint32 reached_points
+bool interrupted
+string reason
+---
+uint32 current_index
+geometry_msgs/Point current_pose
+float64 distance_to_goal
+string state

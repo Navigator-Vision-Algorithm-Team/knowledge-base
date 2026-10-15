@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "description": "Fixed synthetic teaching input; no robot or venue measurements.",
+  "tf": {
+    "translation_m": [0.2, 0.0],
+    "correct_yaw_deg": 0.0,
+    "yaw_error_deg": 5.0,
+    "points_lidar_m": [[1.0, 0.0], [2.0, -0.8], [2.0, -0.6], [2.0, -0.4], [2.0, -0.2], [2.0, 0.0], [2.0, 0.2], [2.0, 0.4], [2.0, 0.6], [2.0, 0.8]]
+  },
+  "map": {
+    "description": "Equivalent occupied geometry to the read-only teaching_map.pgm: first row is north, 1 occupied / 0 free.",
+    "reference_source": "training/datasets/synthetic-v1/map/teaching_map.pgm",
+    "resolution_m": 0.25,
+    "origin_m_rad": [-1.0, -1.0, 0.0],
+    "origin_shift_m": [0.5, 0.0],
+    "marked_image_cell": [14, 8],
+    "rows_north_first": [
+      "11111111111111111111",
+      "10000000000000000001",
+      "10000000000000000001",
+      "10000000000000000001",
+      "10000000000000100001",
+      "10000000000000100001",
+      "10000000000000100001",
+      "10000000000000100001",
+      "10000000000000100001",
+      "10000000000000100001",
+      "10000000000000100001",
+      "10000000000000000001",
+      "10000000000000000001",
+      "10000000000000000001",
+      "10000000000000000001",
+      "11111111111111111111"
+    ]
+  },
+  "velocity": {
+    "dt_s": 0.1,
+    "true_initial_position_m": 0.0,
+    "true_velocity_m_s": 0.2,
+    "position_noise_m": [0.008, -0.006, 0.011, -0.013, 0.004, 0.015, -0.009, 0.003, -0.012, 0.007, -0.004, 0.010, -0.015, 0.005, 0.012, -0.008, 0.002, -0.011, 0.009, -0.003, 0.014, -0.010, 0.006, -0.005, 0.013, -0.014, 0.001, 0.008, -0.007, 0.004, -0.012, 0.011, -0.006, 0.015, -0.009, 0.003, -0.013, 0.010, -0.004, 0.007, -0.002],
+    "kalman": {
+      "initial_velocity_m_s": 0.0,
+      "initial_position_variance_m2": 0.0001,
+      "initial_velocity_variance_m2_s2": 0.25,
+      "measurement_variance_m2": 0.0001,
+      "acceleration_variance_m2_s4": 0.04
+    }
+  }
+}

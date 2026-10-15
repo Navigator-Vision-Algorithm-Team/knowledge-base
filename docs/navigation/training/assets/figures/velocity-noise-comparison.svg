@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="775" viewBox="0 0 960 775" role="img">
+<title>Synthetic position-noise and Kalman velocity comparison</title>
+<desc>Synthetic teaching data. Geometry axes use metres; velocity axes use seconds and metres per second.</desc>
+<rect width="100%" height="100%" fill="white"/>
+<g font-family="Arial, sans-serif" font-size="15" fill="#253346">
+<text x="42" y="38" font-size="23" text-anchor="start" font-weight="bold">Position noise: differentiate, then estimate velocity</text>
+<text x="42" y="68" font-size="15" text-anchor="start" font-weight="normal">Synthetic fixed sequence | dt = 0.1 s | n = 41 positions</text>
+<text x="85" y="110" font-size="17" text-anchor="start" font-weight="bold">a  Same position observations feed both methods</text>
+<polyline points="85,137 85,319" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="85" y="343" font-size="13" text-anchor="middle" font-weight="normal">0</text>
+<polyline points="233.75,137 233.75,319" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="233.75" y="343" font-size="13" text-anchor="middle" font-weight="normal">1</text>
+<polyline points="382.5,137 382.5,319" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="382.5" y="343" font-size="13" text-anchor="middle" font-weight="normal">2</text>
+<polyline points="531.25,137 531.25,319" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="531.25" y="343" font-size="13" text-anchor="middle" font-weight="normal">3</text>
+<polyline points="680,137 680,319" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="680" y="343" font-size="13" text-anchor="middle" font-weight="normal">4</text>
+<polyline points="85,298 680,298" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="73" y="302" font-size="13" text-anchor="end" font-weight="normal">0</text>
+<polyline points="85,210.5 680,210.5" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="73" y="214.5" font-size="13" text-anchor="end" font-weight="normal">0.5</text>
+<polyline points="85,137 85,319 680,319" fill="none" stroke="#64748B" stroke-width="1.5"/>
+<text x="382.5" y="369" font-size="15" text-anchor="middle" font-weight="normal">time (s)</text>
+<text x="37" y="228" font-size="15" text-anchor="middle" font-weight="normal" transform="rotate(-90 37 228)">position (m)</text>
+<polyline points="85,298 99.875,294.5 114.75,291 129.625,287.5 144.5,284 159.375,280.5 174.25,277 189.125,273.5 204,270 218.875,266.5 233.75,263 248.625,259.5 263.5,256 278.375,252.5 293.25,249 308.125,245.5 323,242 337.875,238.5 352.75,235 367.625,231.5 382.5,228 397.375,224.5 412.25,221 427.125,217.5 442,214 456.875,210.5 471.75,207 486.625,203.5 501.5,200 516.375,196.5 531.25,193 546.125,189.5 561,186 575.875,182.5 590.75,179 605.625,175.5 620.5,172 635.375,168.5 650.25,165 665.125,161.5 680,158" fill="none" stroke="#253346" stroke-width="2" stroke-dasharray="8 4"/>
+<circle cx="85" cy="296.6" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="99.875" cy="295.55" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="114.75" cy="289.075" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="129.625" cy="289.775" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="144.5" cy="283.3" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="159.375" cy="277.875" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="174.25" cy="278.575" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="189.125" cy="272.975" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="204" cy="272.1" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="218.875" cy="265.275" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="233.75" cy="263.7" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="248.625" cy="257.75" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="263.5" cy="258.625" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="278.375" cy="251.625" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="293.25" cy="246.9" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="308.125" cy="246.9" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="323" cy="241.65" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="337.875" cy="240.425" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="352.75" cy="233.425" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="367.625" cy="232.025" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="382.5" cy="225.55" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="397.375" cy="226.25" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="412.25" cy="219.95" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="427.125" cy="218.375" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="442" cy="211.725" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="456.875" cy="212.95" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="471.75" cy="206.825" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="486.625" cy="202.1" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="501.5" cy="201.225" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="516.375" cy="195.8" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="531.25" cy="195.1" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="546.125" cy="187.575" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="561" cy="187.05" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="575.875" cy="179.875" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="590.75" cy="180.575" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="605.625" cy="174.975" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="620.5" cy="174.275" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="635.375" cy="166.75" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="650.25" cy="165.7" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="665.125" cy="160.275" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<circle cx="680" cy="158.35" r="2.5" fill="white" stroke="#D55E00" stroke-width="2"/>
+<polyline points="715,158 749,158" fill="none" stroke="#253346" stroke-width="2.3" stroke-dasharray="8 4"/>
+<circle cx="732" cy="158" r="3" fill="white" stroke="#253346" stroke-width="2"/>
+<text x="760" y="163" font-size="14" text-anchor="start" font-weight="normal">Synthetic truth</text>
+<polyline points="715,197 749,197" fill="none" stroke="#D55E00" stroke-width="2.3"/>
+<circle cx="732" cy="197" r="3" fill="white" stroke="#D55E00" stroke-width="2"/>
+<text x="760" y="202" font-size="14" text-anchor="start" font-weight="normal">Noisy position</text>
+<text x="85" y="404" font-size="17" text-anchor="start" font-weight="bold">b  Every velocity output, including initialization</text>
+<polyline points="85,430 85,622" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="85" y="646" font-size="13" text-anchor="middle" font-weight="normal">0</text>
+<polyline points="233.75,430 233.75,622" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="233.75" y="646" font-size="13" text-anchor="middle" font-weight="normal">1</text>
+<polyline points="382.5,430 382.5,622" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="382.5" y="646" font-size="13" text-anchor="middle" font-weight="normal">2</text>
+<polyline points="531.25,430 531.25,622" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="531.25" y="646" font-size="13" text-anchor="middle" font-weight="normal">3</text>
+<polyline points="680,430 680,622" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="680" y="646" font-size="13" text-anchor="middle" font-weight="normal">4</text>
+<polyline points="85,579.169 680,579.169" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="73" y="583.169" font-size="13" text-anchor="end" font-weight="normal">0</text>
+<polyline points="85,520.092 680,520.092" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="73" y="524.092" font-size="13" text-anchor="end" font-weight="normal">0.2</text>
+<polyline points="85,461.015 680,461.015" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+<text x="73" y="465.015" font-size="13" text-anchor="end" font-weight="normal">0.4</text>
+<polyline points="85,430 85,622 680,622" fill="none" stroke="#64748B" stroke-width="1.5"/>
+<text x="382.5" y="672" font-size="15" text-anchor="middle" font-weight="normal">time (s)</text>
+<text x="37" y="526" font-size="15" text-anchor="middle" font-weight="normal" transform="rotate(-90 37 526)">velocity (m/s)</text>
+<polyline points="85,520.092 680,520.092" fill="none" stroke="#253346" stroke-width="2" stroke-dasharray="8 4"/>
+<polyline points="99.875,561.446 114.75,469.877 129.625,590.985 144.5,469.877 159.375,487.6 174.25,590.985 189.125,484.646 204,564.4 218.875,463.969 233.75,552.585 248.625,478.738 263.5,593.938 278.375,461.015 293.25,499.415 308.125,579.169 323,490.554 337.875,558.492 352.75,461.015 367.625,555.538 382.5,469.877 397.375,590.985 412.25,472.831 427.125,552.585 442,466.923 456.875,599.846 471.75,475.785 486.625,499.415 501.5,564.4 516.375,487.6 531.25,567.354 546.125,452.154 561,570.308 575.875,458.062 590.75,590.985 605.625,484.646 620.5,567.354 635.375,452.154 650.25,561.446 665.125,487.6 680,546.677" fill="none" stroke="#D55E00" stroke-width="1.6" stroke-dasharray="4 3"/>
+<polyline points="85,579.169 99.875,562.752 114.75,516.558 129.625,534.446 144.5,524.022 159.375,514.275 174.25,522.456 189.125,520.624 204,526.099 218.875,519.912 233.75,521.395 248.625,515.952 263.5,524.452 278.375,519.706 293.25,514.217 308.125,520.779 323,519.861 337.875,525.011 352.75,518.412 367.625,520.317 382.5,513.969 397.375,521.829 412.25,518.864 427.125,522.207 442,515.918 456.875,524.818 471.75,522.402 486.625,517.76 501.5,522.095 516.375,519.369 531.25,524.921 546.125,517.257 561,520.918 575.875,513.693 590.75,521.127 605.625,519.762 620.5,525.981 635.375,518.518 650.25,520.808 665.125,517.181 680,519.555" fill="none" stroke="#0072B2" stroke-width="2.4"/>
+<circle cx="85" cy="579.169" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<circle cx="144.5" cy="524.022" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<circle cx="204" cy="526.099" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<circle cx="263.5" cy="524.452" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<circle cx="323" cy="519.861" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<circle cx="382.5" cy="513.969" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<circle cx="442" cy="515.918" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<circle cx="501.5" cy="522.095" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<circle cx="561" cy="520.918" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<circle cx="620.5" cy="525.981" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<circle cx="680" cy="519.555" r="2.5" fill="white" stroke="#0072B2" stroke-width="2"/>
+<polyline points="715,451 749,451" fill="none" stroke="#253346" stroke-width="2.3" stroke-dasharray="8 4"/>
+<circle cx="732" cy="451" r="3" fill="white" stroke="#253346" stroke-width="2"/>
+<text x="760" y="456" font-size="14" text-anchor="start" font-weight="normal">Truth (0.2 m/s)</text>
+<polyline points="715,490 749,490" fill="none" stroke="#D55E00" stroke-width="2.3" stroke-dasharray="4 3"/>
+<polyline points="729,487 735,493" fill="none" stroke="#D55E00" stroke-width="2"/>
+<polyline points="729,493 735,487" fill="none" stroke="#D55E00" stroke-width="2"/>
+<text x="760" y="495" font-size="14" text-anchor="start" font-weight="normal">Position difference</text>
+<polyline points="715,529 749,529" fill="none" stroke="#0072B2" stroke-width="2.3"/>
+<circle cx="732" cy="529" r="3" fill="white" stroke="#0072B2" stroke-width="2"/>
+<text x="760" y="534" font-size="14" text-anchor="start" font-weight="normal">CV Kalman estimate</text>
+<text x="715" y="575" font-size="14" text-anchor="start" font-weight="bold">RMSE, k = 1..40 (m/s)</text>
+<text x="715" y="604" font-size="14" text-anchor="start" font-weight="normal">Difference: 0.1711</text>
+<text x="715" y="633" font-size="14" text-anchor="start" font-weight="normal">Kalman:     0.0265</text>
+<text x="42" y="714" font-size="14" text-anchor="start" font-weight="normal">Difference describes the preceding 0.1 s interval; it is plotted at its end time. KF is causal.</text>
+<text x="42" y="742" font-size="14" text-anchor="start" font-weight="normal">Constant-velocity teaching model; lower error on this input is no physical estimator claim.</text>
+</g></svg>
